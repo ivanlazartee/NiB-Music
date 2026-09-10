@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import { Play } from "lucide-react";
 
+import portadaDefault from "../assets/img/portada-default.png";
+
 const SongCard = ({ cancion, onPlay }) => {
+  const handleImageError = (event) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = portadaDefault;
+  };
+
   return (
     <article className="song-card">
       <Link
@@ -12,6 +19,7 @@ const SongCard = ({ cancion, onPlay }) => {
           src={cancion.imagen}
           alt={`Portada de ${cancion.nombre}`}
           className="song-card__image"
+          onError={handleImageError}
         />
       </Link>
 
@@ -32,9 +40,7 @@ const SongCard = ({ cancion, onPlay }) => {
           {cancion.nombre}
         </Link>
 
-        <p className="song-card__artist">
-          {cancion.artista}
-        </p>
+        <p className="song-card__artist">{cancion.artista}</p>
       </div>
     </article>
   );

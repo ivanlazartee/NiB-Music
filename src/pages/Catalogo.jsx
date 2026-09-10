@@ -2,7 +2,9 @@ import SongCard from "../components/SongCard";
 import { cancionesIniciales } from "../utils/seedData";
 
 function Catalogo() {
-  const cancion = cancionesIniciales[0];
+  const cancionesActivas = cancionesIniciales.filter(
+    (cancion) => cancion.activo
+  );
 
   return (
     <section className="catalogo">
@@ -21,7 +23,12 @@ function Catalogo() {
       </div>
 
       <div className="catalogo__grid">
-        <SongCard cancion={cancion} />
+        {cancionesActivas.map((cancion) => (
+          <SongCard
+            key={cancion.id}
+            cancion={cancion}
+          />
+        ))}
       </div>
     </section>
   );
