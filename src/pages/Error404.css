@@ -17,7 +17,10 @@
 }
 
 .error404-image {
-  flex: 1;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .error404-info {
@@ -96,4 +99,25 @@
   .error404-info h2 {
     font-size: 1.8rem;
   }
+}
+
+.vinilo {
+    width: 440px;
+    max-width: 100%;
+    animation: girar 12s linear infinite;
+}
+
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.vinilo:hover {
+    animation-play-state: paused;
+    cursor: pointer;
 }
