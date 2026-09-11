@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import logoNib from "../assets/img/Nib-Home.png";
+import premiumBanner from "../assets/img/nib-premium-banner.png";
 
 const Sidebar = () => {
   return (
@@ -48,7 +49,7 @@ const Sidebar = () => {
 
         <NavLink to="/playlist" className="sidebar__playlist-link">
           <ListMusic size={18} />
-          <span>Éxitos 2024</span>
+          <span>Éxitos 2026</span>
         </NavLink>
 
         <NavLink to="/playlist" className="sidebar__playlist-link">
@@ -70,6 +71,23 @@ const Sidebar = () => {
           <ListMusic size={18} />
           <span>Para Programar</span>
         </NavLink>
+      </div>
+
+      <div className="sidebar__premium">
+        <div className="sidebar__premium-card">
+          <img
+            src={premiumBanner}
+            alt="NiB Premium - Música sin anuncios"
+            className="sidebar__premium-image"
+          />
+
+          <button
+            type="button"
+            className="sidebar__premium-action"
+          >
+            Suscribite aquí
+          </button>
+        </div>
       </div>
 
       <div className="sidebar__profile">
