@@ -1,0 +1,315 @@
+.inicio-section {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.inicio-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+}
+
+.inicio-section__title {
+  margin: 0;
+
+  color: var(--color-text);
+
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.inicio-section__more {
+  color: var(--color-text-secondary);
+
+  font-size: 0.68rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: color var(--transition-fast);
+}
+
+.inicio-section__more:hover {
+  color: var(--color-primary);
+}
+
+.inicio-recomendados {
+  display: grid;
+
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.inicio-recomendado-card {
+  position: relative;
+
+  min-width: 0;
+  aspect-ratio: 1.35 / 1;
+
+  overflow: hidden;
+
+  background-color: #0c0c0c;
+
+  border: 1px solid rgba(255, 223, 45, 0.16);
+  border-radius: 10px;
+
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.inicio-recomendado-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(255, 223, 45, 0.45);
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(255, 223, 45, 0.08);
+}
+
+.inicio-recomendado-card__image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform var(--transition-normal);
+}
+
+.inicio-recomendado-card:hover
+.inicio-recomendado-card__image {
+  transform: scale(1.05);
+}
+
+.inicio-recomendado-card__overlay {
+  position: absolute;
+
+  inset: auto 0 0;
+
+  padding: 24px 10px 9px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(0, 0, 0, 0.94)
+    );
+}
+
+.inicio-recomendado-card__overlay h3 {
+  margin: 0;
+
+  overflow: hidden;
+
+  color: var(--color-text);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.inicio-recomendado-card__overlay p {
+  margin: 3px 0 0;
+
+  overflow: hidden;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.58rem;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.inicio-artistas {
+  display: grid;
+
+  grid-template-columns:
+    repeat(8, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.inicio-artista {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 0;
+
+  background: transparent;
+  color: var(--color-text);
+
+  border: none;
+}
+
+.inicio-artista__image-wrapper {
+  width: 100%;
+  max-width: 86px;
+
+  aspect-ratio: 1;
+
+  padding: 3px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--color-primary),
+      rgba(255, 223, 45, 0.2)
+    );
+
+  border-radius: 50%;
+
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.inicio-artista:hover
+.inicio-artista__image-wrapper {
+  transform: translateY(-3px) scale(1.03);
+
+  box-shadow:
+    0 0 18px rgba(255, 223, 45, 0.18);
+}
+
+.inicio-artista__image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  border: 3px solid #080808;
+  border-radius: 50%;
+}
+
+.inicio-artista span {
+  width: 100%;
+
+  overflow: hidden;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.62rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+.inicio-albumes {
+  display: grid;
+
+  grid-template-columns:
+    repeat(8, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.inicio-album {
+  min-width: 0;
+}
+
+.inicio-album__image {
+  width: 100%;
+
+  aspect-ratio: 1.4 / 1;
+
+  object-fit: cover;
+
+  background-color: #0c0c0c;
+
+  border: 1px solid rgba(255, 223, 45, 0.12);
+  border-radius: 8px;
+
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.inicio-album:hover .inicio-album__image {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 223, 45, 0.38);
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.inicio-album h3 {
+  margin: 7px 0 0;
+
+  overflow: hidden;
+
+  color: var(--color-text);
+
+  font-size: 0.62rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.inicio-album p {
+  margin: 3px 0 0;
+
+  overflow: hidden;
+
+  color: var(--color-text-muted);
+
+  font-size: 0.56rem;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1200px) {
+  .inicio-recomendados {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .inicio-artistas {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+
+  .inicio-albumes {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .inicio-recomendados {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .inicio-artistas {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .inicio-albumes {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
