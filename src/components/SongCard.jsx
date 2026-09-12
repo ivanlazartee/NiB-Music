@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Play } from "lucide-react";
 
-import portadaDefault from "../assets/img/portada-default.png";
-
 const SongCard = ({ cancion, onPlay }) => {
-  const handleImageError = (event) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src = portadaDefault;
+  const navigate = useNavigate();
+
+  const handlePlayClick = () => {
+    onPlay?.(cancion);
+    navigate(`/detalle/${cancion.id}`);
   };
 
   return (
@@ -19,15 +19,14 @@ const SongCard = ({ cancion, onPlay }) => {
           src={cancion.imagen}
           alt={`Portada de ${cancion.nombre}`}
           className="song-card__image"
-          onError={handleImageError}
         />
       </Link>
 
       <button
         type="button"
         className="song-card__play"
-        onClick={() => onPlay?.(cancion)}
-        aria-label={`Reproducir ${cancion.nombre}`}
+        onClick={handlePlayClick}
+        aria-label={`Abrir ${cancion.nombre}`}
       >
         <Play size={20} fill="currentColor" />
       </button>
@@ -40,7 +39,9 @@ const SongCard = ({ cancion, onPlay }) => {
           {cancion.nombre}
         </Link>
 
-        <p className="song-card__artist">{cancion.artista}</p>
+        <p className="song-card__artist">
+          {cancion.artista}
+        </p>
       </div>
     </article>
   );
