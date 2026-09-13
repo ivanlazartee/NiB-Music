@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 4rem;
+  gap: 5rem;
 }
 
 .error404-image {
@@ -80,6 +80,7 @@
   .error404-content {
     flex-direction: column;
     text-align: center;
+    gap: 2rem;
   }
 
   .error404-info p {
@@ -87,10 +88,11 @@
     margin-right: auto;
   }
 
-  .error404-buttons {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+ .error404-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
 
   .error404-info h1 {
     font-size: 5rem;
@@ -99,12 +101,18 @@
   .error404-info h2 {
     font-size: 1.8rem;
   }
+  
+  
+    .vinilo {
+        width: 190px;
+    }
 }
 
 .vinilo {
-    width: 440px;
+    width: 340px;
     max-width: 100%;
     animation: girar 12s linear infinite;
+    transition: transform .3s ease;
 }
 
 @keyframes girar {
