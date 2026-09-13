@@ -9,6 +9,7 @@ import Registro from "./pages/Registro";
 import Perfil from "./pages/Perfil";
 import Playlist from "./pages/Playlist";
 import Admin from "./pages/Admin";
+import Error404 from "./pages/Error404";
 
 function AppRouter() {
   return (
@@ -26,6 +27,7 @@ function AppRouter() {
         <Route path="/registro" element={<Registro />} />
 
         <Route path="/admin" element={<Admin />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
   );
