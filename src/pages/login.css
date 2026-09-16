@@ -1,0 +1,85 @@
+.login-page{
+    position:relative;
+    width:100%;
+    height:100vh;
+    overflow:hidden;
+}
+
+.login-bg{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position: center top;
+}
+
+.login-overlay{
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding-right: 70px;
+    padding-top: 100px;
+    padding-bottom: 40px;
+
+    box-sizing: border-box;
+}
+
+.login-navbar{
+    position: absolute;
+    top: 35px;
+    right: 130px;
+
+    display: flex;
+    align-items: center;
+    gap: 40px;
+
+    z-index: 100;
+}
+.login-navbar a{
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.login-navbar a:hover{
+    color: #d4af37;
+}
+
+.login-user{
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid #d4af37;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #d4af37;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+.login-card{
+    width: 430px;
+    min-height: 650px;
+
+    background: rgba(10,10,10,.90);
+
+    border: 1px solid #d4af37;
+    border-radius: 18px;
+
+    backdrop-filter: blur(8px);
+
+    padding: 40px;
+
+    flex-shrink: 0;
+
+    position: relative;
+    z-index: 1;
+}
