@@ -1,5 +1,6 @@
 import loginBg from "../assets/img/login-bg.png";
 import "./login.css";
+import { Link } from "react-router-dom";
 
 function Login() {
   return (
@@ -14,20 +15,53 @@ function Login() {
       <div className="login-overlay">
 
         {/* Navbar */}
-        <nav className="login-navbar">
-        <a href="/">Inicio</a>
-        <a href="/catalogo">Explorar</a>
-        <a href="#">Soporte</a>
+<nav className="login-navbar">
+  <Link to="/">Inicio</Link>
 
-<button className="login-user">
-  👤
-</button>
-        </nav>
+  <Link to="/catalogo">Explorar</Link>
+
+  <Link to="/soporte">Soporte</Link>
+
+  <button className="login-user">
+    👤
+  </button>
+</nav>
 
         {/* Modal */}
-        <div className="login-card">
+<div className="login-card">
+  <h2>Iniciar sesión</h2>
 
-        </div>
+  <p className="login-subtitle">
+    Ingresá a tu cuenta para seguir disfrutando de tu música.
+  </p>
+
+  <form className="login-form">
+
+    <label>Correo electrónico</label>
+    <input
+      type="email"
+      placeholder="ejemplo@email.com"
+    />
+
+    <label>Contraseña</label>
+    <input
+      type="password"
+      placeholder="********"
+    />
+
+<Link to="/" className="forgot-password">
+  ¿Olvidaste tu contraseña?
+</Link>
+
+    <button type="submit" className="login-button">
+      Ingresar
+    </button>
+<p className="register-text">
+  ¿No tenés cuenta? <Link to="/registro">Registrate</Link>
+</p>
+
+  </form>
+</div>
 
       </div>
 
