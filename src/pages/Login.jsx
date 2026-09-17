@@ -1,6 +1,8 @@
 import loginBg from "../assets/img/login-bg.png";
 import "./login.css";
 import { Link } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import { FaSpotify, FaApple } from "react-icons/fa";
 
 function Login() {
   return (
@@ -53,9 +55,33 @@ function Login() {
   ¿Olvidaste tu contraseña?
 </Link>
 
-    <button type="submit" className="login-button">
-      Ingresar
-    </button>
+<button type="submit" className="login-button">
+  Ingresar
+</button>
+
+<div className="login-divider">
+  <span>o continuá con</span>
+</div>
+
+<div className="social-login">
+
+  <button type="button" className="social-button">
+    <FcGoogle size={22} />
+    Continuar con Google
+  </button>
+
+  <button type="button" className="social-button">
+    <FaSpotify size={22} color="#1DB954" />
+    Continuar con Spotify
+  </button>
+
+  <button type="button" className="social-button">
+    <FaApple size={22} />
+    Continuar con Apple Music
+  </button>
+
+</div>
+
 <p className="register-text">
   ¿No tenés cuenta? <Link to="/registro">Registrate</Link>
 </p>
