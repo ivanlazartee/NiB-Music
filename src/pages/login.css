@@ -28,8 +28,8 @@
 }
 .login-navbar{
     position: absolute;
-    top: 35px;
-    right: 130px;
+    top: 20px;
+    right: 145px;
 
     display: flex;
     align-items: center;
@@ -76,7 +76,7 @@
     backdrop-filter: blur(8px);
 
     padding: 40px;
-    padding-top: 80px;
+    padding-top: 50px;
 
     flex-shrink: 0;
 
@@ -89,12 +89,14 @@
     color:white;
     font-size:32px;
     margin-bottom:10px;
+    text-align: center;
 }
 
 .login-subtitle{
     color:#bdbdbd;
     margin-bottom:35px;
     line-height:1.5;
+    text-align: center;
 }
 
 .login-form{
@@ -130,6 +132,7 @@
 }
 
 .login-button{
+    width: 100%;
     background:#d4af37;
     color:black;
     border:none;
