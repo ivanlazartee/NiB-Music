@@ -2,7 +2,7 @@ import loginBg from "../assets/img/login-bg.png";
 import "./login.css";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { FaSpotify, FaApple } from "react-icons/fa";
+import { FaSpotify, FaApple, FaRegCircleUser } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
 function Login() {
@@ -11,6 +11,19 @@ const mostrarProveedor = (proveedor) => {
   Swal.fire({
     title: "Próximamente",
     text: `El inicio de sesión con ${proveedor} estará disponible en una próxima versión de NiB Music.`,
+    icon: "info",
+    iconColor: "#d4af37",
+    background: "#0f0f0f",
+    color: "#ffffff",
+    confirmButtonText: "Entendido",
+    confirmButtonColor: "#d4af37",
+  });
+};
+
+const mostrarPerfil = () => {
+  Swal.fire({
+    title: "Mi cuenta",
+    text: "Iniciá sesión para acceder a tu perfil y administrar tu biblioteca.",
     icon: "info",
     iconColor: "#d4af37",
     background: "#0f0f0f",
@@ -42,9 +55,12 @@ const manejarLogin = (e) => {
 
   <Link to="/soporte">Soporte</Link>
 
-  <button className="login-user">
-    👤
-  </button>
+<button
+  className="login-user"
+  onClick={mostrarPerfil}
+>
+  <FaRegCircleUser size={20} />
+</button>
 </nav>
 
         {/* Modal */}
