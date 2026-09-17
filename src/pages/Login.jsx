@@ -3,8 +3,22 @@ import "./login.css";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaSpotify, FaApple } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 function Login() {
+
+const mostrarProveedor = (proveedor) => {
+  Swal.fire({
+    title: "Próximamente",
+    text: `El inicio de sesión con ${proveedor} estará disponible en una próxima versión de NiB Music.`,
+    icon: "info",
+    iconColor: "#d4af37",
+    background: "#0f0f0f",
+    color: "#ffffff",
+    confirmButtonText: "Entendido",
+    confirmButtonColor: "#d4af37",
+  });
+};
   return (
     <section className="login-page">
 
@@ -65,20 +79,32 @@ function Login() {
 
 <div className="social-login">
 
-  <button type="button" className="social-button">
-    <FcGoogle size={22} />
-    Continuar con Google
-  </button>
+<button
+  type="button"
+  className="social-button"
+  onClick={() => mostrarProveedor("Google")}
+>
+  <FcGoogle size={22} />
+  Continuar con Google
+</button>
 
-  <button type="button" className="social-button">
-    <FaSpotify size={22} color="#1DB954" />
-    Continuar con Spotify
-  </button>
+<button
+  type="button"
+  className="social-button"
+  onClick={() => mostrarProveedor("Spotify")}
+>
+  <FaSpotify size={22} color="#1DB954" />
+  Continuar con Spotify
+</button>
 
-  <button type="button" className="social-button">
-    <FaApple size={22} />
-    Continuar con Apple Music
-  </button>
+<button
+  type="button"
+  className="social-button"
+  onClick={() => mostrarProveedor("Apple Music")}
+>
+  <FaApple size={22} />
+  Continuar con Apple Music
+</button>
 
 </div>
 
