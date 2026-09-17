@@ -19,6 +19,10 @@ const mostrarProveedor = (proveedor) => {
     confirmButtonColor: "#d4af37",
   });
 };
+
+const manejarLogin = (e) => {
+  e.preventDefault();
+};
   return (
     <section className="login-page">
 
@@ -51,19 +55,24 @@ const mostrarProveedor = (proveedor) => {
     Ingresá a tu cuenta para seguir disfrutando de tu música.
   </p>
 
-  <form className="login-form">
+<form className="login-form" onSubmit={manejarLogin}>
 
     <label>Correo electrónico</label>
-    <input
-      type="email"
-      placeholder="ejemplo@email.com"
-    />
+<input
+  type="email"
+  placeholder="ejemplo@email.com"
+  required
+  maxLength={50}
+/>
 
     <label>Contraseña</label>
-    <input
-      type="password"
-      placeholder="********"
-    />
+<input
+  type="password"
+  placeholder="********"
+  required
+  minLength={8}
+  maxLength={20}
+/>
 
 <Link to="/" className="forgot-password">
   ¿Olvidaste tu contraseña?
