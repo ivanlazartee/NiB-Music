@@ -1,10 +1,104 @@
+import { useState } from "react";
+
 import registroBg from "../assets/img/registro-bg.png";
 import "./registro.css";
 
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF, FaXTwitter } from "react-icons/fa6";
+import { FaFacebookF, FaXTwitter, FaEye, FaEyeSlash } from "react-icons/fa6";
+
+import Swal from "sweetalert2";
 
 function Registro() {
+  const [formulario, setFormulario] = useState({
+    nombre: "",
+    apellido: "",
+    email: "",
+    password: "",
+    confirmarPassword: "",
+  });
+
+  const [errores, setErrores] = useState({});
+
+  const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
+    useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormulario({
+      ...formulario,
+      [name]: value,
+    });
+
+    setErrores({
+      ...errores,
+      [name]: "",
+    });
+  };
+
+  const validarFormulario = () => {
+    const nuevosErrores = {};
+
+    if (!formulario.nombre.trim()) {
+      nuevosErrores.nombre = "El nombre es obligatorio.";
+    }
+
+    if (!formulario.apellido.trim()) {
+      nuevosErrores.apellido = "El apellido es obligatorio.";
+    }
+
+    if (!formulario.email.trim()) {
+      nuevosErrores.email = "El correo electrónico es obligatorio.";
+    } else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formulario.email)
+    ) {
+      nuevosErrores.email = "Ingresá un correo electrónico válido.";
+    }
+
+    if (!formulario.password) {
+      nuevosErrores.password = "La contraseña es obligatoria.";
+    } else if (formulario.password.length < 8) {
+      nuevosErrores.password =
+        "La contraseña debe tener al menos 8 caracteres.";
+    }
+
+    if (!formulario.confirmarPassword) {
+      nuevosErrores.confirmarPassword =
+        "Debés confirmar tu contraseña.";
+    } else if (
+      formulario.password !== formulario.confirmarPassword
+    ) {
+      nuevosErrores.confirmarPassword =
+        "Las contraseñas no coinciden.";
+    }
+
+    return nuevosErrores;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const nuevosErrores = validarFormulario();
+
+    if (Object.keys(nuevosErrores).length > 0) {
+      setErrores(nuevosErrores);
+      return;
+    }
+
+    setErrores({});
+
+    Swal.fire({
+      title: "¡Cuenta creada!",
+      text: "Tu cuenta fue creada correctamente.",
+      icon: "success",
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#d4af37",
+      background: "#181818",
+      color: "#ffffff",
+    });
+  };
+
   return (
     <section className="registro-page">
       <img
@@ -19,42 +113,172 @@ function Registro() {
           <h2>Crear Cuenta</h2>
 
           <p className="registro-subtitle">
-            Creá tu cuenta y empezá a disfrutar de toda la experiencia NiB Music.
+            Creá tu cuenta y empezá a disfrutar de toda la experiencia
+            NiB Music.
           </p>
 
-          <form className="registro-form">
+          <form
+            className="registro-form"
+            onSubmit={handleSubmit}
+          >
 
-            <label>Nombre</label>
+            <label htmlFor="nombre">Nombre</label>
+
             <input
+              id="nombre"
+              name="nombre"
               type="text"
               placeholder="Ingresá tu nombre"
+              value={formulario.nombre}
+              onChange={handleChange}
+              className={errores.nombre ? "registro-input-error" : ""}
             />
 
-            <label>Apellido</label>
+            {errores.nombre && (
+              <span className="registro-error">
+                {errores.nombre}
+              </span>
+            )}
+
+
+            <label htmlFor="apellido">Apellido</label>
+
             <input
+              id="apellido"
+              name="apellido"
               type="text"
               placeholder="Ingresá tu apellido"
+              value={formulario.apellido}
+              onChange={handleChange}
+              className={errores.apellido ? "registro-input-error" : ""}
             />
 
-            <label>Correo electrónico</label>
+            {errores.apellido && (
+              <span className="registro-error">
+                {errores.apellido}
+              </span>
+            )}
+
+
+            <label htmlFor="email">Correo electrónico</label>
+
             <input
+              id="email"
+              name="email"
               type="email"
               placeholder="ejemplo@email.com"
+              value={formulario.email}
+              onChange={handleChange}
+              className={errores.email ? "registro-input-error" : ""}
             />
 
-            <label>Contraseña</label>
-            <input
-              type="password"
-              placeholder="********"
-            />
+            {errores.email && (
+              <span className="registro-error">
+                {errores.email}
+              </span>
+            )}
 
-            <label>Confirmar contraseña</label>
-            <input
-              type="password"
-              placeholder="********"
-            />
 
-            <button type="submit" className="registro-btn">
+            <label htmlFor="password">Contraseña</label>
+
+            <div className="registro-password-container">
+
+              <input
+                id="password"
+                name="password"
+                type={mostrarPassword ? "text" : "password"}
+                placeholder="********"
+                value={formulario.password}
+                onChange={handleChange}
+                className={
+                  errores.password
+                    ? "registro-input-error"
+                    : ""
+                }
+              />
+
+              <button
+                type="button"
+                className="registro-password-toggle"
+                onClick={() =>
+                  setMostrarPassword(!mostrarPassword)
+                }
+                aria-label={
+                  mostrarPassword
+                    ? "Ocultar contraseña"
+                    : "Mostrar contraseña"
+                }
+              >
+                {mostrarPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+
+            </div>
+
+            {errores.password && (
+              <span className="registro-error">
+                {errores.password}
+              </span>
+            )}
+
+
+            <label htmlFor="confirmarPassword">
+              Confirmar contraseña
+            </label>
+
+            <div className="registro-password-container">
+
+              <input
+                id="confirmarPassword"
+                name="confirmarPassword"
+                type={
+                  mostrarConfirmarPassword
+                    ? "text"
+                    : "password"
+                }
+                placeholder="********"
+                value={formulario.confirmarPassword}
+                onChange={handleChange}
+                className={
+                  errores.confirmarPassword
+                    ? "registro-input-error"
+                    : ""
+                }
+              />
+
+              <button
+                type="button"
+                className="registro-password-toggle"
+                onClick={() =>
+                  setMostrarConfirmarPassword(
+                    !mostrarConfirmarPassword
+                  )
+                }
+                aria-label={
+                  mostrarConfirmarPassword
+                    ? "Ocultar contraseña"
+                    : "Mostrar contraseña"
+                }
+              >
+                {mostrarConfirmarPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
+              </button>
+
+            </div>
+
+            {errores.confirmarPassword && (
+              <span className="registro-error">
+                {errores.confirmarPassword}
+              </span>
+            )}
+
+
+            <button
+              type="submit"
+              className="registro-btn"
+            >
               Crear cuenta
             </button>
 
@@ -66,17 +290,26 @@ function Registro() {
 
           <div className="registro-social-login">
 
-            <button type="button" className="registro-social-btn">
+            <button
+              type="button"
+              className="registro-social-btn"
+            >
               <FcGoogle />
               <span>Google</span>
             </button>
 
-            <button type="button" className="registro-social-btn">
+            <button
+              type="button"
+              className="registro-social-btn"
+            >
               <FaFacebookF />
               <span>Facebook</span>
             </button>
 
-            <button type="button" className="registro-social-btn">
+            <button
+              type="button"
+              className="registro-social-btn"
+            >
               <FaXTwitter />
               <span>X</span>
             </button>
