@@ -1,0 +1,213 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.registro-page{
+    position:relative;
+    width:100%;
+    height:100vh;
+    overflow:hidden;
+}
+
+.registro-bg{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+.registro-overlay{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.registro-card{
+    width:440px;
+
+    background:rgba(10,10,10,.92);
+
+    border:1px solid #d4af37;
+    border-radius:18px;
+
+    backdrop-filter:blur(10px);
+
+    padding:28px 30px;
+
+    display:flex;
+    flex-direction:column;
+
+    box-shadow:0 0 30px rgba(0,0,0,.35);
+}
+
+.registro-card h2{
+    color:#fff;
+    text-align:center;
+    font-size:34px;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.registro-subtitle{
+    color:#b5b5b5;
+    text-align:center;
+    font-size:16px;
+    line-height:1.5;
+    margin-bottom:24px;
+}
+
+.registro-form{
+    display:flex;
+    flex-direction:column;
+}
+
+.registro-form label{
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.registro-form input{
+    width:100%;
+    height:48px;
+
+    background:#1d1d1d;
+
+    border:1px solid #333;
+
+    border-radius:10px;
+
+    color:#fff;
+
+    padding:0 16px;
+
+    margin-bottom:16px;
+
+    outline:none;
+
+    transition:.25s;
+}
+
+.registro-form input:focus{
+    border-color:#d4af37;
+}
+
+.registro-btn{
+    width:100%;
+    height:50px;
+
+    margin-top:10px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#d4af37;
+
+    color:#111;
+
+    font-size:17px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.registro-btn:hover{
+    transform:translateY(-2px);
+    background:#e2be48;
+}
+
+.registro-divider{
+    display:flex;
+    align-items:center;
+    margin:22px 0 18px;
+}
+
+.registro-divider::before,
+.registro-divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:#353535;
+}
+
+.registro-divider span{
+    color:#8d8d8d;
+    font-size:14px;
+    padding:0 14px;
+}
+
+/* ========================= */
+/* BOTONES SOCIALES */
+/* ========================= */
+
+.registro-social-login{
+    display:flex;
+    gap:10px;
+    width:100%;
+}
+
+.registro-social-btn{
+    flex:1;
+
+    height:48px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+
+    background:#202020;
+
+    border:1px solid #353535;
+    border-radius:10px;
+
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.registro-social-btn:hover{
+    background:#292929;
+    border-color:#d4af37;
+}
+
+.registro-social-btn svg{
+    font-size:20px;
+}
+
+.registro-social-btn span{
+    font-size:14px;
+    font-weight:500;
+    white-space:nowrap;
+}
+
+/* ========================= */
+
+.registro-footer{
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#b5b5b5;
+
+    font-size:15px;
+}
+
+.registro-footer a{
+    color:#d4af37;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.registro-footer a:hover{
+    text-decoration:underline;
+}
