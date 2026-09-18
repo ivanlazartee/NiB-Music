@@ -2,7 +2,7 @@ import loginBg from "../assets/img/login-bg.png";
 import "./login.css";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { FaSpotify, FaApple, FaRegCircleUser } from "react-icons/fa6";
+import { FaFacebookF, FaXTwitter, FaRegCircleUser } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
 function Login() {
@@ -116,19 +116,19 @@ const manejarLogin = (e) => {
 <button
   type="button"
   className="social-button"
-  onClick={() => mostrarProveedor("Spotify")}
+  onClick={() => mostrarProveedor("Facebook")}
 >
-  <FaSpotify size={22} color="#1DB954" />
-  Continuar con Spotify
+  <FaFacebookF size={20} color="#1877F2" />
+  Continuar con Facebook
 </button>
 
 <button
   type="button"
   className="social-button"
-  onClick={() => mostrarProveedor("Apple Music")}
+  onClick={() => mostrarProveedor("X")}
 >
-  <FaApple size={22} />
-  Continuar con Apple Music
+  <FaXTwitter size={20} />
+  Continuar con X
 </button>
 
 </div>
