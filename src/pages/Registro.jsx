@@ -3,8 +3,15 @@ import { useState } from "react";
 import registroBg from "../assets/img/registro-bg.png";
 import "./registro.css";
 
+import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF, FaXTwitter, FaEye, FaEyeSlash } from "react-icons/fa6";
+import {
+  FaFacebookF,
+  FaXTwitter,
+  FaEye,
+  FaEyeSlash,
+  FaRegCircleUser,
+} from "react-icons/fa6";
 
 import Swal from "sweetalert2";
 
@@ -22,6 +29,19 @@ function Registro() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
     useState(false);
+
+  const mostrarPerfil = () => {
+    Swal.fire({
+      title: "Mi cuenta",
+      text: "Iniciá sesión para acceder a tu perfil y administrar tu biblioteca.",
+      icon: "info",
+      iconColor: "#d4af37",
+      background: "#0f0f0f",
+      color: "#ffffff",
+      confirmButtonText: "Entendido",
+      confirmButtonColor: "#d4af37",
+    });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,15 +112,17 @@ function Registro() {
       title: "¡Cuenta creada!",
       text: "Tu cuenta fue creada correctamente.",
       icon: "success",
+      iconColor: "#d4af37",
       confirmButtonText: "Aceptar",
       confirmButtonColor: "#d4af37",
-      background: "#181818",
+      background: "#0f0f0f",
       color: "#ffffff",
     });
   };
 
   return (
     <section className="registro-page">
+
       <img
         src={registroBg}
         alt="Registro NiB Music"
@@ -108,6 +130,26 @@ function Registro() {
       />
 
       <div className="registro-overlay">
+
+        {/* Navbar */}
+        <nav className="registro-navbar">
+
+          <Link to="/">Inicio</Link>
+
+          <Link to="/catalogo">Explorar</Link>
+
+          <Link to="/soporte">Soporte</Link>
+
+          <button
+            className="registro-user"
+            onClick={mostrarPerfil}
+          >
+            <FaRegCircleUser size={20} />
+          </button>
+
+        </nav>
+
+        {/* Modal */}
         <div className="registro-card">
 
           <h2>Crear Cuenta</h2>
@@ -122,7 +164,9 @@ function Registro() {
             onSubmit={handleSubmit}
           >
 
-            <label htmlFor="nombre">Nombre</label>
+            <label htmlFor="nombre">
+              Nombre
+            </label>
 
             <input
               id="nombre"
@@ -131,7 +175,11 @@ function Registro() {
               placeholder="Ingresá tu nombre"
               value={formulario.nombre}
               onChange={handleChange}
-              className={errores.nombre ? "registro-input-error" : ""}
+              className={
+                errores.nombre
+                  ? "registro-input-error"
+                  : ""
+              }
             />
 
             {errores.nombre && (
@@ -141,7 +189,9 @@ function Registro() {
             )}
 
 
-            <label htmlFor="apellido">Apellido</label>
+            <label htmlFor="apellido">
+              Apellido
+            </label>
 
             <input
               id="apellido"
@@ -150,7 +200,11 @@ function Registro() {
               placeholder="Ingresá tu apellido"
               value={formulario.apellido}
               onChange={handleChange}
-              className={errores.apellido ? "registro-input-error" : ""}
+              className={
+                errores.apellido
+                  ? "registro-input-error"
+                  : ""
+              }
             />
 
             {errores.apellido && (
@@ -160,7 +214,9 @@ function Registro() {
             )}
 
 
-            <label htmlFor="email">Correo electrónico</label>
+            <label htmlFor="email">
+              Correo electrónico
+            </label>
 
             <input
               id="email"
@@ -169,7 +225,11 @@ function Registro() {
               placeholder="ejemplo@email.com"
               value={formulario.email}
               onChange={handleChange}
-              className={errores.email ? "registro-input-error" : ""}
+              className={
+                errores.email
+                  ? "registro-input-error"
+                  : ""
+              }
             />
 
             {errores.email && (
@@ -179,14 +239,20 @@ function Registro() {
             )}
 
 
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor="password">
+              Contraseña
+            </label>
 
             <div className="registro-password-container">
 
               <input
                 id="password"
                 name="password"
-                type={mostrarPassword ? "text" : "password"}
+                type={
+                  mostrarPassword
+                    ? "text"
+                    : "password"
+                }
                 placeholder="********"
                 value={formulario.password}
                 onChange={handleChange}
@@ -209,7 +275,11 @@ function Registro() {
                     : "Mostrar contraseña"
                 }
               >
-                {mostrarPassword ? <FaEyeSlash /> : <FaEye />}
+                {mostrarPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
               </button>
 
             </div>
@@ -318,7 +388,7 @@ function Registro() {
 
           <p className="registro-footer">
             ¿Ya tenés una cuenta?
-            <a href="/login"> Iniciar sesión</a>
+            <Link to="/login"> Iniciar sesión</Link>
           </p>
 
         </div>

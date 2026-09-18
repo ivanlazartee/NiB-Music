@@ -29,6 +29,65 @@
     overflow:hidden;
 }
 
+/* ========================= */
+/* NAVBAR */
+/* ========================= */
+
+.registro-navbar{
+    position:absolute;
+
+    top:20px;
+    right:145px;
+
+    display:flex;
+    align-items:center;
+    gap:40px;
+
+    z-index:100;
+}
+
+.registro-navbar a{
+    color:white;
+
+    text-decoration:none;
+
+    font-size:14px;
+    font-weight:600;
+
+    transition:.25s;
+}
+
+.registro-navbar a:hover{
+    color:#d4af37;
+}
+
+.registro-user{
+    width:42px;
+    height:42px;
+
+    border:1px solid #d4af37;
+    border-radius:50%;
+
+    background:transparent;
+    color:#d4af37;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.registro-user:hover{
+    background:rgba(212,175,55,.10);
+}
+
+/* ========================= */
+/* MODAL */
+/* ========================= */
+
 .registro-card{
     width:440px;
     max-height:calc(100vh - 40px);
@@ -54,17 +113,24 @@
 
 .registro-card h2{
     color:#fff;
+
     text-align:center;
+
     font-size:32px;
     font-weight:600;
+
     margin-bottom:6px;
 }
 
 .registro-subtitle{
     color:#b5b5b5;
+
     text-align:center;
+
     font-size:15px;
+
     line-height:1.4;
+
     margin-bottom:18px;
 }
 
@@ -75,8 +141,10 @@
 
 .registro-form label{
     color:#fff;
+
     font-size:15px;
     font-weight:600;
+
     margin-bottom:5px;
 }
 
@@ -158,6 +226,8 @@
 }
 
 /* ========================= */
+/* ERRORES */
+/* ========================= */
 
 .registro-error{
     color:#e74c3c;
@@ -167,6 +237,10 @@
     margin-top:-5px;
     margin-bottom:8px;
 }
+
+/* ========================= */
+/* BOTÓN CREAR CUENTA */
+/* ========================= */
 
 .registro-btn{
     width:100%;
@@ -191,8 +265,13 @@
 
 .registro-btn:hover{
     transform:translateY(-2px);
+
     background:#e2be48;
 }
+
+/* ========================= */
+/* DIVISOR */
+/* ========================= */
 
 .registro-divider{
     display:flex;
@@ -204,14 +283,19 @@
 .registro-divider::before,
 .registro-divider::after{
     content:"";
+
     flex:1;
+
     height:1px;
+
     background:#353535;
 }
 
 .registro-divider span{
     color:#8d8d8d;
+
     font-size:13px;
+
     padding:0 12px;
 }
 
@@ -221,7 +305,9 @@
 
 .registro-social-login{
     display:flex;
+
     gap:10px;
+
     width:100%;
 }
 
@@ -233,11 +319,13 @@
     display:flex;
     justify-content:center;
     align-items:center;
+
     gap:7px;
 
     background:#202020;
 
     border:1px solid #353535;
+
     border-radius:10px;
 
     color:#fff;
@@ -249,6 +337,7 @@
 
 .registro-social-btn:hover{
     background:#292929;
+
     border-color:#d4af37;
 }
 
@@ -258,10 +347,14 @@
 
 .registro-social-btn span{
     font-size:13px;
+
     font-weight:500;
+
     white-space:nowrap;
 }
 
+/* ========================= */
+/* FOOTER */
 /* ========================= */
 
 .registro-footer{
@@ -276,7 +369,9 @@
 
 .registro-footer a{
     color:#d4af37;
+
     text-decoration:none;
+
     font-weight:700;
 }
 
