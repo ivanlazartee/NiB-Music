@@ -52,6 +52,45 @@ export function AuthProvider({ children }) {
     };
   };
 
+  const registro = (datos) => {
+    const usuarios = getItem(KEYS.usuarios) || [];
+
+    const emailExiste = usuarios.some(
+      (usuario) =>
+        usuario.email.toLowerCase() === datos.email.toLowerCase()
+    );
+
+    if (emailExiste) {
+      return {
+        success: false,
+        message: "Ya existe una cuenta registrada con ese email.",
+      };
+    }
+
+    const nuevoUsuario = {
+      id: crypto.randomUUID(),
+      nombre: datos.nombre,
+      email: datos.email,
+      password: datos.password,
+      rol: "premium",
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        datos.nombre
+      )}&background=059669&color=fff`,
+      fechaRegistro: new Date().toISOString(),
+      activo: true,
+      fechaDesactivacion: null,
+    };
+
+    const usuariosActualizados = [...usuarios, nuevoUsuario];
+
+    setItem(KEYS.usuarios, usuariosActualizados);
+
+    return {
+      success: true,
+      user: nuevoUsuario,
+    };
+  };
+
   const logout = () => {
     setUsuarioActual(null);
     removeItem(KEYS.usuarioActual);
@@ -62,6 +101,7 @@ export function AuthProvider({ children }) {
       value={{
         usuarioActual,
         login,
+        registro,
         logout,
       }}
     >
