@@ -12,16 +12,31 @@ export function PlayerProvider({ children }) {
   const [cola, setCola] = useState([])
   const audioRef = useRef(new Audio())
 
+  function reproducir(cancion) {
+    audioRef.current.src = cancion.archivo
+    audioRef.current.play()
+    setCancionActual(cancion)
+    setReproduciendo(true)
+  }
+
+  function togglePlay() {
+    if (reproduciendo) {
+      audioRef.current.pause()
+      setReproduciendo(false)
+    } else {
+      audioRef.current.play()
+      setReproduciendo(true)
+    }
+  }
+
   return (
     <PlayerContext.Provider
       value={{
         cancionActual,
         reproduciendo,
-        cola,git
-        setCancionActual,
-        setReproduciendo,
-        setCola,
-        audioRef,
+        cola,
+        reproducir,
+        togglePlay,
       }}
     >
       {children}
