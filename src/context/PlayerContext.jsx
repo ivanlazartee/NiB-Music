@@ -1,15 +1,10 @@
-import { createContext, useContext } from "react";
-
+import { createContext, useContext, useState, useRef } from 'react'
 export const PlayerContext = createContext(null)
-
 export function usePlayer() {
-    return useContext(PlayerContext)
+  return useContext(PlayerContext)
 }
-
-export function PlayerProvider({ children }){
-    return(
-        <PlayerContext.Provider value={{}}>
-            {children}
-        </PlayerContext.Provider>
-    )
-}
+export function PlayerProvider({ children }) {
+  const [cancionActual, setCancionActual] = useState(null)
+  const [reproduciendo, setReproduciendo] = useState(false)
+  const [cola, setCola] = useState([])
+  const audioRef = useRef(new Audio())
