@@ -24,6 +24,8 @@ export const usuariosIniciales = [
     rol: 'admin',
     avatar: 'https://ui-avatars.com/api/?name=Admin&background=6d28d9&color=fff',
     fechaRegistro: new Date().toISOString(),
+    activo: true,
+    fechaDesactivacion: null,
   },
   {
     id: uuidv4(),
@@ -33,5 +35,7 @@ export const usuariosIniciales = [
     rol: 'premium',
     avatar: 'https://ui-avatars.com/api/?name=Premium&background=059669&color=fff',
     fechaRegistro: new Date().toISOString(),
+    activo: true,
+    fechaDesactivacion: null,
   },
 ]
