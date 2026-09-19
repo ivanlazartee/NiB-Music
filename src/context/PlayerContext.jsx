@@ -29,6 +29,22 @@ export function PlayerProvider({ children }) {
     }
   }
 
+  function siguiente() {
+    const indice = cola.findIndex(c => c.id === cancionActual?.id)
+    const sig = cola[indice + 1]
+    if (sig) reproducir(sig)
+  }
+
+  function anterior() {
+    const indice = cola.findIndex(c => c.id === cancionActual?.id)
+    const ant = cola[indice - 1]
+    if (ant) reproducir(ant)
+  }
+
+  function cargarCola(canciones) {
+    setCola(canciones)
+  }
+
   return (
     <PlayerContext.Provider
       value={{
@@ -37,6 +53,9 @@ export function PlayerProvider({ children }) {
         cola,
         reproducir,
         togglePlay,
+        siguiente,
+        anterior,
+        cargarCola,
       }}
     >
       {children}
