@@ -11,6 +11,8 @@ import Playlist from "./pages/Playlist";
 import Admin from "./pages/Admin";
 import Error404 from "./pages/Error404";
 
+import PrivateRoute from "./components/PrivateRoute";
+
 function AppRouter() {
   return (
     <BrowserRouter>
@@ -26,7 +28,14 @@ function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
 
-        <Route path="/admin" element={<Admin />} />
+<Route
+  path="/admin"
+  element={
+    <PrivateRoute role="admin">
+      <Admin />
+    </PrivateRoute>
+  }
+/>
         <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
