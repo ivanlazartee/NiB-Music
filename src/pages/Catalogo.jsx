@@ -7,11 +7,17 @@ import SongCard from "../components/SongCard";
 
 import { getItem, KEYS } from "../utils/localStorage";
 
+import { useAuth } from "../context/AuthContext"
+import { usePlayer } from "../context/PlayerContext"
+
 import "../styles/InicioSections.css";
 
 function Catalogo() {
   const { search } = useOutletContext();
-
+  const { usuarioActual } = useAuth()
+  const { reproducir, cargarCola } = usePlayer()
+  
+  const esPremium = usuarioActual?.rol === "premium"
   const [generoSeleccionado, setGeneroSeleccionado] = useState("");
   const [artistaSeleccionado, setArtistaSeleccionado] = useState("");
 
@@ -83,6 +89,14 @@ function Catalogo() {
       coincideArtista
     );
   });
+
+  function handlePlayCancion(cancion) {
+    // Commit incompleto: visitante todavía no redirige a /registro
+    if (!esPremium) return
+
+    cargarCola(cancionesFiltradas)
+    reproducir(cancion)
+  }
 
   return (
     <section className="catalogo-layout">
@@ -255,9 +269,10 @@ function Catalogo() {
             <div className="catalogo__grid">
               {cancionesFiltradas.map((cancion) => (
                 <SongCard
-                  key={cancion.id}
-                  cancion={cancion}
-                />
+                key={cancion.id}
+                cancion={cancion}
+                onPlay={handlePlayCancion}
+              />
               ))}
             </div>
           ) : (
