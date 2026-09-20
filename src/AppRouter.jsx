@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 
+import Inicio from "./pages/Inicio";
 import Catalogo from "./pages/Catalogo";
 import DetalleCancion from "./pages/DetalleCancion";
 import Login from "./pages/Login";
@@ -19,7 +20,7 @@ function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Catalogo />} />
+          <Route path="/" element={<Inicio />} />
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/detalle/:id" element={<DetalleCancion />} />
           <Route path="/perfil" element={<Perfil />} />
