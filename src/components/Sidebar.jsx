@@ -6,11 +6,15 @@ import {
   Heart,
   ListMusic,
   Crown,
+  LogOut,
 } from "lucide-react";
 
 import logoNib from "../assets/img/Nib-Home.png";
+import { useAuth } from "../context/AuthContext";
 
 const Sidebar = () => {
+  const { usuarioActual, logout } = useAuth();
+
   return (
     <aside className="sidebar">
       <div className="sidebar__glow" />
@@ -103,6 +107,17 @@ const Sidebar = () => {
             Obtener Premium
           </button>
         </div>
+
+        {usuarioActual && (
+          <button
+            type="button"
+            className="sidebar__logout-button"
+            onClick={logout}
+          >
+            <LogOut size={18} />
+            <span>Cerrar sesión</span>
+          </button>
+        )}
       </div>
     </aside>
   );
