@@ -313,3 +313,101 @@
       repeat(2, minmax(0, 1fr));
   }
 }
+
+.song-card-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(5px);
+}
+
+.song-card-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 28px 28px;
+  border: 1px solid rgba(255, 223, 45, 0.35);
+  border-radius: 18px;
+  background: #17160e;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.song-card-modal h2 {
+  margin: 0 0 14px;
+  color: #ffdf2d;
+  font-size: 1.5rem;
+}
+
+.song-card-modal p {
+  margin: 0;
+  color: #d5d5d5;
+  line-height: 1.6;
+}
+
+.song-card-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.song-card-modal__close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.song-card-modal__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.song-card-modal__primary,
+.song-card-modal__secondary {
+  padding: 11px 20px;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.song-card-modal__primary {
+  border: 1px solid #ffdf2d;
+  background: #ffdf2d;
+  color: #111;
+}
+
+.song-card-modal__primary:hover {
+  background: #ffe85e;
+}
+
+.song-card-modal__secondary {
+  border: 1px solid #555;
+  background: transparent;
+  color: #fff;
+}
+
+.song-card-modal__secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 480px) {
+  .song-card-modal__actions {
+    flex-direction: column;
+  }
+}
