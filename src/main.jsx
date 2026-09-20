@@ -6,10 +6,11 @@ import { AuthProvider } from './context/AuthContext.jsx'
 import { PlayerProvider } from './context/PlayerContext.jsx'
 import { initItem, getItem, setItem, KEYS } from './utils/localStorage.js'
 import { cancionesIniciales, usuariosIniciales } from './utils/seedData.js'
+import { limpiarUsuariosDesactivados } from './utils/limpiarUsuariosDesactivados.js'
 
-initItem (KEYS.canciones, cancionesIniciales)
-initItem (KEYS.usuarios, usuariosIniciales)
-initItem (KEYS.playlists, [])
+initItem(KEYS.canciones, cancionesIniciales)
+initItem(KEYS.usuarios, usuariosIniciales)
+initItem(KEYS.playlists, [])
 
 const usuariosGuardados = getItem(KEYS.usuarios) || []
 
@@ -21,6 +22,7 @@ const usuariosActualizados = usuariosGuardados.map((usuario) => ({
 
 setItem(KEYS.usuarios, usuariosActualizados)
 
+limpiarUsuariosDesactivados()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
