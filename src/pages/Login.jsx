@@ -1,14 +1,23 @@
+import { useState } from "react";
 import loginBg from "../assets/img/login-bg.png";
 import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF, FaXTwitter, FaRegCircleUser } from "react-icons/fa6";
+import {
+  FaFacebookF,
+  FaXTwitter,
+  FaRegCircleUser,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa6";
 import Swal from "sweetalert2";
 import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const mostrarProveedor = (proveedor) => {
     Swal.fire({
@@ -80,7 +89,6 @@ function Login() {
       />
 
       <div className="login-overlay">
-
         {/* Navbar */}
         <nav className="login-navbar">
           <Link to="/">Inicio</Link>
@@ -105,8 +113,10 @@ function Login() {
             Ingresá a tu cuenta para seguir disfrutando de tu música.
           </p>
 
-          <form className="login-form" onSubmit={manejarLogin}>
-
+          <form
+            className="login-form"
+            onSubmit={manejarLogin}
+          >
             <label>Correo electrónico</label>
 
             <input
@@ -119,20 +129,47 @@ function Login() {
 
             <label>Contraseña</label>
 
-            <input
-              type="password"
-              name="password"
-              placeholder="********"
-              required
-              minLength={8}
-              maxLength={20}
-            />
+            <div className="login-password-container">
+              <input
+                type={mostrarPassword ? "text" : "password"}
+                name="password"
+                placeholder="********"
+                required
+                minLength={8}
+                maxLength={20}
+              />
 
-            <Link to="/" className="forgot-password">
+              <button
+                type="button"
+                className="login-password-toggle"
+                onClick={() =>
+                  setMostrarPassword(!mostrarPassword)
+                }
+                aria-label={
+                  mostrarPassword
+                    ? "Ocultar contraseña"
+                    : "Mostrar contraseña"
+                }
+              >
+                {mostrarPassword ? (
+                  <FaEyeSlash />
+                ) : (
+                  <FaEye />
+                )}
+              </button>
+            </div>
+
+            <Link
+              to="/"
+              className="forgot-password"
+            >
               ¿Olvidaste tu contraseña?
             </Link>
 
-            <button type="submit" className="login-button">
+            <button
+              type="submit"
+              className="login-button"
+            >
               Ingresar
             </button>
 
@@ -141,7 +178,6 @@ function Login() {
             </div>
 
             <div className="social-login">
-
               <button
                 type="button"
                 className="social-button"
@@ -156,7 +192,10 @@ function Login() {
                 className="social-button"
                 onClick={() => mostrarProveedor("Facebook")}
               >
-                <FaFacebookF size={20} color="#1877F2" />
+                <FaFacebookF
+                  size={20}
+                  color="#1877F2"
+                />
                 Continuar con Facebook
               </button>
 
@@ -168,17 +207,16 @@ function Login() {
                 <FaXTwitter size={20} />
                 Continuar con X
               </button>
-
             </div>
 
             <p className="register-text">
               ¿No tenés cuenta?{" "}
-              <Link to="/registro">Registrate</Link>
+              <Link to="/registro">
+                Registrate
+              </Link>
             </p>
-
           </form>
         </div>
-
       </div>
     </section>
   );

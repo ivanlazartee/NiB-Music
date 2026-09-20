@@ -78,12 +78,15 @@ function Registro() {
       nuevosErrores.email = "Ingresá un correo electrónico válido.";
     }
 
-    if (!formulario.password) {
-      nuevosErrores.password = "La contraseña es obligatoria.";
-    } else if (formulario.password.length < 8) {
-      nuevosErrores.password =
-        "La contraseña debe tener al menos 8 caracteres.";
-    }
+const regexPassword =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+
+if (!formulario.password) {
+  nuevosErrores.password = "La contraseña es obligatoria.";
+} else if (!regexPassword.test(formulario.password)) {
+  nuevosErrores.password =
+    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo especial (@$!%?&).";
+}
 
     if (!formulario.confirmarPassword) {
       nuevosErrores.confirmarPassword =
