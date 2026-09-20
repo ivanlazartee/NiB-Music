@@ -1,20 +1,32 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Play, X } from "lucide-react";
+
 import { useAuth } from "../context/AuthContext";
+import { usePlayer } from "../context/PlayerContext";
 
 const SongCard = ({ cancion, onPlay }) => {
   const navigate = useNavigate();
+
   const { usuarioActual } = useAuth();
+  const { reproducir } = usePlayer();
+
   const [mostrarAviso, setMostrarAviso] = useState(false);
 
   const handlePlayClick = () => {
+    // Los visitantes deben registrarse o iniciar sesión.
     if (!usuarioActual) {
       setMostrarAviso(true);
       return;
     }
 
+    // Conectamos la tarjeta con el reproductor de Iván.
+    reproducir(cancion);
+
+    // Conservamos el callback por compatibilidad con otros componentes.
     onPlay?.(cancion);
+
+    // Mantenemos la navegación que ya tenía la tarjeta.
     navigate(`/detalle/${cancion.id}`);
   };
 
