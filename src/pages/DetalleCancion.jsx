@@ -3,13 +3,17 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Disc3, Play, X } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import { usePlayer } from "../context/PlayerContext";
+
 import { getItem, KEYS } from "../utils/localStorage";
 import portadaDefault from "../assets/img/portada-default.png";
 
 function DetalleCancion() {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const { usuarioActual } = useAuth();
+  const { reproducir } = usePlayer();
 
   const [mostrarAviso, setMostrarAviso] = useState(false);
 
@@ -25,13 +29,14 @@ function DetalleCancion() {
   };
 
   const handlePlayClick = () => {
+    // Conservamos el bloqueo para visitantes.
     if (!usuarioActual) {
       setMostrarAviso(true);
       return;
     }
 
-    // La reproducción real se conectará aquí cuando esté
-    // implementada la función correspondiente en PlayerContext.
+    // Reproducimos la canción seleccionada desde su página de detalle.
+    reproducir(cancion);
   };
 
   const irARegistro = () => {
