@@ -91,6 +91,40 @@ export function AuthProvider({ children }) {
     };
   };
 
+  const actualizarPerfil = (datos) => {
+    if (!usuarioActual) {
+      return {
+        success: false,
+        message: "No hay un usuario con sesión iniciada.",
+      };
+    }
+
+    const usuarios = getItem(KEYS.usuarios) || [];
+
+    const usuarioActualizado = {
+      ...usuarioActual,
+      ...(datos.nombre !== undefined && {
+        nombre: datos.nombre,
+      }),
+      ...(datos.avatar !== undefined && {
+        avatar: datos.avatar,
+      }),
+    };
+
+    const usuariosActualizados = usuarios.map((usuario) =>
+      usuario.id === usuarioActual.id ? usuarioActualizado : usuario
+    );
+
+    setItem(KEYS.usuarios, usuariosActualizados);
+    setItem(KEYS.usuarioActual, usuarioActualizado);
+    setUsuarioActual(usuarioActualizado);
+
+    return {
+      success: true,
+      user: usuarioActualizado,
+    };
+  };
+
   const logout = () => {
     setUsuarioActual(null);
     removeItem(KEYS.usuarioActual);
@@ -102,6 +136,7 @@ export function AuthProvider({ children }) {
         usuarioActual,
         login,
         registro,
+        actualizarPerfil,
         logout,
       }}
     >
