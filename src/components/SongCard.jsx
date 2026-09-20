@@ -1,13 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Play } from "lucide-react";
+import { Link } from "react-router-dom"
+import { Play } from "lucide-react"
 
 const SongCard = ({ cancion, onPlay }) => {
-  const navigate = useNavigate();
-
   const handlePlayClick = () => {
-    onPlay?.(cancion);
-    navigate(`/detalle/${cancion.id}`);
-  };
+    onPlay?.(cancion)
+  }
 
   return (
     <article className="song-card">
@@ -26,7 +23,7 @@ const SongCard = ({ cancion, onPlay }) => {
         type="button"
         className="song-card__play"
         onClick={handlePlayClick}
-        aria-label={`Abrir ${cancion.nombre}`}
+        aria-label={`Reproducir ${cancion.nombre}`}
       >
         <Play size={20} fill="currentColor" />
       </button>
@@ -44,7 +41,7 @@ const SongCard = ({ cancion, onPlay }) => {
         </p>
       </div>
     </article>
-  );
-};
+  )
+}
 
-export default SongCard;
+export default SongCard

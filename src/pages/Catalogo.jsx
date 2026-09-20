@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 import HeroBanner from "../components/HeroBanner";
 import QueuePanel from "../components/QueuePanel";
@@ -13,6 +13,7 @@ import { usePlayer } from "../context/PlayerContext"
 import "../styles/InicioSections.css";
 
 function Catalogo() {
+  const navigate = useNavigate()
   const { search } = useOutletContext();
   const { usuarioActual } = useAuth()
   const { reproducir, cargarCola } = usePlayer()
@@ -91,9 +92,11 @@ function Catalogo() {
   });
 
   function handlePlayCancion(cancion) {
-    // Commit incompleto: visitante todavía no redirige a /registro
-    if (!esPremium) return
-
+    if (!esPremium) {
+      navigate("/registro")
+      return
+    }
+  
     cargarCola(cancionesFiltradas)
     reproducir(cancion)
   }
