@@ -12,30 +12,47 @@ import Admin from "./pages/Admin";
 import Error404 from "./pages/Error404";
 
 import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 
 function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-  <Route path="/" element={<Catalogo />} />
-  <Route path="/catalogo" element={<Catalogo />} />
-  <Route path="/detalle/:id" element={<DetalleCancion />} />
-  <Route path="/perfil" element={<Perfil />} />
-  <Route path="/playlist" element={<Playlist />} />
-</Route>
+          <Route path="/" element={<Catalogo />} />
+          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/detalle/:id" element={<DetalleCancion />} />
+          <Route path="/perfil" element={<Perfil />} />
+          <Route path="/playlist" element={<Playlist />} />
+        </Route>
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<Registro />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
 
-<Route
-  path="/admin"
-  element={
-    <PrivateRoute role="admin">
-      <Admin />
-    </PrivateRoute>
-  }
-/>
+        <Route
+          path="/registro"
+          element={
+            <PublicRoute>
+              <Registro />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute role="admin">
+              <Admin />
+            </PrivateRoute>
+          }
+        />
+
         <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
