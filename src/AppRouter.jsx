@@ -23,8 +23,24 @@ function AppRouter() {
           <Route path="/" element={<Inicio />} />
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/detalle/:id" element={<DetalleCancion />} />
-          <Route path="/perfil" element={<Perfil />} />
-          <Route path="/playlist" element={<Playlist />} />
+
+          <Route
+            path="/perfil"
+            element={
+              <PrivateRoute role="premium">
+                <Perfil />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/playlist"
+            element={
+              <PrivateRoute role="premium">
+                <Playlist />
+              </PrivateRoute>
+            }
+          />
         </Route>
 
         <Route
