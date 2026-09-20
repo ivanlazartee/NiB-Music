@@ -1,22 +1,29 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 
 const Navbar = ({ search, setSearch }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSearchChange = (event) => {
+    const valor = event.target.value;
+
+    setSearch(valor);
+
+    // Si el usuario empieza a buscar desde otra página,
+    // lo llevamos al catálogo para mostrar los resultados.
+    if (valor.trim() !== "" && location.pathname !== "/catalogo") {
+      navigate("/catalogo");
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    navigate("/catalogo");
-
-    setTimeout(() => {
-      document
-        .getElementById("catalogo")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-    }, 100);
+    // Enter también lleva al catálogo, sin desplazar la página.
+    if (location.pathname !== "/catalogo") {
+      navigate("/catalogo");
+    }
   };
 
   return (
@@ -35,7 +42,7 @@ const Navbar = ({ search, setSearch }) => {
           placeholder="Buscar canciones, artistas, álbumes..."
           className="navbar__input"
           value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={handleSearchChange}
         />
       </form>
 

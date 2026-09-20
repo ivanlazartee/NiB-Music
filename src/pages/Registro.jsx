@@ -1,9 +1,7 @@
 import { useState } from "react";
-
 import registroBg from "../assets/img/registro-bg.png";
 import "./registro.css";
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import {
   FaFacebookF,
@@ -12,10 +10,13 @@ import {
   FaEyeSlash,
   FaRegCircleUser,
 } from "react-icons/fa6";
-
 import Swal from "sweetalert2";
+import { useAuth } from "../context/AuthContext";
 
 function Registro() {
+  const navigate = useNavigate();
+  const { registro } = useAuth();
+
   const [formulario, setFormulario] = useState({
     nombre: "",
     apellido: "",
@@ -27,6 +28,7 @@ function Registro() {
   const [errores, setErrores] = useState({});
 
   const [mostrarPassword, setMostrarPassword] = useState(false);
+
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
     useState(false);
 
@@ -76,12 +78,15 @@ function Registro() {
       nuevosErrores.email = "Ingresá un correo electrónico válido.";
     }
 
-    if (!formulario.password) {
-      nuevosErrores.password = "La contraseña es obligatoria.";
-    } else if (formulario.password.length < 8) {
-      nuevosErrores.password =
-        "La contraseña debe tener al menos 8 caracteres.";
-    }
+const regexPassword =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+
+if (!formulario.password) {
+  nuevosErrores.password = "La contraseña es obligatoria.";
+} else if (!regexPassword.test(formulario.password)) {
+  nuevosErrores.password =
+    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo especial (@$!%?&).";
+}
 
     if (!formulario.confirmarPassword) {
       nuevosErrores.confirmarPassword =
@@ -108,21 +113,36 @@ function Registro() {
 
     setErrores({});
 
+    const resultado = registro({
+      nombre: `${formulario.nombre.trim()} ${formulario.apellido.trim()}`,
+      email: formulario.email.trim(),
+      password: formulario.password,
+    });
+
+    if (!resultado.success) {
+      setErrores({
+        email: resultado.message,
+      });
+
+      return;
+    }
+
     Swal.fire({
       title: "¡Cuenta creada!",
       text: "Tu cuenta fue creada correctamente.",
       icon: "success",
       iconColor: "#d4af37",
-      confirmButtonText: "Aceptar",
+      confirmButtonText: "Iniciar sesión",
       confirmButtonColor: "#d4af37",
       background: "#0f0f0f",
       color: "#ffffff",
+    }).then(() => {
+      navigate("/login");
     });
   };
 
   return (
     <section className="registro-page">
-
       <img
         src={registroBg}
         alt="Registro NiB Music"
@@ -130,14 +150,10 @@ function Registro() {
       />
 
       <div className="registro-overlay">
-
         {/* Navbar */}
         <nav className="registro-navbar">
-
           <Link to="/">Inicio</Link>
-
           <Link to="/catalogo">Explorar</Link>
-
           <Link to="/soporte">Soporte</Link>
 
           <button
@@ -146,12 +162,10 @@ function Registro() {
           >
             <FaRegCircleUser size={20} />
           </button>
-
         </nav>
 
         {/* Modal */}
         <div className="registro-card">
-
           <h2>Crear Cuenta</h2>
 
           <p className="registro-subtitle">
@@ -163,10 +177,7 @@ function Registro() {
             className="registro-form"
             onSubmit={handleSubmit}
           >
-
-            <label htmlFor="nombre">
-              Nombre
-            </label>
+            <label htmlFor="nombre">Nombre</label>
 
             <input
               id="nombre"
@@ -176,9 +187,7 @@ function Registro() {
               value={formulario.nombre}
               onChange={handleChange}
               className={
-                errores.nombre
-                  ? "registro-input-error"
-                  : ""
+                errores.nombre ? "registro-input-error" : ""
               }
             />
 
@@ -188,10 +197,7 @@ function Registro() {
               </span>
             )}
 
-
-            <label htmlFor="apellido">
-              Apellido
-            </label>
+            <label htmlFor="apellido">Apellido</label>
 
             <input
               id="apellido"
@@ -201,9 +207,7 @@ function Registro() {
               value={formulario.apellido}
               onChange={handleChange}
               className={
-                errores.apellido
-                  ? "registro-input-error"
-                  : ""
+                errores.apellido ? "registro-input-error" : ""
               }
             />
 
@@ -213,10 +217,7 @@ function Registro() {
               </span>
             )}
 
-
-            <label htmlFor="email">
-              Correo electrónico
-            </label>
+            <label htmlFor="email">Correo electrónico</label>
 
             <input
               id="email"
@@ -226,9 +227,7 @@ function Registro() {
               value={formulario.email}
               onChange={handleChange}
               className={
-                errores.email
-                  ? "registro-input-error"
-                  : ""
+                errores.email ? "registro-input-error" : ""
               }
             />
 
@@ -238,21 +237,13 @@ function Registro() {
               </span>
             )}
 
-
-            <label htmlFor="password">
-              Contraseña
-            </label>
+            <label htmlFor="password">Contraseña</label>
 
             <div className="registro-password-container">
-
               <input
                 id="password"
                 name="password"
-                type={
-                  mostrarPassword
-                    ? "text"
-                    : "password"
-                }
+                type={mostrarPassword ? "text" : "password"}
                 placeholder="********"
                 value={formulario.password}
                 onChange={handleChange}
@@ -281,7 +272,6 @@ function Registro() {
                   <FaEye />
                 )}
               </button>
-
             </div>
 
             {errores.password && (
@@ -290,13 +280,11 @@ function Registro() {
               </span>
             )}
 
-
             <label htmlFor="confirmarPassword">
               Confirmar contraseña
             </label>
 
             <div className="registro-password-container">
-
               <input
                 id="confirmarPassword"
                 name="confirmarPassword"
@@ -335,7 +323,6 @@ function Registro() {
                   <FaEye />
                 )}
               </button>
-
             </div>
 
             {errores.confirmarPassword && (
@@ -344,14 +331,12 @@ function Registro() {
               </span>
             )}
 
-
             <button
               type="submit"
               className="registro-btn"
             >
               Crear cuenta
             </button>
-
           </form>
 
           <div className="registro-divider">
@@ -359,7 +344,6 @@ function Registro() {
           </div>
 
           <div className="registro-social-login">
-
             <button
               type="button"
               className="registro-social-btn"
@@ -383,14 +367,12 @@ function Registro() {
               <FaXTwitter />
               <span>X</span>
             </button>
-
           </div>
 
           <p className="registro-footer">
             ¿Ya tenés una cuenta?
             <Link to="/login"> Iniciar sesión</Link>
           </p>
-
         </div>
       </div>
     </section>
