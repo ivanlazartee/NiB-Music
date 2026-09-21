@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getItem, setItem, removeItem, KEYS } from "../utils/localStorage";
+import { ensurePlaylistsAleatoriasUsuario } from "../utils/playlists";
 
 export const AuthContext = createContext(null);
 
@@ -84,6 +85,7 @@ export function AuthProvider({ children }) {
     const usuariosActualizados = [...usuarios, nuevoUsuario];
 
     setItem(KEYS.usuarios, usuariosActualizados);
+    ensurePlaylistsAleatoriasUsuario(nuevoUsuario.id, 3);
 
     return {
       success: true,

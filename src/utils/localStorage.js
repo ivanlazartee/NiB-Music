@@ -3,6 +3,8 @@ export const KEYS = {
   usuarios: "usuarios",
   playlists: "playlists",
   usuarioActual: "usuarioActual",
+  cola: "cola",
+  colaPorUsuario: "colaPorUsuario",
 };
 
 export function getItem(key) {

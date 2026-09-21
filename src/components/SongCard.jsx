@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Play, X } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import LikeSongButton from "./LikeSongButton";
 
 const SongCard = ({ cancion, onPlay }) => {
   const navigate = useNavigate();
@@ -10,14 +11,11 @@ const SongCard = ({ cancion, onPlay }) => {
   const [mostrarAviso, setMostrarAviso] = useState(false);
 
   const handlePlayClick = () => {
-    // Visitante: aviso para registrarse (UI de compañeros)
     if (!usuarioActual) {
       setMostrarAviso(true);
       return;
     }
 
-    // Premium (u otro rol): el padre decide qué hacer con onPlay
-    // No navegamos al detalle: play ≠ abrir ficha
     onPlay?.(cancion);
   };
 
@@ -50,12 +48,16 @@ const SongCard = ({ cancion, onPlay }) => {
         </button>
 
         <div className="song-card__info">
-          <Link
-            to={`/detalle/${cancion.id}`}
-            className="song-card__title"
-          >
-            {cancion.nombre}
-          </Link>
+          <div className="song-card__info-top">
+            <Link
+              to={`/detalle/${cancion.id}`}
+              className="song-card__title"
+            >
+              {cancion.nombre}
+            </Link>
+
+            <LikeSongButton cancion={cancion} />
+          </div>
 
           <p className="song-card__artist">{cancion.artista}</p>
         </div>

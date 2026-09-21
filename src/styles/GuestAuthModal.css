@@ -1,0 +1,132 @@
+.guest-auth-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+
+  background: transparent;
+}
+
+.guest-auth-modal {
+  position: fixed;
+  z-index: 81;
+
+  width: min(340px, calc(100vw - 24px));
+
+  padding: 14px 14px 12px;
+
+  background: var(--color-primary);
+  color: #111;
+
+  border-radius: 12px;
+
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
+.guest-auth-modal__arrow {
+  position: absolute;
+  left: -8px;
+  top: 22px;
+
+  width: 0;
+  height: 0;
+
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid var(--color-primary);
+}
+
+.guest-auth-modal h2 {
+  margin: 0 0 4px;
+
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.guest-auth-modal p {
+  margin: 0 0 12px;
+
+  color: rgba(17, 17, 17, 0.82);
+
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.guest-auth-modal__actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.guest-auth-modal__ghost {
+  padding: 6px 8px;
+
+  background: transparent;
+  color: #111;
+
+  border: none;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+.guest-auth-modal__ghost:hover {
+  text-decoration: underline;
+}
+
+.guest-auth-modal__secondary,
+.guest-auth-modal__primary {
+  min-height: 28px;
+  padding: 0 10px;
+
+  border: none;
+  border-radius: 999px;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+.guest-auth-modal__secondary {
+  background: rgba(0, 0, 0, 0.14);
+  color: #111;
+}
+
+.guest-auth-modal__secondary:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.guest-auth-modal__primary {
+  background: #111;
+  color: var(--color-primary);
+}
+
+.guest-auth-modal__primary:hover {
+  background: #222;
+}
+
+@media (max-width: 700px) {
+  .guest-auth-modal {
+    left: 12px !important;
+    right: 12px;
+    width: auto;
+  }
+
+  .guest-auth-modal__actions {
+    flex-wrap: wrap;
+    justify-content: stretch;
+  }
+
+  .guest-auth-modal__ghost,
+  .guest-auth-modal__secondary,
+  .guest-auth-modal__primary {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}

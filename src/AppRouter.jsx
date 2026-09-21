@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import Perfil from "./pages/Perfil";
 import Playlist from "./pages/Playlist";
+import Podcasts from "./pages/Podcasts";
 import Admin from "./pages/Admin";
 import Error404 from "./pages/Error404";
 
@@ -23,6 +24,7 @@ function AppRouter() {
           <Route path="/" element={<Inicio />} />
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/detalle/:id" element={<DetalleCancion />} />
+          <Route path="/podcasts" element={<Podcasts />} />
 
           <Route
             path="/perfil"
@@ -36,7 +38,16 @@ function AppRouter() {
           <Route
             path="/playlist"
             element={
-              <PrivateRoute role="premium">
+              <PrivateRoute role={["premium", "admin"]}>
+                <Playlist />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/playlist/:id"
+            element={
+              <PrivateRoute role={["premium", "admin"]}>
                 <Playlist />
               </PrivateRoute>
             }

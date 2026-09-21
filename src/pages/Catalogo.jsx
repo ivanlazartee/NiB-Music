@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
-import QueuePanel from "../components/QueuePanel";
 import SongCard from "../components/SongCard";
 
 import { getItem, KEYS } from "../utils/localStorage";
@@ -15,7 +14,7 @@ function Catalogo() {
   const navigate = useNavigate();
   const { search = "" } = useOutletContext();
   const { usuarioActual } = useAuth();
-  const { reproducir, cargarCola, cancionActual } = usePlayer();
+  const { reproducir, cargarCola } = usePlayer();
 
   const puedeReproducir =
     usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
@@ -28,8 +27,6 @@ function Catalogo() {
   const cancionesActivas = canciones.filter(
     (cancion) => cancion.activo
   );
-
-  const cancionesCola = cancionesActivas.slice(0, 6);
 
   const generos = [
     ...new Set(
@@ -71,95 +68,88 @@ function Catalogo() {
       return;
     }
 
-    cargarCola(cancionesFiltradas.length > 0 ? cancionesFiltradas : cancionesCola);
+    cargarCola(cancionesFiltradas, {
+      usuarioId: usuarioActual?.id,
+      cancionInicialId: cancion.id,
+    });
     reproducir(cancion);
   }
 
   return (
-    <section className="catalogo-layout">
-      <div className="catalogo-layout__main">
-        <section className="catalogo">
-          <div className="catalogo__header">
-            <div>
-              <span className="catalogo__eyebrow">
-                Tu música
-              </span>
+    <section className="catalogo">
+      <div className="catalogo__header">
+        <div>
+          <span className="catalogo__eyebrow">
+            Tu música
+          </span>
 
-              <h1 className="catalogo__title">
-                Catálogo
-              </h1>
+          <h1 className="catalogo__title">
+            Catálogo
+          </h1>
 
-              <p className="catalogo__subtitle">
-                Explorá canciones y descubrí nueva música.
-              </p>
-            </div>
-          </div>
-
-          <div className="catalogo__filters">
-            <select
-              value={generoSeleccionado}
-              onChange={(event) =>
-                setGeneroSeleccionado(event.target.value)
-              }
-              className="catalogo__select"
-            >
-              <option value="">
-                Todos los géneros
-              </option>
-
-              {generos.map((genero) => (
-                <option key={genero} value={genero}>
-                  {genero}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={artistaSeleccionado}
-              onChange={(event) =>
-                setArtistaSeleccionado(event.target.value)
-              }
-              className="catalogo__select"
-            >
-              <option value="">
-                Todos los artistas
-              </option>
-
-              {artistas.map((artista) => (
-                <option key={artista} value={artista}>
-                  {artista}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {cancionesFiltradas.length > 0 ? (
-            <div className="catalogo__grid">
-              {cancionesFiltradas.map((cancion) => (
-                <SongCard
-                  key={cancion.id}
-                  cancion={cancion}
-                  onPlay={handlePlayCancion}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="catalogo__empty">
-              <h2>No encontramos canciones</h2>
-
-              <p>
-                Probá con otra búsqueda o cambiá los filtros.
-              </p>
-            </div>
-          )}
-        </section>
+          <p className="catalogo__subtitle">
+            Explorá canciones y descubrí nueva música.
+          </p>
+        </div>
       </div>
 
-      <QueuePanel
-        canciones={cancionesCola}
-        cancionActualId={cancionActual?.id}
-        onSelectCancion={handlePlayCancion}
-      />
+      <div className="catalogo__filters">
+        <select
+          value={generoSeleccionado}
+          onChange={(event) =>
+            setGeneroSeleccionado(event.target.value)
+          }
+          className="catalogo__select"
+        >
+          <option value="">
+            Todos los géneros
+          </option>
+
+          {generos.map((genero) => (
+            <option key={genero} value={genero}>
+              {genero}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={artistaSeleccionado}
+          onChange={(event) =>
+            setArtistaSeleccionado(event.target.value)
+          }
+          className="catalogo__select"
+        >
+          <option value="">
+            Todos los artistas
+          </option>
+
+          {artistas.map((artista) => (
+            <option key={artista} value={artista}>
+              {artista}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {cancionesFiltradas.length > 0 ? (
+        <div className="catalogo__grid">
+          {cancionesFiltradas.map((cancion) => (
+            <SongCard
+              key={cancion.id}
+              cancion={cancion}
+              onPlay={handlePlayCancion}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="catalogo__empty">
+          <h2>No encontramos canciones</h2>
+
+          <p>
+            Probá con otra búsqueda o cambiá los filtros.
+          </p>
+        </div>
+      )}
     </section>
   );
 }
