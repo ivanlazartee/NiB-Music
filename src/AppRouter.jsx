@@ -25,7 +25,10 @@ function AppRouter() {
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/detalle/:id" element={<DetalleCancion />} />
           <Route path="/perfil" element={<Perfil />} />
+
           <Route path="/playlist" element={<Playlist />} />
+          <Route path="/playlist/:id" element={<Playlist />} />
+
           <Route
             path="/acerca-de-nosotros"
             element={<AcercaNosotros />}
