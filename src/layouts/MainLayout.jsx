@@ -14,7 +14,11 @@ const MainLayout = () => {
     usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
 
   return (
-    <div className="app-layout">
+    <div
+      className={
+        mostrarPlayer ? "app-layout app-layout--with-player" : "app-layout"
+      }
+    >
       <Sidebar />
 
       <div className="app-layout__content">

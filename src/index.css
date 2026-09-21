@@ -121,6 +121,10 @@ img {
   padding-bottom: calc(var(--space-xl) + 96px);
 }
 
+.app-layout--with-player .sidebar {
+  padding-bottom: calc(20px + 96px);
+}
+
 .sidebar {
   position: sticky;
   top: 0;
