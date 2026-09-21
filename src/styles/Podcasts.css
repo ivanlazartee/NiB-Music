@@ -53,6 +53,17 @@
   gap: 16px;
 }
 
+.podcasts__episode {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.podcasts__episode:hover .podcasts__episode-cover {
+  filter: brightness(1.06);
+}
+
 .podcasts__episode-cover {
   display: flex;
   align-items: center;
@@ -94,11 +105,15 @@
 }
 
 .podcasts__category {
+  display: flex;
+  align-items: flex-start;
+
   min-height: 110px;
   padding: 18px;
 
   color: #fff;
   text-align: left;
+  text-decoration: none;
 
   border: none;
   border-radius: 14px;
