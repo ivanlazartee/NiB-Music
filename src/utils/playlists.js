@@ -491,3 +491,93 @@ export function llenarMeGustaConTodasCanciones(usuarioId) {
 export function seedCancionAleatoriaSiVacia(usuarioId) {
   return llenarMeGustaConTodasCanciones(usuarioId);
 }
+
+const NOMBRES_PLAYLISTS_SEED = [
+  "Gym mode",
+  "Noche larga",
+  "After office",
+  "Perreo suavecito",
+  "Trap & café",
+  "Viaje en bondi",
+  "Solo hits",
+  "Mood domingo",
+  "Foco total",
+  "Chill latino",
+  "Fiesta casera",
+  "Running 5K",
+  "Slow jams",
+  "Radar personal",
+  "Lo que suena ahora",
+];
+
+function idPlaylistSeed(usuarioId, indice) {
+  return `user-seed-${usuarioId}-${indice}`;
+}
+
+/** Agrega playlists propias aleatorias a la biblioteca del usuario (idempotente). */
+export function ensurePlaylistsAleatoriasUsuario(usuarioId, cantidad = 3) {
+  if (!usuarioId) return getItem(KEYS.playlists) || [];
+
+  let playlists = ensureMeGustaPlaylist(usuarioId);
+  const cancionesActivas = (getItem(KEYS.canciones) || []).filter(
+    (cancion) => cancion.activo
+  );
+
+  if (cancionesActivas.length === 0) return playlists;
+
+  const nombres = ordenarPlaylistsPorUsuario(
+    [...NOMBRES_PLAYLISTS_SEED],
+    usuarioId,
+    "seed-nombres"
+  );
+
+  const total = Math.max(2, Math.min(cantidad, nombres.length));
+  const nuevas = [];
+
+  for (let i = 0; i < total; i += 1) {
+    const id = idPlaylistSeed(usuarioId, i);
+    if (playlists.some((playlist) => playlist.id === id)) continue;
+
+    const cancionesIds = ordenarPlaylistsPorUsuario(
+      cancionesActivas.map((cancion) => cancion.id),
+      usuarioId,
+      `seed-songs-${i}`
+    ).slice(0, 6 + ((i + hashSemilla(usuarioId)) % 5));
+
+    const portada = cancionesActivas.find(
+      (cancion) => String(cancion.id) === String(cancionesIds[0])
+    );
+
+    nuevas.push({
+      id,
+      usuarioId,
+      nombre: nombres[i],
+      descripcion: "Playlist de tu biblioteca",
+      cancionesIds,
+      imagen: portada?.imagen || null,
+      esMeGusta: false,
+      esSeedUsuario: true,
+    });
+  }
+
+  if (nuevas.length === 0) return playlists;
+
+  playlists = [...playlists, ...nuevas];
+  setItem(KEYS.playlists, playlists);
+  notifyPlaylistsUpdated();
+  return playlists;
+}
+
+/** Siembra playlists aleatorias en la biblioteca de todos los usuarios existentes. */
+export function ensurePlaylistsAleatoriasParaTodos() {
+  const usuarios = getItem(KEYS.usuarios) || [];
+
+  for (const usuario of usuarios) {
+    if (usuario?.id) {
+      ensurePlaylistsAleatoriasUsuario(usuario.id, 3);
+    }
+  }
+
+  return getItem(KEYS.playlists) || [];
+}
+

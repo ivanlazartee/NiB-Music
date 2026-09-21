@@ -6,6 +6,7 @@ import logoNib from "../assets/img/Nib-Home.png";
 import { useAuth } from "../context/AuthContext";
 import {
   ensureMeGustaPlaylist,
+  ensurePlaylistsAleatoriasUsuario,
   getPlaylistsDeUsuario,
   getPortadaPlaylist,
   isMeGustaPlaylist,
@@ -32,7 +33,8 @@ const Sidebar = () => {
     }
 
     ensureMeGustaPlaylist(usuarioActual.id);
-    const actualizadas = llenarMeGustaConTodasCanciones(usuarioActual.id);
+    llenarMeGustaConTodasCanciones(usuarioActual.id);
+    const actualizadas = ensurePlaylistsAleatoriasUsuario(usuarioActual.id, 3);
     setPlaylists(actualizadas);
 
     const sync = () => {
