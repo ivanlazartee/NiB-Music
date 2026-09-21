@@ -32,6 +32,19 @@ function Registro() {
   const [mostrarConfirmarPassword, setMostrarConfirmarPassword] =
     useState(false);
 
+  const mostrarProveedor = (proveedor) => {
+    Swal.fire({
+      title: "Próximamente",
+      text: `El inicio de sesión con ${proveedor} estará disponible en una próxima versión de NiB Music.`,
+      icon: "info",
+      iconColor: "#d4af37",
+      background: "#0f0f0f",
+      color: "#ffffff",
+      confirmButtonText: "Entendido",
+      confirmButtonColor: "#d4af37",
+    });
+  };
+
   const mostrarPerfil = () => {
     Swal.fire({
       title: "Mi cuenta",
@@ -78,15 +91,15 @@ function Registro() {
       nuevosErrores.email = "Ingresá un correo electrónico válido.";
     }
 
-const regexPassword =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+    const regexPassword =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
 
-if (!formulario.password) {
-  nuevosErrores.password = "La contraseña es obligatoria.";
-} else if (!regexPassword.test(formulario.password)) {
-  nuevosErrores.password =
-    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo especial (@$!%?&).";
-}
+    if (!formulario.password) {
+      nuevosErrores.password = "La contraseña es obligatoria.";
+    } else if (!regexPassword.test(formulario.password)) {
+      nuevosErrores.password =
+        "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo especial (@$!%?&).";
+    }
 
     if (!formulario.confirmarPassword) {
       nuevosErrores.confirmarPassword =
@@ -153,7 +166,9 @@ if (!formulario.password) {
         {/* Navbar */}
         <nav className="registro-navbar">
           <Link to="/">Inicio</Link>
+
           <Link to="/catalogo">Explorar</Link>
+
           <Link to="/soporte">Soporte</Link>
 
           <button
@@ -347,6 +362,7 @@ if (!formulario.password) {
             <button
               type="button"
               className="registro-social-btn"
+              onClick={() => mostrarProveedor("Google")}
             >
               <FcGoogle />
               <span>Google</span>
@@ -355,6 +371,7 @@ if (!formulario.password) {
             <button
               type="button"
               className="registro-social-btn"
+              onClick={() => mostrarProveedor("Facebook")}
             >
               <FaFacebookF />
               <span>Facebook</span>
@@ -363,6 +380,7 @@ if (!formulario.password) {
             <button
               type="button"
               className="registro-social-btn"
+              onClick={() => mostrarProveedor("X")}
             >
               <FaXTwitter />
               <span>X</span>
