@@ -5,10 +5,6 @@
   color: #fff;
 }
 
-.admin-page--with-player {
-  padding-bottom: calc(36px + 96px);
-}
-
 .admin-page__header {
   margin-bottom: 30px;
 }
@@ -69,10 +65,6 @@
 @media (max-width: 700px) {
   .admin-page {
     padding: 20px 14px;
-  }
-
-  .admin-page--with-player {
-    padding-bottom: calc(20px + 110px);
   }
 
   .admin-page__nav {
