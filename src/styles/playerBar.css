@@ -271,3 +271,70 @@
     width: 72px;
   }
 }
+
+/* iPhone 15 Pro Max / móvil (~430px) */
+@media (max-width: 480px) {
+  .player-bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "track controls"
+      "progress progress";
+    gap: 0.45rem 0.75rem;
+    min-height: 0;
+    padding: 0.55rem 0.7rem 0.65rem;
+    border-radius: 10px;
+  }
+
+  .player-bar__track {
+    grid-area: track;
+    gap: 0.55rem;
+  }
+
+  .player-bar__cover {
+    width: 44px;
+    height: 44px;
+  }
+
+  .player-bar__title {
+    font-size: 0.8rem;
+  }
+
+  .player-bar__artist {
+    font-size: 0.7rem;
+  }
+
+  .player-bar__center {
+    grid-area: controls;
+    width: auto;
+    gap: 0.2rem;
+    align-items: flex-end;
+  }
+
+  .player-bar__controls {
+    gap: 0.35rem;
+  }
+
+  .player-bar__btn:not(.player-bar__btn--main) {
+    display: none;
+  }
+
+  .player-bar__btn--main {
+    width: 40px;
+    height: 40px;
+  }
+
+  .player-bar__progress {
+    grid-area: progress;
+    width: 100%;
+    grid-template-columns: 34px 1fr 34px;
+    gap: 0.35rem;
+  }
+
+  .player-bar__time {
+    font-size: 0.65rem;
+  }
+
+  .player-bar__extra {
+    display: none;
+  }
+}
