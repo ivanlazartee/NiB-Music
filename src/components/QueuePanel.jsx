@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GripVertical, ListMusic, Play } from "lucide-react";
 
 import portadaDefault from "../assets/img/portada-default.png";
-import "../styles/QueuePanel.css";
+import "../styles/queuePanel.css";
 
 const QueuePanel = ({
   canciones = [],
@@ -100,39 +100,38 @@ const QueuePanel = ({
                   <GripVertical size={16} />
                 </span>
 
+                <span className="queue-panel__position">
+                  {index + 1}
+                </span>
+
                 <button
                   type="button"
-                  className="queue-panel__select"
+                  className="queue-panel__cover"
+                  onClick={() => onSelectCancion?.(cancion)}
+                  aria-label={`Reproducir ${cancion.nombre}`}
+                >
+                  <img
+                    src={cancion.imagen}
+                    alt=""
+                    onError={handleImageError}
+                  />
+
+                  <span className="queue-panel__play-icon">
+                    <Play size={16} fill="currentColor" />
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  className="queue-panel__info"
                   onClick={() => onSelectCancion?.(cancion)}
                 >
-                  <span className="queue-panel__position">
-                    {index + 1}
+                  <span className="queue-panel__song">
+                    {cancion.nombre}
                   </span>
-
-                  <div className="queue-panel__cover">
-                    <img
-                      src={cancion.imagen}
-                      alt={`Portada de ${cancion.nombre}`}
-                      onError={handleImageError}
-                    />
-
-                    <span className="queue-panel__play-icon">
-                      <Play
-                        size={16}
-                        fill="currentColor"
-                      />
-                    </span>
-                  </div>
-
-                  <div className="queue-panel__info">
-                    <span className="queue-panel__song">
-                      {cancion.nombre}
-                    </span>
-
-                    <span className="queue-panel__artist">
-                      {cancion.artista}
-                    </span>
-                  </div>
+                  <span className="queue-panel__artist">
+                    {cancion.artista}
+                  </span>
                 </button>
               </div>
             );
