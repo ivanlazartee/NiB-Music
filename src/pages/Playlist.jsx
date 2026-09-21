@@ -16,9 +16,12 @@ import { usePlayer } from "../context/PlayerContext";
 import { getItem, setItem, KEYS } from "../utils/localStorage";
 import {
   PLAYLISTS_EVENT,
+  ensureCatalogoPlaylists,
   ensureMeGustaPlaylist,
+  getPlaylistById,
   getPlaylistsDeUsuario,
   getPortadaPlaylist,
+  isCatalogoPlaylist,
   isMeGustaPlaylist,
 } from "../utils/playlists";
 
@@ -45,10 +48,13 @@ function Playlist() {
     usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
 
   useLayoutEffect(() => {
-    if (!usuarioId) return;
+    ensureCatalogoPlaylists();
 
-    const actualizadas = ensureMeGustaPlaylist(usuarioId);
-    setPlaylists(actualizadas);
+    if (usuarioId) {
+      ensureMeGustaPlaylist(usuarioId);
+    }
+
+    setPlaylists(getItem(KEYS.playlists) || []);
 
     const sync = () => {
       setPlaylists(getItem(KEYS.playlists) || []);
@@ -60,9 +66,7 @@ function Playlist() {
 
   const playlistsDelUsuario = getPlaylistsDeUsuario(usuarioId, playlists);
 
-  const playlistSeleccionada = playlistsDelUsuario.find(
-    (playlist) => playlist.id === id
-  );
+  const playlistSeleccionada = getPlaylistById(id, playlists);
 
   const cancionesDePlaylist = playlistSeleccionada
     ? playlistSeleccionada.cancionesIds
@@ -109,11 +113,16 @@ function Playlist() {
   }
 
   function eliminarPlaylist(playlistId) {
-    const playlist = playlistsDelUsuario.find(
-      (item) => item.id === playlistId
-    );
+    const playlist = getPlaylistById(playlistId, playlists);
 
-    if (!playlist || isMeGustaPlaylist(playlist)) return;
+    if (
+      !playlist ||
+      isMeGustaPlaylist(playlist) ||
+      isCatalogoPlaylist(playlist) ||
+      playlist.usuarioId !== usuarioId
+    ) {
+      return;
+    }
 
     const nuevasPlaylists = playlists.filter(
       (item) => !(item.id === playlistId && item.usuarioId === usuarioId)
@@ -128,7 +137,13 @@ function Playlist() {
   }
 
   function agregarCancion() {
-    if (!playlistSeleccionada || !cancionParaAgregarId) return;
+    if (
+      !playlistSeleccionada ||
+      !cancionParaAgregarId ||
+      isCatalogoPlaylist(playlistSeleccionada)
+    ) {
+      return;
+    }
 
     const cancion = cancionesDisponibles.find(
       (item) => String(item.id) === cancionParaAgregarId
@@ -155,7 +170,12 @@ function Playlist() {
   }
 
   function quitarCancion(cancionId) {
-    if (!playlistSeleccionada) return;
+    if (
+      !playlistSeleccionada ||
+      isCatalogoPlaylist(playlistSeleccionada)
+    ) {
+      return;
+    }
 
     const nuevasPlaylists = playlists.map((playlist) => {
       if (
@@ -215,7 +235,16 @@ function Playlist() {
 
   if (playlistSeleccionada) {
     const esMeGusta = isMeGustaPlaylist(playlistSeleccionada);
+    const esCatalogo = isCatalogoPlaylist(playlistSeleccionada);
+    const esPropia =
+      playlistSeleccionada.usuarioId === usuarioId && !esCatalogo;
     const portada = getPortadaPlaylist(playlistSeleccionada);
+    const heroStyle =
+      !esMeGusta && playlistSeleccionada.color
+        ? {
+            background: `linear-gradient(180deg, ${playlistSeleccionada.color} 0%, #181818 100%)`,
+          }
+        : undefined;
 
     return (
       <section className="playlists-page playlists-page--detail">
@@ -223,6 +252,7 @@ function Playlist() {
           className={`playlist-hero ${
             esMeGusta ? "playlist-hero--liked" : ""
           }`}
+          style={heroStyle}
         >
           {esMeGusta ? (
             <div className="playlist-hero__cover playlist-hero__cover--liked">
@@ -241,10 +271,21 @@ function Playlist() {
           )}
 
           <div className="playlist-hero__meta">
-            <span className="playlist-hero__type">Playlist</span>
+            <span className="playlist-hero__type">
+              {esCatalogo ? "Playlist pública" : "Playlist"}
+            </span>
             <h1>{playlistSeleccionada.nombre}</h1>
+            {playlistSeleccionada.descripcion && (
+              <p className="playlist-hero__description">
+                {playlistSeleccionada.descripcion}
+              </p>
+            )}
             <p>
-              <strong>{usuarioActual.nombre}</strong>
+              <strong>
+                {esCatalogo
+                  ? playlistSeleccionada.creador || "NiB Music"
+                  : usuarioActual.nombre}
+              </strong>
               <span>·</span>
               {cancionesDePlaylist.length} canciones
             </p>
@@ -267,7 +308,7 @@ function Playlist() {
             <Play size={28} fill="currentColor" />
           </button>
 
-          {!esMeGusta && (
+          {esPropia && !esMeGusta && (
             <button
               type="button"
               className="playlists-icon-button"
@@ -280,38 +321,46 @@ function Playlist() {
           )}
         </div>
 
-        <div className="playlists-add">
-          <select
-            value={cancionParaAgregarId}
-            onChange={(event) => setCancionParaAgregarId(event.target.value)}
-            aria-label="Elegir canción para agregar"
-          >
-            <option value="">Elegí una canción del catálogo</option>
+        {esPropia && (
+          <div className="playlists-add">
+            <select
+              value={cancionParaAgregarId}
+              onChange={(event) =>
+                setCancionParaAgregarId(event.target.value)
+              }
+              aria-label="Elegir canción para agregar"
+            >
+              <option value="">Elegí una canción del catálogo</option>
 
-            {cancionesDisponibles.map((cancion) => (
-              <option key={cancion.id} value={String(cancion.id)}>
-                {cancion.nombre} — {cancion.artista}
-              </option>
-            ))}
-          </select>
+              {cancionesDisponibles.map((cancion) => (
+                <option key={cancion.id} value={String(cancion.id)}>
+                  {cancion.nombre} — {cancion.artista}
+                </option>
+              ))}
+            </select>
 
-          <button
-            type="button"
-            className="playlists-button"
-            onClick={agregarCancion}
-            disabled={!cancionParaAgregarId}
-          >
-            <Plus size={18} />
-            Agregar
-          </button>
-        </div>
+            <button
+              type="button"
+              className="playlists-button"
+              onClick={agregarCancion}
+              disabled={!cancionParaAgregarId}
+            >
+              <Plus size={18} />
+              Agregar
+            </button>
+          </div>
+        )}
 
         {cancionesDePlaylist.length === 0 ? (
           <p className="playlists-detail__empty">
             Esta playlist todavía no tiene canciones.
           </p>
         ) : (
-          <div className="playlist-table">
+          <div
+            className={`playlist-table ${
+              esPropia ? "" : "playlist-table--readonly"
+            }`}
+          >
             <div className="playlist-table__head">
               <span>#</span>
               <span>Título</span>
@@ -320,7 +369,7 @@ function Playlist() {
                 <Clock3 size={16} />
               </span>
               <span className="playlist-table__action" />
-              <span className="playlist-table__action" />
+              {esPropia && <span className="playlist-table__action" />}
             </div>
 
             {cancionesDePlaylist.map((cancion, index) => (
@@ -332,7 +381,9 @@ function Playlist() {
                   disabled={!puedeReproducir}
                   aria-label={`Reproducir ${cancion.nombre}`}
                 >
-                  <span className="playlist-table__number">{index + 1}</span>
+                  <span className="playlist-table__number">
+                    {index + 1}
+                  </span>
                   <Play
                     size={14}
                     fill="currentColor"
@@ -363,15 +414,17 @@ function Playlist() {
 
                 <LikeSongButton cancion={cancion} />
 
-                <button
-                  type="button"
-                  className="playlists-icon-button"
-                  onClick={() => quitarCancion(cancion.id)}
-                  aria-label={`Quitar ${cancion.nombre}`}
-                  title="Quitar canción"
-                >
-                  <X size={18} />
-                </button>
+                {esPropia && (
+                  <button
+                    type="button"
+                    className="playlists-icon-button"
+                    onClick={() => quitarCancion(cancion.id)}
+                    aria-label={`Quitar ${cancion.nombre}`}
+                    title="Quitar canción"
+                  >
+                    <X size={18} />
+                  </button>
+                )}
               </div>
             ))}
           </div>

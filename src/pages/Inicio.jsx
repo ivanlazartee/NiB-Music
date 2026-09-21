@@ -1,222 +1,274 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Heart, Play } from "lucide-react";
 
 import HeroBanner from "../components/HeroBanner";
-import LikeSongButton from "../components/LikeSongButton";
 
 import { useAuth } from "../context/AuthContext";
+import { usePlayer } from "../context/PlayerContext";
 import { getItem, KEYS } from "../utils/localStorage";
 import {
+  ensureCatalogoPlaylists,
   ensureMeGustaPlaylist,
-  getPlaylistsDeUsuario,
+  getPlaylistsCatalogo,
   getPortadaPlaylist,
   isMeGustaPlaylist,
+  seedCancionAleatoriaSiVacia,
 } from "../utils/playlists";
 
+import portadaDefault from "../assets/img/portada-default.png";
 import "../styles/InicioSections.css";
+
+function PlaylistCard({ playlist, onPlay }) {
+  const navigate = useNavigate();
+  const esMeGusta = isMeGustaPlaylist(playlist);
+  const portada = getPortadaPlaylist(playlist);
+
+  return (
+    <article className="inicio-pl-card">
+      <div className="inicio-pl-card__cover-wrap">
+        <button
+          type="button"
+          className="inicio-pl-card__cover-btn"
+          onClick={() => navigate(`/playlist/${playlist.id}`)}
+          aria-label={`Abrir ${playlist.nombre}`}
+        >
+          {esMeGusta ? (
+            <span
+              className="inicio-pl-card__cover inicio-pl-card__cover--liked"
+              aria-hidden="true"
+            >
+              <Heart size={42} fill="currentColor" />
+            </span>
+          ) : (
+            <img
+              src={portada || portadaDefault}
+              alt=""
+              className="inicio-pl-card__cover"
+            />
+          )}
+        </button>
+
+        <button
+          type="button"
+          className="inicio-pl-card__play"
+          onClick={() => onPlay?.(playlist)}
+          aria-label={`Reproducir ${playlist.nombre}`}
+        >
+          <Play size={22} fill="currentColor" />
+        </button>
+      </div>
+
+      <button
+        type="button"
+        className="inicio-pl-card__meta"
+        onClick={() => navigate(`/playlist/${playlist.id}`)}
+      >
+        <h3>{playlist.nombre}</h3>
+        <p>{playlist.descripcion || "Playlist"}</p>
+      </button>
+    </article>
+  );
+}
+
+function PlaylistRow({ title, eyebrow, playlists, onPlay }) {
+  if (!playlists.length) return null;
+
+  return (
+    <section className="inicio-section">
+      <div className="inicio-section__header inicio-section__header--stack">
+        <div>
+          {eyebrow && (
+            <span className="inicio-section__eyebrow">{eyebrow}</span>
+          )}
+          <h2 className="inicio-section__title">{title}</h2>
+        </div>
+
+        <Link to="/playlist" className="inicio-section__more">
+          Mostrar todo
+        </Link>
+      </div>
+
+      <div className="inicio-pl-row">
+        {playlists.map((playlist) => (
+          <PlaylistCard
+            key={playlist.id}
+            playlist={playlist}
+            onPlay={onPlay}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
 
 function Inicio() {
   const { usuarioActual } = useAuth();
+  const { reproducir, cargarCola } = usePlayer();
+  const navigate = useNavigate();
   const esLogueado = Boolean(usuarioActual);
-  const [playlists, setPlaylists] = useState(
-    () => getItem(KEYS.playlists) || []
-  );
+
+  const [playlists, setPlaylists] = useState(() => {
+    ensureCatalogoPlaylists();
+    return getItem(KEYS.playlists) || [];
+  });
 
   useEffect(() => {
-    if (!usuarioActual?.id) return;
-    setPlaylists(ensureMeGustaPlaylist(usuarioActual.id));
+    const catalogo = ensureCatalogoPlaylists();
+
+    if (!usuarioActual?.id) {
+      setPlaylists(catalogo);
+      return;
+    }
+
+    ensureMeGustaPlaylist(usuarioActual.id);
+    setPlaylists(seedCancionAleatoriaSiVacia(usuarioActual.id));
   }, [usuarioActual?.id]);
 
   const canciones = getItem(KEYS.canciones) || [];
+  const cancionesActivas = canciones.filter((cancion) => cancion.activo);
 
-  const cancionesActivas = canciones.filter(
-    (cancion) => cancion.activo
+  const vuelve = getPlaylistsCatalogo("vuelve", playlists);
+  const hecho = getPlaylistsCatalogo("hecho", playlists);
+  const recientesCatalogo = getPlaylistsCatalogo("recientes", playlists);
+  const similares = getPlaylistsCatalogo("similares", playlists);
+
+  const meGusta = playlists.find(
+    (playlist) =>
+      playlist.usuarioId === usuarioActual?.id && isMeGustaPlaylist(playlist)
   );
 
-  const cancionesRecomendadas = cancionesActivas.slice(0, 6);
-
-  const playlistsMasEscuchadas = getPlaylistsDeUsuario(
-    usuarioActual?.id,
-    playlists
-  );
-
-  const artistasDestacados = [
-    ...new Map(
-      cancionesActivas.map((cancion) => [
-        cancion.artista,
+  const recientes = meGusta
+    ? [
         {
-          nombre: cancion.artista,
-          imagen: cancion.imagen,
+          ...meGusta,
+          descripcion: `Playlist · ${usuarioActual.nombre}`,
         },
-      ])
-    ).values(),
+        ...recientesCatalogo,
+      ]
+    : recientesCatalogo;
+
+  const accesoRapido = [
+    ...(meGusta ? [meGusta] : []),
+    ...recientesCatalogo,
+    ...vuelve,
   ].slice(0, 8);
 
-  const albumesPopulares = [
-    ...new Map(
-      cancionesActivas.map((cancion) => [
-        `${cancion.album}-${cancion.artista}`,
-        {
-          nombre: cancion.album,
-          artista: cancion.artista,
-          imagen: cancion.imagen,
-        },
-      ])
-    ).values(),
-  ].slice(0, 8);
+  function reproducirPlaylist(playlist) {
+    if (!usuarioActual) {
+      navigate("/login");
+      return;
+    }
+
+    const puede =
+      usuarioActual.rol === "premium" || usuarioActual.rol === "admin";
+
+    if (!puede) {
+      navigate("/registro");
+      return;
+    }
+
+    const temas = (playlist.cancionesIds || [])
+      .map((id) =>
+        cancionesActivas.find(
+          (cancion) => String(cancion.id) === String(id)
+        )
+      )
+      .filter(Boolean);
+
+    if (temas.length === 0) return;
+
+    cargarCola(temas);
+    reproducir(temas[0]);
+  }
+
+  if (!esLogueado) {
+    return (
+      <section className="catalogo">
+        <HeroBanner />
+        <PlaylistRow
+          title="Vuelve a tu música"
+          playlists={vuelve}
+          onPlay={reproducirPlaylist}
+        />
+        <PlaylistRow
+          title="Similares a Bad Bunny"
+          playlists={similares}
+          onPlay={reproducirPlaylist}
+        />
+      </section>
+    );
+  }
 
   return (
-    <section className="catalogo">
-      {esLogueado ? (
-        <section className="inicio-section">
-          <div className="inicio-section__header">
-            <h2 className="inicio-section__title">
-              Tus playlists más escuchadas
-            </h2>
+    <section className="catalogo inicio-home">
+      <div className="inicio-chips">
+        <button type="button" className="inicio-chip inicio-chip--active">
+          Todo
+        </button>
+        <button type="button" className="inicio-chip">
+          Música
+        </button>
+        <button type="button" className="inicio-chip">
+          Podcasts
+        </button>
+      </div>
 
-            <Link to="/playlist" className="inicio-section__more">
-              Ver todo
-            </Link>
-          </div>
+      <div className="inicio-quick-grid">
+        {accesoRapido.map((playlist) => {
+          const esLiked = isMeGustaPlaylist(playlist);
+          const portada = getPortadaPlaylist(playlist);
 
-          <div className="inicio-playlists-grid">
-            {playlistsMasEscuchadas.slice(0, 8).map((playlist) => {
-              const esMeGusta = isMeGustaPlaylist(playlist);
-              const portada = getPortadaPlaylist(playlist);
-
-              return (
-                <Link
-                  key={playlist.id}
-                  to={`/playlist/${playlist.id}`}
-                  className="inicio-playlist-chip"
+          return (
+            <Link
+              key={`quick-${playlist.id}`}
+              to={`/playlist/${playlist.id}`}
+              className="inicio-quick-card"
+            >
+              {esLiked ? (
+                <span
+                  className="inicio-quick-card__cover inicio-quick-card__cover--liked"
+                  aria-hidden="true"
                 >
-                  {esMeGusta ? (
-                    <span
-                      className="inicio-playlist-chip__cover inicio-playlist-chip__cover--liked"
-                      aria-hidden="true"
-                    >
-                      <Heart size={22} fill="currentColor" />
-                    </span>
-                  ) : (
-                    <img
-                      src={portada}
-                      alt={playlist.nombre}
-                      className="inicio-playlist-chip__cover"
-                    />
-                  )}
-                  <span>{playlist.nombre}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      ) : (
-        <HeroBanner />
-      )}
-
-      <section className="inicio-section">
-        <div className="inicio-section__header">
-          <h2 className="inicio-section__title">
-            Hecho para ti
-          </h2>
-
-          <Link
-            to="/catalogo"
-            className="inicio-section__more"
-          >
-            Ver todo
-          </Link>
-        </div>
-
-        <div className="inicio-recomendados">
-          {cancionesRecomendadas.map((cancion) => (
-            <div key={cancion.id} className="inicio-recomendado-wrap">
-              <Link
-                to={`/detalle/${cancion.id}`}
-                className="inicio-recomendado-card"
-              >
+                  <Heart size={18} fill="currentColor" />
+                </span>
+              ) : (
                 <img
-                  src={cancion.imagen}
-                  alt={cancion.nombre}
-                  className="inicio-recomendado-card__image"
+                  src={portada || portadaDefault}
+                  alt=""
+                  className="inicio-quick-card__cover"
                 />
+              )}
+              <span>{playlist.nombre}</span>
+            </Link>
+          );
+        })}
+      </div>
 
-                <div className="inicio-recomendado-card__overlay">
-                  <h3>{cancion.nombre}</h3>
-                  <p>{cancion.artista}</p>
-                </div>
-              </Link>
+      <PlaylistRow
+        title="Vuelve a tu música"
+        playlists={vuelve}
+        onPlay={reproducirPlaylist}
+      />
 
-              <LikeSongButton
-                cancion={cancion}
-                className="inicio-recomendado-like"
-              />
-            </div>
-          ))}
-        </div>
-      </section>
+      <PlaylistRow
+        eyebrow="Hecho para"
+        title={usuarioActual.nombre}
+        playlists={hecho}
+        onPlay={reproducirPlaylist}
+      />
 
-      <section className="inicio-section">
-        <div className="inicio-section__header">
-          <h2 className="inicio-section__title">
-            Artistas destacados
-          </h2>
+      <PlaylistRow
+        title="Recientes"
+        playlists={recientes}
+        onPlay={reproducirPlaylist}
+      />
 
-          <span className="inicio-section__more">
-            Descubrí artistas
-          </span>
-        </div>
-
-        <div className="inicio-artistas">
-          {artistasDestacados.map((artista) => (
-            <div
-              key={artista.nombre}
-              className="inicio-artista"
-            >
-              <div className="inicio-artista__image-wrapper">
-                <img
-                  src={artista.imagen}
-                  alt={artista.nombre}
-                  className="inicio-artista__image"
-                />
-              </div>
-
-              <span>{artista.nombre}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="inicio-section">
-        <div className="inicio-section__header">
-          <h2 className="inicio-section__title">
-            Álbumes populares
-          </h2>
-
-          <span className="inicio-section__more">
-            Ver todo
-          </span>
-        </div>
-
-        <div className="inicio-albumes">
-          {albumesPopulares.map((album) => (
-            <article
-              key={`${album.nombre}-${album.artista}`}
-              className="inicio-album"
-            >
-              <img
-                src={album.imagen}
-                alt={album.nombre}
-                className="inicio-album__image"
-              />
-
-              <h3>{album.nombre}</h3>
-              <p>{album.artista}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <PlaylistRow
+        title="Similares a Bad Bunny"
+        playlists={similares}
+        onPlay={reproducirPlaylist}
+      />
     </section>
   );
 }

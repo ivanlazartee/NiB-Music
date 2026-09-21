@@ -6,11 +6,13 @@ import { AuthProvider } from './context/AuthContext.jsx'
 import { PlayerProvider } from './context/PlayerContext.jsx'
 import { initItem, getItem, setItem, KEYS } from './utils/localStorage.js'
 import { cancionesIniciales, usuariosIniciales } from './utils/seedData.js'
+import { ensureCatalogoPlaylists } from './utils/playlists.js'
 import { limpiarUsuariosDesactivados } from './utils/limpiarUsuariosDesactivados.js'
 
 initItem(KEYS.canciones, cancionesIniciales)
 initItem(KEYS.usuarios, usuariosIniciales)
 initItem(KEYS.playlists, [])
+ensureCatalogoPlaylists()
 
 const usuariosGuardados = getItem(KEYS.usuarios) || []
 

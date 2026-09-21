@@ -1,8 +1,10 @@
 import { getItem, setItem, KEYS } from "./localStorage";
 import portadaDefault from "../assets/img/portada-default.png";
+import { playlistsCatalogoSeed } from "./playlistsCatalogo";
 
 export const NOMBRE_ME_GUSTA = "Tus me gusta";
 export const PLAYLISTS_EVENT = "nib:playlists-updated";
+export const CATALOGO_USUARIO_ID = "catalogo";
 
 export function notifyPlaylistsUpdated() {
   window.dispatchEvent(new CustomEvent(PLAYLISTS_EVENT));
@@ -10,6 +12,68 @@ export function notifyPlaylistsUpdated() {
 
 export function isMeGustaPlaylist(playlist) {
   return Boolean(playlist?.esMeGusta);
+}
+
+export function isCatalogoPlaylist(playlist) {
+  return Boolean(playlist?.esCatalogo);
+}
+
+function pickCancionesIds(cancionesIds, offset, cantidad = 5) {
+  if (cancionesIds.length === 0) return [];
+
+  const elegidas = [];
+
+  for (let i = 0; i < cantidad; i += 1) {
+    elegidas.push(cancionesIds[(offset + i) % cancionesIds.length]);
+  }
+
+  return [...new Set(elegidas)];
+}
+
+export function ensureCatalogoPlaylists() {
+  const canciones = (getItem(KEYS.canciones) || []).filter(
+    (cancion) => cancion.activo
+  );
+  const cancionesIds = canciones.map((cancion) => cancion.id);
+  const existentes = getItem(KEYS.playlists) || [];
+  const deUsuario = existentes.filter((playlist) => !isCatalogoPlaylist(playlist));
+
+  const catalogo = playlistsCatalogoSeed.map((seed, index) => ({
+    id: seed.id,
+    usuarioId: CATALOGO_USUARIO_ID,
+    esCatalogo: true,
+    esMeGusta: false,
+    nombre: seed.nombre,
+    descripcion: seed.descripcion,
+    seccion: seed.seccion,
+    color: seed.color,
+    creador: seed.creador,
+    cancionesIds: pickCancionesIds(cancionesIds, index * 2, 5),
+  }));
+
+  const actualizadas = [...catalogo, ...deUsuario];
+  setItem(KEYS.playlists, actualizadas);
+  return actualizadas;
+}
+
+export function getPlaylistsCatalogo(seccion, playlistsFuente) {
+  const playlists = playlistsFuente || getItem(KEYS.playlists) || [];
+
+  return playlists.filter(
+    (playlist) =>
+      isCatalogoPlaylist(playlist) &&
+      (!seccion || playlist.seccion === seccion)
+  );
+}
+
+export function getPlaylistById(playlistId, playlistsFuente) {
+  if (!playlistId) return null;
+
+  const playlists = playlistsFuente || getItem(KEYS.playlists) || [];
+  return (
+    playlists.find((playlist) => String(playlist.id) === String(playlistId)) ||
+    null
+  );
 }
 
 export function ensureMeGustaPlaylist(usuarioId) {
