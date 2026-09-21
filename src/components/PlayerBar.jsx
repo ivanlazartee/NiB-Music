@@ -1,5 +1,6 @@
 import { SkipBack, Play, Pause, SkipForward } from "lucide-react"
 import { usePlayer } from "../context/PlayerContext"
+import LikeSongButton from "./LikeSongButton"
 import "../styles/playerBar.css"
 
 function PlayerBar() {
@@ -25,6 +26,7 @@ function PlayerBar() {
               <p className="player-bar__title">{cancionActual.nombre}</p>
               <p className="player-bar__artist">{cancionActual.artista}</p>
             </div>
+            <LikeSongButton cancion={cancionActual} />
           </>
         ) : (
           <p className="player-bar__empty">No hay canción en reproducción</p>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 
 import HeroBanner from "../components/HeroBanner";
+import LikeSongButton from "../components/LikeSongButton";
 
 import { useAuth } from "../context/AuthContext";
 import { getItem, KEYS } from "../utils/localStorage";
@@ -130,22 +131,28 @@ function Inicio() {
 
         <div className="inicio-recomendados">
           {cancionesRecomendadas.map((cancion) => (
-            <Link
-              key={cancion.id}
-              to={`/detalle/${cancion.id}`}
-              className="inicio-recomendado-card"
-            >
-              <img
-                src={cancion.imagen}
-                alt={cancion.nombre}
-                className="inicio-recomendado-card__image"
-              />
+            <div key={cancion.id} className="inicio-recomendado-wrap">
+              <Link
+                to={`/detalle/${cancion.id}`}
+                className="inicio-recomendado-card"
+              >
+                <img
+                  src={cancion.imagen}
+                  alt={cancion.nombre}
+                  className="inicio-recomendado-card__image"
+                />
 
-              <div className="inicio-recomendado-card__overlay">
-                <h3>{cancion.nombre}</h3>
-                <p>{cancion.artista}</p>
-              </div>
-            </Link>
+                <div className="inicio-recomendado-card__overlay">
+                  <h3>{cancion.nombre}</h3>
+                  <p>{cancion.artista}</p>
+                </div>
+              </Link>
+
+              <LikeSongButton
+                cancion={cancion}
+                className="inicio-recomendado-like"
+              />
+            </div>
           ))}
         </div>
       </section>

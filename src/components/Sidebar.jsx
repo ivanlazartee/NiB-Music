@@ -9,6 +9,8 @@ import {
   getPlaylistsDeUsuario,
   getPortadaPlaylist,
   isMeGustaPlaylist,
+  PLAYLISTS_EVENT,
+  seedCancionAleatoriaSiVacia,
 } from "../utils/playlists";
 import GuestAuthModal from "./GuestAuthModal";
 
@@ -29,8 +31,16 @@ const Sidebar = () => {
       return;
     }
 
-    const actualizadas = ensureMeGustaPlaylist(usuarioActual.id);
+    ensureMeGustaPlaylist(usuarioActual.id);
+    const actualizadas = seedCancionAleatoriaSiVacia(usuarioActual.id);
     setPlaylists(actualizadas);
+
+    const sync = () => {
+      setPlaylists(ensureMeGustaPlaylist(usuarioActual.id));
+    };
+
+    window.addEventListener(PLAYLISTS_EVENT, sync);
+    return () => window.removeEventListener(PLAYLISTS_EVENT, sync);
   }, [usuarioActual?.id, location.pathname]);
 
   const playlistsDelUsuario = getPlaylistsDeUsuario(

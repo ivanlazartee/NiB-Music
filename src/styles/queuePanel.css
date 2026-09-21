@@ -94,14 +94,11 @@
   width: 100%;
   min-width: 0;
 
-  display: grid;
-  grid-template-columns: 20px 46px minmax(0, 1fr);
-
-  gap: 10px;
-
+  display: flex;
   align-items: center;
+  gap: 4px;
 
-  padding: 8px;
+  padding: 4px 4px 4px 8px;
 
   background-color: transparent;
   color: inherit;
@@ -114,6 +111,27 @@
   transition:
     background-color var(--transition-fast),
     transform var(--transition-fast);
+}
+
+.queue-panel__select {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+
+  display: grid;
+  grid-template-columns: 20px 46px minmax(0, 1fr);
+
+  gap: 10px;
+  align-items: center;
+
+  padding: 4px;
+
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-align: left;
+
+  cursor: pointer;
 }
 
 .queue-panel__item:hover {

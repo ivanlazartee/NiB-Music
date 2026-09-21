@@ -7,6 +7,7 @@ import { usePlayer } from "../context/PlayerContext";
 
 import { getItem, KEYS } from "../utils/localStorage";
 import portadaDefault from "../assets/img/portada-default.png";
+import LikeSongButton from "../components/LikeSongButton";
 
 function DetalleCancion() {
   const { id } = useParams();
@@ -107,14 +108,21 @@ function DetalleCancion() {
               {cancion.album} · {cancion.anio} · {cancion.genero}
             </p>
 
-            <button
-              type="button"
-              className="detalle-cancion__play"
-              onClick={handlePlayClick}
-            >
-              <Play size={20} fill="currentColor" />
-              Reproducir
-            </button>
+            <div className="detalle-cancion__actions">
+              <button
+                type="button"
+                className="detalle-cancion__play"
+                onClick={handlePlayClick}
+              >
+                <Play size={20} fill="currentColor" />
+                Reproducir
+              </button>
+
+              <LikeSongButton
+                cancion={cancion}
+                className="detalle-cancion__like"
+              />
+            </div>
 
             <div className="detalle-cancion__metadata">
               <div className="detalle-cancion__metadata-item">

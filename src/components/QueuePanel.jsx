@@ -1,5 +1,6 @@
 import { ListMusic, Play } from "lucide-react";
 
+import LikeSongButton from "./LikeSongButton";
 import portadaDefault from "../assets/img/portada-default.png";
 import "../styles/QueuePanel.css";
 
@@ -35,43 +36,49 @@ const QueuePanel = ({
             const esActual = cancion.id === cancionActualId;
 
             return (
-              <button
+              <div
                 key={cancion.id}
-                type="button"
                 className={`queue-panel__item ${
                   esActual ? "queue-panel__item--active" : ""
                 }`}
-                onClick={() => onSelectCancion?.(cancion)}
               >
-                <span className="queue-panel__position">
-                  {index + 1}
-                </span>
+                <button
+                  type="button"
+                  className="queue-panel__select"
+                  onClick={() => onSelectCancion?.(cancion)}
+                >
+                  <span className="queue-panel__position">
+                    {index + 1}
+                  </span>
 
-                <div className="queue-panel__cover">
-                  <img
-                    src={cancion.imagen}
-                    alt={`Portada de ${cancion.nombre}`}
-                    onError={handleImageError}
-                  />
-
-                  <span className="queue-panel__play-icon">
-                    <Play
-                      size={16}
-                      fill="currentColor"
+                  <div className="queue-panel__cover">
+                    <img
+                      src={cancion.imagen}
+                      alt={`Portada de ${cancion.nombre}`}
+                      onError={handleImageError}
                     />
-                  </span>
-                </div>
 
-                <div className="queue-panel__info">
-                  <span className="queue-panel__song">
-                    {cancion.nombre}
-                  </span>
+                    <span className="queue-panel__play-icon">
+                      <Play
+                        size={16}
+                        fill="currentColor"
+                      />
+                    </span>
+                  </div>
 
-                  <span className="queue-panel__artist">
-                    {cancion.artista}
-                  </span>
-                </div>
-              </button>
+                  <div className="queue-panel__info">
+                    <span className="queue-panel__song">
+                      {cancion.nombre}
+                    </span>
+
+                    <span className="queue-panel__artist">
+                      {cancion.artista}
+                    </span>
+                  </div>
+                </button>
+
+                <LikeSongButton cancion={cancion} />
+              </div>
             );
           })
         ) : (

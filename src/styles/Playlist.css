@@ -273,7 +273,7 @@
 .playlist-table__head,
 .playlist-table__row {
   display: grid;
-  grid-template-columns: 48px minmax(0, 2fr) minmax(0, 1.2fr) 64px 44px;
+  grid-template-columns: 48px minmax(0, 2fr) minmax(0, 1.2fr) 64px 40px 44px;
   gap: 12px;
   align-items: center;
   padding: 0 12px;
@@ -455,7 +455,7 @@
 
   .playlist-table__head,
   .playlist-table__row {
-    grid-template-columns: 40px minmax(0, 1fr) 52px 40px;
+    grid-template-columns: 40px minmax(0, 1fr) 52px 36px 40px;
   }
 }
 

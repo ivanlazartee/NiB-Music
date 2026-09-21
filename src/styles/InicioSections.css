@@ -123,6 +123,25 @@
   gap: 12px;
 }
 
+.inicio-recomendado-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.inicio-recomendado-like {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.inicio-recomendado-like:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
 .inicio-recomendado-card {
   position: relative;
 

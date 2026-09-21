@@ -1186,8 +1186,17 @@ img {
   padding-top: 12px;
 }
 
+.song-card__info-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .song-card__title {
   display: block;
+  flex: 1;
+  min-width: 0;
 
   overflow: hidden;
 
@@ -1400,6 +1409,13 @@ img {
   font-size: 0.95rem;
 }
 
+.detalle-cancion__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
 .detalle-cancion__play {
   display: inline-flex;
   align-items: center;
@@ -1409,7 +1425,7 @@ img {
 
   min-height: 48px;
 
-  margin-top: 28px;
+  margin-top: 0;
 
   padding: 0 24px;
 
@@ -1425,6 +1441,12 @@ img {
     background-color var(--transition-fast),
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
+}
+
+.detalle-cancion__like {
+  margin-top: 0;
+  width: 48px;
+  height: 48px;
 }
 
 .detalle-cancion__play:hover {

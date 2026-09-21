@@ -10,10 +10,12 @@ import {
   X,
 } from "lucide-react";
 
+import LikeSongButton from "../components/LikeSongButton";
 import { useAuth } from "../context/AuthContext";
 import { usePlayer } from "../context/PlayerContext";
 import { getItem, setItem, KEYS } from "../utils/localStorage";
 import {
+  PLAYLISTS_EVENT,
   ensureMeGustaPlaylist,
   getPlaylistsDeUsuario,
   getPortadaPlaylist,
@@ -47,6 +49,13 @@ function Playlist() {
 
     const actualizadas = ensureMeGustaPlaylist(usuarioId);
     setPlaylists(actualizadas);
+
+    const sync = () => {
+      setPlaylists(getItem(KEYS.playlists) || []);
+    };
+
+    window.addEventListener(PLAYLISTS_EVENT, sync);
+    return () => window.removeEventListener(PLAYLISTS_EVENT, sync);
   }, [usuarioId]);
 
   const playlistsDelUsuario = getPlaylistsDeUsuario(usuarioId, playlists);
@@ -311,6 +320,7 @@ function Playlist() {
                 <Clock3 size={16} />
               </span>
               <span className="playlist-table__action" />
+              <span className="playlist-table__action" />
             </div>
 
             {cancionesDePlaylist.map((cancion, index) => (
@@ -350,6 +360,8 @@ function Playlist() {
                 </span>
 
                 <span className="playlist-table__duration">—</span>
+
+                <LikeSongButton cancion={cancion} />
 
                 <button
                   type="button"

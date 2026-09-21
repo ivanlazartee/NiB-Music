@@ -33,6 +33,7 @@
   
   .player-bar__info {
     min-width: 0;
+    flex: 1;
   }
   
   .player-bar__title {
