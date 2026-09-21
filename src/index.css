@@ -152,7 +152,7 @@ img {
   grid-template-columns: 240px minmax(0, 1fr) 300px;
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
-    "sidebar top right"
+    "sidebar top top"
     "sidebar center right";
   gap: 8px;
 }
@@ -752,9 +752,9 @@ img {
   width: 100%;
   flex-shrink: 0;
 
-  display: grid;
-  grid-template-columns: 1fr minmax(200px, 420px) 1fr;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
 
   gap: 12px;
 
@@ -773,6 +773,7 @@ img {
   justify-content: flex-start;
   gap: 12px;
 
+  flex: 1;
   min-width: 0;
 }
 
@@ -808,9 +809,10 @@ img {
 .navbar__search {
   position: relative;
 
+  flex: 1;
   width: 100%;
   max-width: 420px;
-  justify-self: center;
+  min-width: 0;
 }
 
 .navbar__search-icon {
@@ -982,6 +984,12 @@ img {
 
   box-shadow:
     0 0 18px rgba(255, 223, 45, 0.24);
+}
+
+.navbar__button--compact {
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .navbar__avatar-link {

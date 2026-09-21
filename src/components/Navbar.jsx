@@ -29,7 +29,7 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
   };
 
   return (
-    <header className="navbar">
+    <header className={`navbar ${esInvitado ? "navbar--guest" : ""}`}>
       <div className="navbar__left">
         <Link
           to="/"
@@ -39,29 +39,31 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
           <House size={20} />
         </Link>
 
-        <Link to="/catalogo" className="navbar__explore">
-          Explorar
-        </Link>
+        <form
+          className="navbar__search"
+          onSubmit={handleSubmit}
+        >
+          <Search
+            className="navbar__search-icon"
+            size={19}
+          />
+
+          <input
+            ref={searchInputRef}
+            type="search"
+            placeholder="Buscar canciones, artistas, álbumes..."
+            className="navbar__input"
+            value={search}
+            onChange={handleSearchChange}
+          />
+        </form>
+
+        {!esInvitado && (
+          <Link to="/catalogo" className="navbar__explore">
+            Explorar
+          </Link>
+        )}
       </div>
-
-      <form
-        className="navbar__search"
-        onSubmit={handleSubmit}
-      >
-        <Search
-          className="navbar__search-icon"
-          size={19}
-        />
-
-        <input
-          ref={searchInputRef}
-          type="search"
-          placeholder="Buscar canciones, artistas, álbumes..."
-          className="navbar__input"
-          value={search}
-          onChange={handleSearchChange}
-        />
-      </form>
 
       <div className="navbar__actions">
         {esInvitado && (
@@ -95,7 +97,7 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
         )}
 
         {esInvitado ? (
-          <Link to="/login" className="navbar__button">
+          <Link to="/login" className="navbar__button navbar__button--compact">
             Iniciar sesión
           </Link>
         ) : (
