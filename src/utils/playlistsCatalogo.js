@@ -2,6 +2,7 @@
 export const playlistsCatalogoSeed = [
   {
     id: "catalog-forever-tu-gantel",
+    portadaCancion: "Esclava",
     nombre: "FOREVER TU GANTEL",
     descripcion: "Con Omar Courtz, Yan Block y más",
     seccion: "vuelve",
@@ -12,6 +13,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-ferxxo",
+    portadaCancion: "Feliz Cumpleaños Ferxxo",
     nombre: "FERXXO",
     descripcion: "Si sabe Ferxxo — Feid, Blessd y más",
     seccion: "vuelve",
@@ -22,6 +24,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-las-mas-bonitas",
+    portadaCancion: "China",
     nombre: "Las más bonitas",
     descripcion: "Anuel AA y lo mejor del genre",
     seccion: "vuelve",
@@ -32,6 +35,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-karol-g",
+    portadaCancion: "PROVENZA",
     nombre: "KAROL G",
     descripcion: "Éxitos de Karol G",
     seccion: "vuelve",
@@ -42,6 +46,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-exitos-argentina",
+    portadaCancion: "GIVENCHY",
     nombre: "Éxitos Argentina",
     descripcion: "Lo más escuchado en Argentina",
     seccion: "vuelve",
@@ -52,6 +57,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-noche-urbana",
+    portadaCancion: "Todo De Ti",
     nombre: "Noche urbana",
     descripcion: "Reggaetón y vibes de madrugada",
     seccion: "vuelve",
@@ -62,6 +68,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-mix-diario-1",
+    portadaCancion: "CLASSY 101",
     nombre: "Mix diario 1",
     descripcion: "Tu mezcla personalizada del día",
     seccion: "hecho",
@@ -72,6 +79,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-mix-diario-2",
+    portadaCancion: "PUNTO G",
     nombre: "Mix diario 2",
     descripcion: "Más descubrimientos para vos",
     seccion: "hecho",
@@ -82,6 +90,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-mix-diario-3",
+    portadaCancion: "Hawái",
     nombre: "Mix diario 3",
     descripcion: "Canciones que te pueden gustar",
     seccion: "hecho",
@@ -92,6 +101,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-on-repeat",
+    portadaCancion: "La Bachata",
     nombre: "On Repeat",
     descripcion: "Las que no paramos de escuchar",
     seccion: "hecho",
@@ -102,6 +112,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-radar",
+    portadaCancion: "WHERE SHE GOES",
     nombre: "Release Radar",
     descripcion: "Novedades de artistas que seguís",
     seccion: "hecho",
@@ -112,6 +123,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-time-capsule",
+    portadaCancion: "Gasolina",
     nombre: "Time Capsule",
     descripcion: "Un viaje por tu historial musical",
     seccion: "hecho",
@@ -122,6 +134,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-por-si-manana",
+    portadaCancion: "REINA",
     nombre: "POR SI MAÑANA NO ESTOY",
     descripcion: "Playlist reciente",
     seccion: "recientes",
@@ -132,6 +145,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-radio-zizi",
+    portadaCancion: "Desesperados",
     nombre: "Radio de ZIZI",
     descripcion: "Basada en ZIZI",
     seccion: "recientes",
@@ -142,6 +156,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-5202",
+    portadaCancion: "Lo Siento BB",
     nombre: "5202",
     descripcion: "Selección reciente",
     seccion: "recientes",
@@ -152,6 +167,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-radio-vlone",
+    portadaCancion: "Coco Chanel",
     nombre: "Radio de VLONE",
     descripcion: "Basada en VLONE",
     seccion: "recientes",
@@ -162,6 +178,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-duki-reguetonero",
+    portadaCancion: "Quevedo: Bzrp",
     nombre: "duki reguetonero",
     descripcion: "Duki en modo reggaetón",
     seccion: "recientes",
@@ -172,6 +189,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-duki-old",
+    portadaCancion: "Goteo",
     nombre: "Duki old",
     descripcion: "Clásicos de Duki",
     seccion: "recientes",
@@ -182,6 +200,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-this-is-bad-bunny",
+    portadaCancion: "DÁKITI",
     nombre: "This Is Bad Bunny",
     descripcion: "Los esenciales de Bad Bunny",
     seccion: "similares",
@@ -192,6 +211,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-radio-bad-bunny",
+    portadaCancion: "MONACO",
     nombre: "Radio Bad Bunny",
     descripcion: "Con Bad Bunny, Feid, Rauw Alejandro...",
     seccion: "similares",
@@ -202,6 +222,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-un-verano",
+    portadaCancion: "Tití Me Preguntó",
     nombre: "Un verano sin ti vibes",
     descripcion: "Inspirado en Un Verano Sin Ti",
     seccion: "similares",
@@ -212,6 +233,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-yhlqmdlg",
+    portadaCancion: "Safaera",
     nombre: "YHLQMDLG energy",
     descripcion: "Trap y perreo al estilo Bad Bunny",
     seccion: "similares",
@@ -222,6 +244,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-latino-hits",
+    portadaCancion: "DESPECHÁ",
     nombre: "Latino Hits",
     descripcion: "Los hits latinos del momento",
     seccion: "similares",
@@ -232,6 +255,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-trap-latino",
+    portadaCancion: "M.A.I",
     nombre: "Trap latino",
     descripcion: "Lo mejor del trap en español",
     seccion: "similares",
@@ -242,6 +266,7 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-perreo-intenso",
+    portadaCancion: "Pepas",
     nombre: "Perreo intenso",
     descripcion: "Para la pista toda la noche",
     seccion: "similares",
