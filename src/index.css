@@ -505,8 +505,8 @@ img {
   align-items: center;
   justify-content: center;
 
-  color: #fff;
-  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 45%, #6366f1 100%);
+  color: #111;
+  background: linear-gradient(145deg, #6b5a0a 0%, #d4b400 32%, #ffdf2d 62%, #fff6a8 100%);
 }
 
 .sidebar__library-item-info {
