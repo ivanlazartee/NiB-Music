@@ -38,7 +38,16 @@ function AppRouter() {
           <Route
             path="/playlist"
             element={
-              <PrivateRoute role="premium">
+              <PrivateRoute role={["premium", "admin"]}>
+                <Playlist />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/playlist/:id"
+            element={
+              <PrivateRoute role={["premium", "admin"]}>
                 <Playlist />
               </PrivateRoute>
             }

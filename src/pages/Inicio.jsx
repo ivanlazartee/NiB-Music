@@ -1,12 +1,16 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 
 import HeroBanner from "../components/HeroBanner";
 
 import { useAuth } from "../context/AuthContext";
 import { getItem, KEYS } from "../utils/localStorage";
 import {
+  ensureMeGustaPlaylist,
   getPlaylistsDeUsuario,
   getPortadaPlaylist,
+  isMeGustaPlaylist,
 } from "../utils/playlists";
 
 import "../styles/InicioSections.css";
@@ -14,6 +18,14 @@ import "../styles/InicioSections.css";
 function Inicio() {
   const { usuarioActual } = useAuth();
   const esLogueado = Boolean(usuarioActual);
+  const [playlists, setPlaylists] = useState(
+    () => getItem(KEYS.playlists) || []
+  );
+
+  useEffect(() => {
+    if (!usuarioActual?.id) return;
+    setPlaylists(ensureMeGustaPlaylist(usuarioActual.id));
+  }, [usuarioActual?.id]);
 
   const canciones = getItem(KEYS.canciones) || [];
 
@@ -23,7 +35,10 @@ function Inicio() {
 
   const cancionesRecomendadas = cancionesActivas.slice(0, 6);
 
-  const playlistsMasEscuchadas = getPlaylistsDeUsuario(usuarioActual?.id);
+  const playlistsMasEscuchadas = getPlaylistsDeUsuario(
+    usuarioActual?.id,
+    playlists
+  );
 
   const artistasDestacados = [
     ...new Map(
@@ -64,31 +79,36 @@ function Inicio() {
             </Link>
           </div>
 
-          {playlistsMasEscuchadas.length === 0 ? (
-            <div className="inicio-playlists-empty">
-              <p>Todavía no tenés playlists. Creá una para verla acá.</p>
-              <Link to="/playlist" className="inicio-playlists-empty__button">
-                Ir a playlists
-              </Link>
-            </div>
-          ) : (
-            <div className="inicio-playlists-grid">
-              {playlistsMasEscuchadas.slice(0, 8).map((playlist) => (
+          <div className="inicio-playlists-grid">
+            {playlistsMasEscuchadas.slice(0, 8).map((playlist) => {
+              const esMeGusta = isMeGustaPlaylist(playlist);
+              const portada = getPortadaPlaylist(playlist);
+
+              return (
                 <Link
                   key={playlist.id}
-                  to="/playlist"
+                  to={`/playlist/${playlist.id}`}
                   className="inicio-playlist-chip"
                 >
-                  <img
-                    src={getPortadaPlaylist(playlist)}
-                    alt={playlist.nombre}
-                    className="inicio-playlist-chip__cover"
-                  />
+                  {esMeGusta ? (
+                    <span
+                      className="inicio-playlist-chip__cover inicio-playlist-chip__cover--liked"
+                      aria-hidden="true"
+                    >
+                      <Heart size={22} fill="currentColor" />
+                    </span>
+                  ) : (
+                    <img
+                      src={portada}
+                      alt={playlist.nombre}
+                      className="inicio-playlist-chip__cover"
+                    />
+                  )}
                   <span>{playlist.nombre}</span>
                 </Link>
-              ))}
-            </div>
-          )}
+              );
+            })}
+          </div>
         </section>
       ) : (
         <HeroBanner />

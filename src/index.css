@@ -487,6 +487,10 @@ img {
   background: rgba(255, 255, 255, 0.06);
 }
 
+.sidebar__library-item--active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .sidebar__library-item-cover {
   width: 44px;
   height: 44px;
@@ -494,6 +498,15 @@ img {
 
   object-fit: cover;
   border-radius: 6px;
+}
+
+.sidebar__library-item-cover--liked {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
+  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 45%, #6366f1 100%);
 }
 
 .sidebar__library-item-info {
@@ -512,7 +525,7 @@ img {
 }
 
 .sidebar__library-item-info small {
-  color: var(--color-text-muted);
+  color: #b3b3b3;
   font-size: 0.72rem;
 }
 

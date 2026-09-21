@@ -8,8 +8,12 @@ function PrivateRoute({ children, role }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (role && usuarioActual.rol !== role) {
-    return <Navigate to="/" replace />;
+  if (role) {
+    const rolesPermitidos = Array.isArray(role) ? role : [role];
+
+    if (!rolesPermitidos.includes(usuarioActual.rol)) {
+      return <Navigate to="/" replace />;
+    }
   }
 
   return children;

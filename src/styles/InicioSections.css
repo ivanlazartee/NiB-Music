@@ -76,6 +76,15 @@
   object-fit: cover;
 }
 
+.inicio-playlist-chip__cover--liked {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
+  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 45%, #6366f1 100%);
+}
+
 .inicio-playlists-empty {
   display: flex;
   flex-wrap: wrap;
