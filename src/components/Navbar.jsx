@@ -72,21 +72,13 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
               Premium
             </Link>
 
-            <a
-              href="#ayuda"
-              className="navbar__link"
-              onClick={(event) => event.preventDefault()}
-            >
+            <Link to="/ayuda" className="navbar__link">
               Ayuda
-            </a>
+            </Link>
 
-            <a
-              href="#descargar"
-              className="navbar__link"
-              onClick={(event) => event.preventDefault()}
-            >
+            <Link to="/descargar" className="navbar__link">
               Descargar
-            </a>
+            </Link>
 
             <span className="navbar__divider" aria-hidden="true" />
 
