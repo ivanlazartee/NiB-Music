@@ -1,0 +1,398 @@
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Heart, Play } from "lucide-react";
+
+import HeroBanner from "../components/HeroBanner";
+
+import { useAuth } from "../context/AuthContext";
+import { usePlayer } from "../context/PlayerContext";
+import { getItem, KEYS } from "../utils/localStorage";
+import {
+  ensureCatalogoPlaylists,
+  ensureMeGustaPlaylist,
+  getPlaylistsCatalogo,
+  getPortadaPlaylist,
+  isMeGustaPlaylist,
+  llenarMeGustaConTodasCanciones,
+} from "../utils/playlists";
+
+import portadaDefault from "../assets/img/portada-default.png";
+
+import "../styles/InicioSections.css";
+import "../styles/FooterInicio.css";
+
+function FooterInicio() {
+  return (
+    <footer className="inicio-footer">
+      <div className="inicio-footer__contenido">
+        <span className="inicio-footer__marca">
+          NiB Music
+        </span>
+
+        <Link
+          to="/acerca-de-nosotros"
+          className="inicio-footer__enlace"
+        >
+          Acerca de nosotros
+        </Link>
+
+        <span className="inicio-footer__copyright">
+          © {new Date().getFullYear()} NiB Music
+        </span>
+      </div>
+    </footer>
+  );
+}
+
+function PlaylistCard({ playlist, onPlay }) {
+  const navigate = useNavigate();
+  const esMeGusta = isMeGustaPlaylist(playlist);
+  const portada = getPortadaPlaylist(playlist);
+
+  return (
+    <article className="inicio-pl-card">
+      <div className="inicio-pl-card__cover-wrap">
+        <button
+          type="button"
+          className="inicio-pl-card__cover-btn"
+          onClick={() => navigate(`/playlist/${playlist.id}`)}
+          aria-label={`Abrir ${playlist.nombre}`}
+        >
+          {esMeGusta ? (
+            <span
+              className="inicio-pl-card__cover inicio-pl-card__cover--liked"
+              aria-hidden="true"
+            >
+              <Heart size={42} fill="currentColor" />
+            </span>
+          ) : (
+            <img
+              src={portada || portadaDefault}
+              alt=""
+              className="inicio-pl-card__cover"
+            />
+          )}
+        </button>
+
+        <button
+          type="button"
+          className="inicio-pl-card__play"
+          onClick={() => onPlay?.(playlist)}
+          aria-label={`Reproducir ${playlist.nombre}`}
+        >
+          <Play size={22} fill="currentColor" />
+        </button>
+      </div>
+
+      <button
+        type="button"
+        className="inicio-pl-card__meta"
+        onClick={() => navigate(`/playlist/${playlist.id}`)}
+      >
+        <h3>{playlist.nombre}</h3>
+        <p>{playlist.descripcion || "Playlist"}</p>
+      </button>
+    </article>
+  );
+}
+
+function PlaylistRow({
+  title,
+  eyebrow,
+  playlists,
+  onPlay,
+  titleClassName = "",
+}) {
+  if (!playlists.length) return null;
+
+  return (
+    <section className="inicio-section">
+      <div className="inicio-section__header inicio-section__header--stack">
+        <div>
+          {eyebrow && (
+            <span className="inicio-section__eyebrow">
+              {eyebrow}
+            </span>
+          )}
+
+          <h2 className={`inicio-section__title ${titleClassName}`.trim()}>
+            {title}
+          </h2>
+        </div>
+
+        <Link to="/playlist" className="inicio-section__more">
+          Mostrar todo
+        </Link>
+      </div>
+
+      <div className="inicio-pl-row">
+        {playlists.map((playlist) => (
+          <PlaylistCard
+            key={playlist.id}
+            playlist={playlist}
+            onPlay={onPlay}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Inicio() {
+  const { usuarioActual } = useAuth();
+  const { reproducir, cargarCola } = usePlayer();
+  const navigate = useNavigate();
+
+  const esLogueado = Boolean(usuarioActual);
+
+  const [playlists, setPlaylists] = useState(() => {
+    ensureCatalogoPlaylists();
+    return getItem(KEYS.playlists) || [];
+  });
+
+  useEffect(() => {
+    const catalogo = ensureCatalogoPlaylists();
+
+    if (!usuarioActual?.id) {
+      setPlaylists(catalogo);
+      return;
+    }
+
+    ensureMeGustaPlaylist(usuarioActual.id);
+
+    setPlaylists(
+      llenarMeGustaConTodasCanciones(usuarioActual.id)
+    );
+  }, [usuarioActual?.id]);
+
+  const canciones = getItem(KEYS.canciones) || [];
+
+  const cancionesActivas = canciones.filter(
+    (cancion) => cancion.activo
+  );
+
+  const ordenUsuarioId = usuarioActual?.id;
+
+  const vuelve = getPlaylistsCatalogo(
+    "vuelve",
+    playlists,
+    ordenUsuarioId
+  );
+
+  const hecho = getPlaylistsCatalogo(
+    "hecho",
+    playlists,
+    ordenUsuarioId
+  );
+
+  const recientesCatalogo = getPlaylistsCatalogo(
+    "recientes",
+    playlists,
+    ordenUsuarioId
+  );
+
+  const similares = getPlaylistsCatalogo(
+    "similares",
+    playlists,
+    ordenUsuarioId
+  );
+
+  const meGusta = playlists.find(
+    (playlist) =>
+      playlist.usuarioId === usuarioActual?.id &&
+      isMeGustaPlaylist(playlist)
+  );
+
+  const recientes = meGusta
+    ? [
+        {
+          ...meGusta,
+          descripcion: `Playlist · ${usuarioActual.nombre}`,
+        },
+        ...recientesCatalogo,
+      ]
+    : recientesCatalogo;
+
+  const accesoRapido = [
+    ...(meGusta ? [meGusta] : []),
+    ...recientesCatalogo,
+    ...vuelve,
+  ].slice(0, 8);
+
+  function reproducirPlaylist(playlist) {
+    if (!usuarioActual) {
+      navigate("/login");
+      return;
+    }
+
+    const puede =
+      usuarioActual.rol === "premium" ||
+      usuarioActual.rol === "admin";
+
+    if (!puede) {
+      navigate("/registro");
+      return;
+    }
+
+    const temas = (playlist.cancionesIds || [])
+      .map((id) =>
+        cancionesActivas.find(
+          (cancion) => String(cancion.id) === String(id)
+        )
+      )
+      .filter(Boolean);
+
+    if (temas.length === 0) return;
+
+    cargarCola(temas, {
+      usuarioId: usuarioActual.id,
+      playlistId: playlist.id,
+      cancionInicialId: temas[0]?.id,
+    });
+
+    reproducir(temas[0]);
+  }
+
+  if (!esLogueado) {
+    return (
+      <section className="catalogo">
+        <HeroBanner />
+
+        <PlaylistRow
+          title="Vuelve a tu música"
+          playlists={vuelve}
+          onPlay={reproducirPlaylist}
+        />
+
+        <PlaylistRow
+          title="Similares a Bad Bunny"
+          playlists={similares}
+          onPlay={reproducirPlaylist}
+        />
+
+        <FooterInicio />
+      </section>
+    );
+  }
+
+  const perfilHref =
+    usuarioActual.rol === "admin" ? "/admin" : "/perfil";
+
+  const avatarSrc =
+    usuarioActual.avatar ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      usuarioActual.nombre || "U"
+    )}&background=ffdf2d&color=111`;
+
+  return (
+    <section className="catalogo inicio-home">
+      <div className="inicio-home-top">
+        <Link
+          to={perfilHref}
+          className="inicio-home-avatar"
+          aria-label="Ir al perfil"
+        >
+          <img src={avatarSrc} alt="" />
+        </Link>
+
+        <div className="inicio-chips">
+          <button
+            type="button"
+            className="inicio-chip inicio-chip--active"
+          >
+            Todas
+          </button>
+
+          <button
+            type="button"
+            className="inicio-chip"
+            onClick={() => navigate("/musica")}
+          >
+            Música
+          </button>
+
+          <button
+            type="button"
+            className="inicio-chip"
+            onClick={() => navigate("/podcasts-inicio")}
+          >
+            Podcasts
+          </button>
+        </div>
+      </div>
+
+      <div className="inicio-quick-grid">
+        {accesoRapido.map((playlist) => {
+          const esLiked = isMeGustaPlaylist(playlist);
+          const portada = getPortadaPlaylist(playlist);
+
+          return (
+            <Link
+              key={`quick-${playlist.id}`}
+              to={`/playlist/${playlist.id}`}
+              className="inicio-quick-card"
+            >
+              {esLiked ? (
+                <span
+                  className="inicio-quick-card__cover inicio-quick-card__cover--liked"
+                  aria-hidden="true"
+                >
+                  <Heart size={18} fill="currentColor" />
+                </span>
+              ) : (
+                <img
+                  src={portada || portadaDefault}
+                  alt=""
+                  className="inicio-quick-card__cover"
+                />
+              )}
+
+              <span>{playlist.nombre}</span>
+            </Link>
+          );
+        })}
+      </div>
+
+      <PlaylistRow
+        title="Vuelve a tu música"
+        playlists={vuelve}
+        onPlay={reproducirPlaylist}
+      />
+
+      <PlaylistRow
+        eyebrow="Hecho para"
+        title={
+          <img
+            src={
+              usuarioActual.avatar ||
+              `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                usuarioActual.nombre || "U"
+              )}&background=ffdf2d&color=111`
+            }
+            alt={usuarioActual.nombre}
+            className="inicio-section__avatar"
+          />
+        }
+        titleClassName="inicio-section__title--avatar"
+        playlists={hecho}
+        onPlay={reproducirPlaylist}
+      />
+
+      <PlaylistRow
+        title="Recientes"
+        playlists={recientes}
+        onPlay={reproducirPlaylist}
+      />
+
+      <PlaylistRow
+        title="Similares a Bad Bunny"
+        playlists={similares}
+        onPlay={reproducirPlaylist}
+      />
+
+      <FooterInicio />
+    </section>
+  );
+}
+
+export default Inicio;

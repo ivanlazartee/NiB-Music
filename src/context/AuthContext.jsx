@@ -1,15 +1,148 @@
-import { createContext, useContext} from 'react'
+import { createContext, useContext, useEffect, useState } from "react";
+import { getItem, setItem, removeItem, KEYS } from "../utils/localStorage";
+import { ensurePlaylistsAleatoriasUsuario } from "../utils/playlists";
 
-export const AuthContext = createContext(null)
+export const AuthContext = createContext(null);
 
-export function useAuth(){
-    return useContext(AuthContext)
+export function useAuth() {
+  return useContext(AuthContext);
 }
 
-export function AuthProvider({children}) {
-    return (
-        <AuthContext.Provider value={{}}>
-            {children}
-        </AuthContext.Provider>
-    )
+export function AuthProvider({ children }) {
+  const [usuarioActual, setUsuarioActual] = useState(() =>
+    getItem(KEYS.usuarioActual)
+  );
+
+  useEffect(() => {
+    const usuarioGuardado = getItem(KEYS.usuarioActual);
+
+    if (usuarioGuardado) {
+      setUsuarioActual(usuarioGuardado);
+    }
+  }, []);
+
+  const login = (email, password) => {
+    const usuarios = getItem(KEYS.usuarios) || [];
+
+    const usuario = usuarios.find(
+      (usuario) =>
+        usuario.email.toLowerCase() === email.toLowerCase() &&
+        usuario.password === password
+    );
+
+    if (!usuario) {
+      return {
+        success: false,
+        message: "El email o la contraseña son incorrectos.",
+      };
+    }
+
+    if (usuario.activo === false) {
+      return {
+        success: false,
+        message: "Tu cuenta se encuentra desactivada.",
+      };
+    }
+
+    setUsuarioActual(usuario);
+    setItem(KEYS.usuarioActual, usuario);
+
+    return {
+      success: true,
+      user: usuario,
+    };
+  };
+
+  const registro = (datos) => {
+    const usuarios = getItem(KEYS.usuarios) || [];
+
+    const emailExiste = usuarios.some(
+      (usuario) =>
+        usuario.email.toLowerCase() === datos.email.toLowerCase()
+    );
+
+    if (emailExiste) {
+      return {
+        success: false,
+        message: "Ya existe una cuenta registrada con ese email.",
+      };
+    }
+
+    const nuevoUsuario = {
+      id: crypto.randomUUID(),
+      nombre: datos.nombre,
+      email: datos.email,
+      password: datos.password,
+      rol: "premium",
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        datos.nombre
+      )}&background=059669&color=fff`,
+      fechaRegistro: new Date().toISOString(),
+      activo: true,
+      fechaDesactivacion: null,
+    };
+
+    const usuariosActualizados = [...usuarios, nuevoUsuario];
+
+    setItem(KEYS.usuarios, usuariosActualizados);
+    ensurePlaylistsAleatoriasUsuario(nuevoUsuario.id, 3);
+
+    return {
+      success: true,
+      user: nuevoUsuario,
+    };
+  };
+
+  const actualizarPerfil = (datos) => {
+    if (!usuarioActual) {
+      return {
+        success: false,
+        message: "No hay un usuario con sesión iniciada.",
+      };
+    }
+
+    const usuarios = getItem(KEYS.usuarios) || [];
+
+    const usuarioActualizado = {
+      ...usuarioActual,
+      ...(datos.nombre !== undefined && {
+        nombre: datos.nombre,
+      }),
+      ...(datos.avatar !== undefined && {
+        avatar: datos.avatar,
+      }),
+    };
+
+    const usuariosActualizados = usuarios.map((usuario) =>
+      usuario.id === usuarioActual.id ? usuarioActualizado : usuario
+    );
+
+    setItem(KEYS.usuarios, usuariosActualizados);
+    setItem(KEYS.usuarioActual, usuarioActualizado);
+    setUsuarioActual(usuarioActualizado);
+
+    return {
+      success: true,
+      user: usuarioActualizado,
+    };
+  };
+
+  const logout = () => {
+    setUsuarioActual(null);
+    removeItem(KEYS.usuarioActual);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        usuarioActual,
+        login,
+        registro,
+        actualizarPerfil,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }

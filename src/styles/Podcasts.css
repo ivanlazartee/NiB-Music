@@ -1,0 +1,130 @@
+.podcasts {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.podcasts__header h1 {
+  margin: 8px 0;
+  color: var(--color-text);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.podcasts__eyebrow {
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.podcasts__header p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.podcasts__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.podcasts__section-header h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.2rem;
+}
+
+.podcasts__more {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.podcasts__more:hover {
+  color: var(--color-primary);
+}
+
+.podcasts__episodes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.podcasts__episode {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.podcasts__episode:hover .podcasts__episode-cover {
+  filter: brightness(1.06);
+}
+
+.podcasts__episode-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  aspect-ratio: 1;
+  margin-bottom: 10px;
+
+  color: #fff;
+  border-radius: 12px;
+}
+
+.podcasts__episode-meta h3 {
+  margin: 0 0 6px;
+  color: var(--color-text);
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.podcasts__episode-meta p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.podcasts__dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-bottom: 8px;
+  background: #3d91f4;
+  border-radius: 50%;
+}
+
+.podcasts__categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.podcasts__category {
+  display: flex;
+  align-items: flex-start;
+
+  min-height: 110px;
+  padding: 18px;
+
+  color: #fff;
+  text-align: left;
+  text-decoration: none;
+
+  border: none;
+  border-radius: 14px;
+
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.podcasts__category:hover {
+  filter: brightness(1.06);
+}
