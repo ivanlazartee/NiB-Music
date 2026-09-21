@@ -16,7 +16,6 @@ function resolverIdsCola(usuarioId) {
     return porUsuario[usuarioId]
   }
 
-  // Migración de la cola global anterior
   const legacy = getItem(KEYS.cola)
   return Array.isArray(legacy) ? legacy : []
 }
@@ -91,20 +90,96 @@ export function PlayerProvider({ children }) {
   const [cancionActual, setCancionActual] = useState(null)
   const [reproduciendo, setReproduciendo] = useState(false)
   const [cola, setCola] = useState(() => leerColaGuardada(usuarioId))
+  const [progreso, setProgreso] = useState(0)
+  const [duracion, setDuracion] = useState(0)
+  const [volumen, setVolumen] = useState(0.8)
+  const [aleatorio, setAleatorio] = useState(false)
+  const [repetir, setRepetir] = useState(false)
   const audioRef = useRef(new Audio())
+  const aleatorioRef = useRef(aleatorio)
+  const repetirRef = useRef(repetir)
+  const colaRef = useRef(cola)
+  const cancionRef = useRef(cancionActual)
+
+  aleatorioRef.current = aleatorio
+  repetirRef.current = repetir
+  colaRef.current = cola
+  cancionRef.current = cancionActual
 
   useEffect(() => {
     setCola(leerColaGuardada(usuarioId))
   }, [usuarioId])
+
+  useEffect(() => {
+    const audio = audioRef.current
+    audio.volume = volumen
+
+    const onTimeUpdate = () => setProgreso(audio.currentTime || 0)
+    const onLoaded = () => setDuracion(audio.duration || 0)
+    const onEnded = () => {
+      if (repetirRef.current) {
+        audio.currentTime = 0
+        audio.play()
+        setReproduciendo(true)
+        return
+      }
+
+      const actual = cancionRef.current
+      const lista = colaRef.current || []
+      const indice = lista.findIndex((c) => c.id === actual?.id)
+
+      if (aleatorioRef.current && lista.length > 1) {
+        let nextIndex = Math.floor(Math.random() * lista.length)
+        if (nextIndex === indice) {
+          nextIndex = (nextIndex + 1) % lista.length
+        }
+        const sig = lista[nextIndex]
+        if (sig) {
+          audio.src = sig.archivo
+          audio.play()
+          setCancionActual(sig)
+          setReproduciendo(true)
+          setProgreso(0)
+        }
+        return
+      }
+
+      const sig = lista[indice + 1]
+      if (sig) {
+        audio.src = sig.archivo
+        audio.play()
+        setCancionActual(sig)
+        setReproduciendo(true)
+        setProgreso(0)
+      } else {
+        setReproduciendo(false)
+      }
+    }
+
+    audio.addEventListener('timeupdate', onTimeUpdate)
+    audio.addEventListener('loadedmetadata', onLoaded)
+    audio.addEventListener('durationchange', onLoaded)
+    audio.addEventListener('ended', onEnded)
+
+    return () => {
+      audio.removeEventListener('timeupdate', onTimeUpdate)
+      audio.removeEventListener('loadedmetadata', onLoaded)
+      audio.removeEventListener('durationchange', onLoaded)
+      audio.removeEventListener('ended', onEnded)
+    }
+  }, [])
 
   function reproducir(cancion) {
     audioRef.current.src = cancion.archivo
     audioRef.current.play()
     setCancionActual(cancion)
     setReproduciendo(true)
+    setProgreso(0)
   }
 
   function togglePlay() {
+    if (!cancionActual) return
+
     if (reproduciendo) {
       audioRef.current.pause()
       setReproduciendo(false)
@@ -115,15 +190,52 @@ export function PlayerProvider({ children }) {
   }
 
   function siguiente() {
-    const indice = cola.findIndex(c => c.id === cancionActual?.id)
-    const sig = cola[indice + 1]
+    const lista = cola
+    if (!lista.length) return
+
+    const indice = lista.findIndex((c) => c.id === cancionActual?.id)
+
+    if (aleatorio && lista.length > 1) {
+      let nextIndex = Math.floor(Math.random() * lista.length)
+      if (nextIndex === indice) nextIndex = (nextIndex + 1) % lista.length
+      reproducir(lista[nextIndex])
+      return
+    }
+
+    const sig = lista[indice + 1]
     if (sig) reproducir(sig)
   }
 
   function anterior() {
-    const indice = cola.findIndex(c => c.id === cancionActual?.id)
+    if (progreso > 3) {
+      audioRef.current.currentTime = 0
+      setProgreso(0)
+      return
+    }
+
+    const indice = cola.findIndex((c) => c.id === cancionActual?.id)
     const ant = cola[indice - 1]
     if (ant) reproducir(ant)
+  }
+
+  function buscarEnCancion(segundos) {
+    if (!Number.isFinite(segundos)) return
+    audioRef.current.currentTime = segundos
+    setProgreso(segundos)
+  }
+
+  function cambiarVolumen(valor) {
+    const siguienteVolumen = Math.min(1, Math.max(0, Number(valor)))
+    audioRef.current.volume = siguienteVolumen
+    setVolumen(siguienteVolumen)
+  }
+
+  function toggleAleatorio() {
+    setAleatorio((prev) => !prev)
+  }
+
+  function toggleRepetir() {
+    setRepetir((prev) => !prev)
   }
 
   function cargarCola(canciones, opciones = {}) {
@@ -177,10 +289,19 @@ export function PlayerProvider({ children }) {
         cancionActual,
         reproduciendo,
         cola,
+        progreso,
+        duracion,
+        volumen,
+        aleatorio,
+        repetir,
         reproducir,
         togglePlay,
         siguiente,
         anterior,
+        buscarEnCancion,
+        cambiarVolumen,
+        toggleAleatorio,
+        toggleRepetir,
         cargarCola,
         reordenarCola,
       }}

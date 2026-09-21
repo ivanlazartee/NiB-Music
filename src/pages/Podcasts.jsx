@@ -55,14 +55,18 @@ function Podcasts() {
       <section className="podcasts__section">
         <div className="podcasts__section-header">
           <h2>Nuevos episodios</h2>
-          <Link to="/catalogo" className="podcasts__more">
+          <Link to="/podcasts/mostrar-todo" className="podcasts__more">
             Mostrar todo
           </Link>
         </div>
 
         <div className="podcasts__episodes">
           {episodios.map((episodio) => (
-            <article key={episodio.id} className="podcasts__episode">
+            <Link
+              key={episodio.id}
+              to={`/podcasts/episodio/${episodio.id}`}
+              className="podcasts__episode"
+            >
               <div
                 className="podcasts__episode-cover"
                 style={{ background: episodio.color }}
@@ -77,7 +81,7 @@ function Podcasts() {
                   {episodio.fecha} · {episodio.duracion}
                 </p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
@@ -89,14 +93,14 @@ function Podcasts() {
 
         <div className="podcasts__categories">
           {categorias.map((categoria) => (
-            <button
+            <Link
               key={categoria.id}
-              type="button"
+              to={`/podcasts/categoria/${categoria.id}`}
               className="podcasts__category"
               style={{ background: categoria.color }}
             >
               {categoria.titulo}
-            </button>
+            </Link>
           ))}
         </div>
       </section>
