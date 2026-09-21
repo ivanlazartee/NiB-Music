@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Catalogo from "./pages/catalogo";
+import Catalogo from "./pages/Catalogo";
 import DetalleCancion from "./pages/DetalleCancion";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
