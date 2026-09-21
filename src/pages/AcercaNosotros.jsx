@@ -5,8 +5,19 @@ import "../styles/AcercaNosotros.css";
 
 const integrantes = [
   {
+    id: "nico",
+    nombre: "Eduardo Nicolas Brizuela",
+    rol: "Desarrollador de autenticacion",
+    responsabilidades: "Autenticación · Administración de usuarios",
+    frase:
+      "Creando una experiencia segura y organizada para cada usuario de NiB Music.",
+    imagen: "/equipo/nico.png",
+    iniciales: "N",
+    Icono: ShieldCheck,
+  },
+  {
     id: "ivan",
-    nombre: "Iván",
+    nombre: "Iván Lazarte",
     rol: "Tech Lead",
     responsabilidades: "Usuario Premium · Reproductor · Deploy",
     frase:
@@ -16,25 +27,14 @@ const integrantes = [
     Icono: Code2,
   },
   {
-    id: "nico",
-    nombre: "Nico",
-    rol: "Desarrollador de autenticación",
-    responsabilidades: "Autenticación · Administración de usuarios",
-    frase:
-      "Creando una experiencia segura y organizada para cada usuario de NiB Music.",
-    imagen: "/equipo/nico.png",
-    iniciales: "N",
-    Icono: ShieldCheck,
-  },
-  {
     id: "fede",
-    nombre: "Fede",
+    nombre: "Benjamín Federico Méndez",
     rol: "Design Lead & Scrum Master",
     responsabilidades: "Diseño · Experiencia del visitante · CRUD de canciones",
     frase:
-      "Transformando ideas en una experiencia visual donde cada canción encuentra su lugar.",
+      "Transformando ideas en una experiencia visual donde cada canción encuentra su lugar, por y para nosotros y la musica.",
     imagen: "/equipo/fede.png",
-    iniciales: "F",
+    iniciales: "B",
     Icono: Palette,
   },
 ];
@@ -47,11 +47,11 @@ function TarjetaIntegrante({ integrante }) {
   return (
     <article className="nosotros-card">
       <div className="nosotros-card__avatar">
-        <span className="nosotros-card__iniciales">
-          {integrante.iniciales}
-        </span>
-
-        {!errorImagen && (
+        {errorImagen ? (
+          <span className="nosotros-card__iniciales">
+            {integrante.iniciales}
+          </span>
+        ) : (
           <img
             src={integrante.imagen}
             alt={`Fotografía de ${integrante.nombre}`}
@@ -61,12 +61,37 @@ function TarjetaIntegrante({ integrante }) {
         )}
       </div>
 
-      <div className="nosotros-card__contenido">
+      <span
+        style={{
+          display: "block",
+          marginTop: "-12px",
+          marginBottom: "20px",
+          color: "#ffdf2d",
+          fontSize: "22px",
+          fontWeight: "800",
+          letterSpacing: "2px",
+          textAlign: "center",
+        }}
+      >
+        {integrante.iniciales}
+      </span>
+
+      <div
+        className="nosotros-card__contenido"
+        style={{ height: "auto" }}
+      >
         <div className="nosotros-card__icono">
           <Icono size={22} />
         </div>
 
-        <h2 className="nosotros-card__nombre">
+        <h2
+          className="nosotros-card__nombre"
+          style={{
+            fontSize: "clamp(18px, 1.7vw, 25px)",
+            overflowWrap: "anywhere",
+            lineHeight: "1.3",
+          }}
+        >
           {integrante.nombre}
         </h2>
 
@@ -130,7 +155,6 @@ function AcercaNosotros() {
           </div>
 
           <span className="nosotros__contador">
-            03 integrantes
           </span>
         </div>
 
