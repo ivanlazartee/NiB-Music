@@ -9,6 +9,7 @@ import GuestSearchPanel from "../components/GuestSearchPanel";
 import { useAuth } from "../context/AuthContext";
 import { usePlayer } from "../context/PlayerContext";
 import { getItem, KEYS } from "../utils/localStorage";
+import { ordenarPlaylistsPorUsuario } from "../utils/playlists";
 
 const MainLayout = () => {
   const [search, setSearch] = useState("");
@@ -24,9 +25,11 @@ const MainLayout = () => {
   const puedeReproducir = mostrarPlayer;
 
   const canciones = getItem(KEYS.canciones) || [];
-  const cancionesFallback = canciones
-    .filter((cancion) => cancion.activo)
-    .slice(0, 6);
+  const cancionesFallback = ordenarPlaylistsPorUsuario(
+    canciones.filter((cancion) => cancion.activo),
+    usuarioActual?.id,
+    "cola-fallback"
+  ).slice(0, 8);
   const cancionesCola = cola.length > 0 ? cola : cancionesFallback;
 
   const focusSearch = () => {
@@ -40,7 +43,11 @@ const MainLayout = () => {
     }
 
     if (cola.length === 0) {
-      cargarCola(cancionesFallback);
+      cargarCola(cancionesFallback, {
+        usuarioId: usuarioActual?.id,
+        cancionInicialId: cancion.id,
+        ordenar: false,
+      });
     }
 
     reproducir(cancion);
@@ -51,7 +58,10 @@ const MainLayout = () => {
       const reordenada = [...cancionesFallback];
       const [movida] = reordenada.splice(desdeIndex, 1);
       reordenada.splice(hastaIndex, 0, movida);
-      cargarCola(reordenada);
+      cargarCola(reordenada, {
+        usuarioId: usuarioActual?.id,
+        ordenar: false,
+      });
       return;
     }
 

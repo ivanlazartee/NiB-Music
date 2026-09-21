@@ -187,7 +187,11 @@ function Inicio() {
 
     if (temas.length === 0) return;
 
-    cargarCola(temas);
+    cargarCola(temas, {
+      usuarioId: usuarioActual.id,
+      playlistId: playlist.id,
+      cancionInicialId: temas[0]?.id,
+    });
     reproducir(temas[0]);
   }
 

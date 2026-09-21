@@ -4,6 +4,7 @@ export const KEYS = {
   playlists: "playlists",
   usuarioActual: "usuarioActual",
   cola: "cola",
+  colaPorUsuario: "colaPorUsuario",
 };
 
 export function getItem(key) {

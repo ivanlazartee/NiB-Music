@@ -68,7 +68,10 @@ function Catalogo() {
       return;
     }
 
-    cargarCola(cancionesFiltradas);
+    cargarCola(cancionesFiltradas, {
+      usuarioId: usuarioActual?.id,
+      cancionInicialId: cancion.id,
+    });
     reproducir(cancion);
   }
 

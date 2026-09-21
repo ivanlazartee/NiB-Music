@@ -46,7 +46,10 @@ function DetalleCancion() {
       return;
     }
 
-    cargarCola(cancionesActivas);
+    cargarCola(cancionesActivas, {
+      usuarioId: usuarioActual?.id,
+      cancionInicialId: cancion.id,
+    });
     reproducir(cancion);
   };
 

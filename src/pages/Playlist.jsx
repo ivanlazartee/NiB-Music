@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Clock3,
@@ -33,7 +33,7 @@ function Playlist() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { usuarioActual } = useAuth();
-  const { reproducir, cargarCola } = usePlayer();
+  const { reproducir, cargarCola, cancionActual } = usePlayer();
 
   const [playlists, setPlaylists] = useState(
     () => getItem(KEYS.playlists) || []
@@ -79,6 +79,18 @@ function Playlist() {
         )
         .filter(Boolean)
     : [];
+
+  useEffect(() => {
+    if (!usuarioId || !playlistSeleccionada || cancionesDePlaylist.length === 0) {
+      return;
+    }
+
+    cargarCola(cancionesDePlaylist, {
+      usuarioId,
+      playlistId: playlistSeleccionada.id,
+      cancionInicialId: cancionActual?.id,
+    });
+  }, [usuarioId, playlistSeleccionada?.id]);
 
   const cancionesDisponibles = playlistSeleccionada
     ? cancionesActivas.filter(
@@ -201,8 +213,15 @@ function Playlist() {
   function reproducirPlaylist(desdeIndex = 0) {
     if (!puedeReproducir || cancionesDePlaylist.length === 0) return;
 
-    cargarCola(cancionesDePlaylist);
-    reproducir(cancionesDePlaylist[desdeIndex] || cancionesDePlaylist[0]);
+    const inicial =
+      cancionesDePlaylist[desdeIndex] || cancionesDePlaylist[0];
+
+    cargarCola(cancionesDePlaylist, {
+      usuarioId,
+      playlistId: playlistSeleccionada.id,
+      cancionInicialId: inicial?.id,
+    });
+    reproducir(inicial);
   }
 
   if (!usuarioActual) {
