@@ -18,23 +18,41 @@ export function isCatalogoPlaylist(playlist) {
   return Boolean(playlist?.esCatalogo);
 }
 
-function pickCancionesIds(cancionesIds, offset, cantidad = 5) {
-  if (cancionesIds.length === 0) return [];
+function coincidePlaylist(cancion, seed) {
+  const artista = (cancion.artista || "").toLowerCase();
+  const genero = (cancion.genero || "").toLowerCase();
+  const tags = (cancion.tags || []).map((t) => String(t).toLowerCase());
 
-  const elegidas = [];
+  const artistas = seed.artistas || [];
+  const generos = seed.generos || [];
 
-  for (let i = 0; i < cantidad; i += 1) {
-    elegidas.push(cancionesIds[(offset + i) % cancionesIds.length]);
-  }
+  const matchArtista = artistas.some((nombre) => {
+    const n = nombre.toLowerCase();
+    return artista.includes(n) || tags.some((t) => n.includes(t) || t.includes(n.split(" ")[0]));
+  });
 
-  return [...new Set(elegidas)];
+  const matchGenero = generos.some((g) => genero === g.toLowerCase());
+
+  return matchArtista || matchGenero;
+}
+
+function pickCancionesParaPlaylist(seed, canciones, cantidad = 10) {
+  const prioritarias = canciones.filter((cancion) =>
+    coincidePlaylist(cancion, seed)
+  );
+
+  const resto = canciones.filter(
+    (cancion) => !prioritarias.some((p) => p.id === cancion.id)
+  );
+
+  const elegidas = [...prioritarias, ...resto].slice(0, cantidad);
+  return elegidas.map((cancion) => cancion.id);
 }
 
 export function ensureCatalogoPlaylists() {
   const canciones = (getItem(KEYS.canciones) || []).filter(
     (cancion) => cancion.activo
   );
-  const cancionesIds = canciones.map((cancion) => cancion.id);
   const existentes = getItem(KEYS.playlists) || [];
   const deUsuario = existentes.filter((playlist) => !isCatalogoPlaylist(playlist));
 
@@ -48,7 +66,11 @@ export function ensureCatalogoPlaylists() {
     seccion: seed.seccion,
     color: seed.color,
     creador: seed.creador,
-    cancionesIds: pickCancionesIds(cancionesIds, index * 2, 5),
+    cancionesIds: pickCancionesParaPlaylist(
+      seed,
+      canciones,
+      8 + (index % 4)
+    ),
   }));
 
   const actualizadas = [...catalogo, ...deUsuario];

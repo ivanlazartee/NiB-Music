@@ -1,6 +1,5 @@
 /** Playlists de catálogo para el Inicio (IDs fijos). */
 export const playlistsCatalogoSeed = [
-  // Vuelve a tu música
   {
     id: "catalog-forever-tu-gantel",
     nombre: "FOREVER TU GANTEL",
@@ -8,6 +7,8 @@ export const playlistsCatalogoSeed = [
     seccion: "vuelve",
     color: "#3d5a80",
     creador: "NiB Music",
+    artistas: ["Omar Courtz", "Bryant Myers", "Arcangel", "Myke Towers", "Jhayco"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-ferxxo",
@@ -16,6 +17,8 @@ export const playlistsCatalogoSeed = [
     seccion: "vuelve",
     color: "#a8e000",
     creador: "NiB Music",
+    artistas: ["Feid", "Blessd", "Yandel", "Mora"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-las-mas-bonitas",
@@ -24,6 +27,8 @@ export const playlistsCatalogoSeed = [
     seccion: "vuelve",
     color: "#c1121f",
     creador: "NiB Music",
+    artistas: ["Anuel AA", "Natti Natasha", "Becky G"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-karol-g",
@@ -32,6 +37,8 @@ export const playlistsCatalogoSeed = [
     seccion: "vuelve",
     color: "#ff4d6d",
     creador: "NiB Music",
+    artistas: ["KAROL G", "Karol G"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-exitos-argentina",
@@ -40,6 +47,8 @@ export const playlistsCatalogoSeed = [
     seccion: "vuelve",
     color: "#74c69d",
     creador: "NiB Music",
+    artistas: ["DUKI", "Duki", "Maria Becerra", "LIT killah", "Nicki Nicole", "TINI", "Bizarrap", "Milo j"],
+    generos: ["Trap", "Pop Latino"],
   },
   {
     id: "catalog-noche-urbana",
@@ -48,9 +57,9 @@ export const playlistsCatalogoSeed = [
     seccion: "vuelve",
     color: "#5a189a",
     creador: "NiB Music",
+    artistas: ["Rauw Alejandro", "Ozuna", "Sech", "Lunay", "Jay Wheeler", "Justin Quiles"],
+    generos: ["Reggaeton"],
   },
-
-  // Hecho para vos
   {
     id: "catalog-mix-diario-1",
     nombre: "Mix diario 1",
@@ -58,6 +67,8 @@ export const playlistsCatalogoSeed = [
     seccion: "hecho",
     color: "#4361ee",
     creador: "NiB Music",
+    artistas: ["Bad Bunny", "Feid", "KAROL G", "Rauw Alejandro"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-mix-diario-2",
@@ -66,6 +77,8 @@ export const playlistsCatalogoSeed = [
     seccion: "hecho",
     color: "#f72585",
     creador: "NiB Music",
+    artistas: ["DUKI", "Quevedo", "Mora", "Cris MJ"],
+    generos: ["Trap", "Reggaeton"],
   },
   {
     id: "catalog-mix-diario-3",
@@ -74,6 +87,8 @@ export const playlistsCatalogoSeed = [
     seccion: "hecho",
     color: "#4cc9f0",
     creador: "NiB Music",
+    artistas: ["J Balvin", "Maluma", "Myke Towers", "Eladio Carrion"],
+    generos: ["Reggaeton", "Trap"],
   },
   {
     id: "catalog-on-repeat",
@@ -82,6 +97,8 @@ export const playlistsCatalogoSeed = [
     seccion: "hecho",
     color: "#ffd60a",
     creador: "NiB Music",
+    artistas: ["Manuel Turizo", "Shakira", "ROSALÍA", "Grupo Frontera", "Peso Pluma"],
+    generos: ["Pop Latino", "Latino"],
   },
   {
     id: "catalog-radar",
@@ -90,6 +107,8 @@ export const playlistsCatalogoSeed = [
     seccion: "hecho",
     color: "#2ec4b6",
     creador: "NiB Music",
+    artistas: ["Feid", "Bad Bunny", "Quevedo", "Saiko", "Milo j"],
+    generos: ["Reggaeton", "Trap"],
   },
   {
     id: "catalog-time-capsule",
@@ -98,9 +117,9 @@ export const playlistsCatalogoSeed = [
     seccion: "hecho",
     color: "#e76f51",
     creador: "NiB Music",
+    artistas: ["Daddy Yankee", "Don Omar", "Wisin", "Nicky Jam", "Ricky Martin", "Enrique Iglesias"],
+    generos: ["Reggaeton", "Pop Latino"],
   },
-
-  // Recientes (Tus me gusta se suma en Inicio desde el usuario)
   {
     id: "catalog-por-si-manana",
     nombre: "POR SI MAÑANA NO ESTOY",
@@ -108,6 +127,8 @@ export const playlistsCatalogoSeed = [
     seccion: "recientes",
     color: "#6c757d",
     creador: "NiB Music",
+    artistas: ["Bad Bunny", "Feid", "Mora"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-radio-zizi",
@@ -116,6 +137,8 @@ export const playlistsCatalogoSeed = [
     seccion: "recientes",
     color: "#adb5bd",
     creador: "NiB Music",
+    artistas: ["Rauw Alejandro", "Jhayco", "Arcangel"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-5202",
@@ -124,6 +147,8 @@ export const playlistsCatalogoSeed = [
     seccion: "recientes",
     color: "#212529",
     creador: "NiB Music",
+    artistas: ["Tainy", "Bad Bunny", "J Balvin"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-radio-vlone",
@@ -132,6 +157,8 @@ export const playlistsCatalogoSeed = [
     seccion: "recientes",
     color: "#343a40",
     creador: "NiB Music",
+    artistas: ["Eladio Carrion", "DUKI", "Myke Towers"],
+    generos: ["Trap", "Reggaeton"],
   },
   {
     id: "catalog-duki-reguetonero",
@@ -140,6 +167,8 @@ export const playlistsCatalogoSeed = [
     seccion: "recientes",
     color: "#7b2cbf",
     creador: "NiB Music",
+    artistas: ["DUKI", "Duki", "Bizarrap", "LIT killah"],
+    generos: ["Trap"],
   },
   {
     id: "catalog-duki-old",
@@ -148,9 +177,9 @@ export const playlistsCatalogoSeed = [
     seccion: "recientes",
     color: "#9d4edd",
     creador: "NiB Music",
+    artistas: ["DUKI", "Duki"],
+    generos: ["Trap"],
   },
-
-  // Similares a Bad Bunny
   {
     id: "catalog-this-is-bad-bunny",
     nombre: "This Is Bad Bunny",
@@ -158,6 +187,8 @@ export const playlistsCatalogoSeed = [
     seccion: "similares",
     color: "#e9c46a",
     creador: "NiB Music",
+    artistas: ["Bad Bunny"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-radio-bad-bunny",
@@ -166,6 +197,8 @@ export const playlistsCatalogoSeed = [
     seccion: "similares",
     color: "#f4a261",
     creador: "NiB Music",
+    artistas: ["Bad Bunny", "Feid", "Rauw Alejandro", "J Balvin"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-un-verano",
@@ -174,6 +207,8 @@ export const playlistsCatalogoSeed = [
     seccion: "similares",
     color: "#2a9d8f",
     creador: "NiB Music",
+    artistas: ["Bad Bunny"],
+    generos: ["Reggaeton"],
   },
   {
     id: "catalog-yhlqmdlg",
@@ -182,6 +217,8 @@ export const playlistsCatalogoSeed = [
     seccion: "similares",
     color: "#e76f51",
     creador: "NiB Music",
+    artistas: ["Bad Bunny", "Jhayco", "Anuel AA"],
+    generos: ["Reggaeton", "Trap"],
   },
   {
     id: "catalog-latino-hits",
@@ -190,6 +227,8 @@ export const playlistsCatalogoSeed = [
     seccion: "similares",
     color: "#264653",
     creador: "NiB Music",
+    artistas: ["Shakira", "Manuel Turizo", "Maluma", "Grupo Frontera", "Peso Pluma", "ROSALÍA"],
+    generos: ["Pop Latino", "Latino"],
   },
   {
     id: "catalog-trap-latino",
@@ -198,6 +237,8 @@ export const playlistsCatalogoSeed = [
     seccion: "similares",
     color: "#1d3557",
     creador: "NiB Music",
+    artistas: ["DUKI", "Quevedo", "Eladio Carrion", "Bizarrap", "Milo j"],
+    generos: ["Trap"],
   },
   {
     id: "catalog-perreo-intenso",
@@ -206,5 +247,7 @@ export const playlistsCatalogoSeed = [
     seccion: "similares",
     color: "#d62828",
     creador: "NiB Music",
+    artistas: ["Daddy Yankee", "Farruko", "Don Omar", "Nicky Jam", "Nio Garcia", "Lenny Tavarez"],
+    generos: ["Reggaeton"],
   },
 ];
