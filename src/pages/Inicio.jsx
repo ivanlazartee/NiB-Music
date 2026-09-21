@@ -1,7 +1,8 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useOutletContext } from "react-router-dom";
 
 import HeroBanner from "../components/HeroBanner";
 import QueuePanel from "../components/QueuePanel";
+import GuestSearchPanel from "../components/GuestSearchPanel";
 
 import { getItem, KEYS } from "../utils/localStorage";
 import { useAuth } from "../context/AuthContext";
@@ -11,9 +12,11 @@ import "../styles/InicioSections.css";
 
 function Inicio() {
   const navigate = useNavigate();
+  const { focusSearch } = useOutletContext() || {};
   const { usuarioActual } = useAuth();
   const { reproducir, cargarCola, cancionActual } = usePlayer();
 
+  const esInvitado = !usuarioActual;
   const puedeReproducir =
     usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
 
@@ -166,11 +169,15 @@ function Inicio() {
         </section>
       </div>
 
-      <QueuePanel
-        canciones={cancionesCola}
-        cancionActualId={cancionActual?.id}
-        onSelectCancion={handlePlayCancion}
-      />
+      {esInvitado ? (
+        <GuestSearchPanel onBuscar={() => focusSearch?.()} />
+      ) : (
+        <QueuePanel
+          canciones={cancionesCola}
+          cancionActualId={cancionActual?.id}
+          onSelectCancion={handlePlayCancion}
+        />
+      )}
     </section>
   );
 }

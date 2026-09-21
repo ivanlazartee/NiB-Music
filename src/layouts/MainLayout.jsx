@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
@@ -8,10 +8,19 @@ import { useAuth } from "../context/AuthContext";
 
 const MainLayout = () => {
   const [search, setSearch] = useState("");
+  const searchInputRef = useRef(null);
   const { usuarioActual } = useAuth();
 
   const mostrarPlayer =
     usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
+
+  const focusSearch = () => {
+    searchInputRef.current?.focus();
+    searchInputRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  };
 
   return (
     <div
@@ -25,6 +34,7 @@ const MainLayout = () => {
         <Navbar
           search={search}
           setSearch={setSearch}
+          searchInputRef={searchInputRef}
         />
 
         <main
@@ -34,7 +44,7 @@ const MainLayout = () => {
               : "app-layout__main"
           }
         >
-          <Outlet context={{ search }} />
+          <Outlet context={{ search, setSearch, focusSearch }} />
         </main>
       </div>
 

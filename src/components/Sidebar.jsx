@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   House,
   Search,
@@ -13,7 +13,12 @@ import logoNib from "../assets/img/Nib-Home.png";
 import { useAuth } from "../context/AuthContext";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const { usuarioActual, logout } = useAuth();
+
+  const handleObtenerPremium = () => {
+    navigate("/registro");
+  };
 
   return (
     <aside className="sidebar">
@@ -103,6 +108,7 @@ const Sidebar = () => {
           <button
             type="button"
             className="sidebar__premium-button"
+            onClick={handleObtenerPremium}
           >
             Obtener Premium
           </button>
