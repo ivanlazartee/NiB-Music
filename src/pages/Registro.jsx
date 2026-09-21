@@ -1,6 +1,6 @@
 import { useState } from "react";
 import registroBg from "../assets/img/registro-bg.png";
-import "./registro.css";
+import "../styles/registro.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import {

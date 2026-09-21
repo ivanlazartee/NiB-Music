@@ -1,4 +1,4 @@
-import "./Error404.css";
+import "../styles/Error404.css";
 import vinilo from "../assets/img/vinilo.png";
 import error404Bg from "../assets/img/error404-bg.png";
 import { Link } from "react-router-dom";
