@@ -104,8 +104,8 @@
 }
 
 .inicio-section__avatar {
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(255, 223, 45, 0.45);
