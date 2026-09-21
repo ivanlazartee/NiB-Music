@@ -71,7 +71,7 @@ function PlaylistCard({ playlist, onPlay }) {
   );
 }
 
-function PlaylistRow({ title, eyebrow, playlists, onPlay }) {
+function PlaylistRow({ title, eyebrow, playlists, onPlay, titleClassName = "" }) {
   if (!playlists.length) return null;
 
   return (
@@ -81,7 +81,9 @@ function PlaylistRow({ title, eyebrow, playlists, onPlay }) {
           {eyebrow && (
             <span className="inicio-section__eyebrow">{eyebrow}</span>
           )}
-          <h2 className="inicio-section__title">{title}</h2>
+          <h2 className={`inicio-section__title ${titleClassName}`.trim()}>
+            {title}
+          </h2>
         </div>
 
         <Link to="/playlist" className="inicio-section__more">
@@ -219,10 +221,18 @@ function Inicio() {
         <button type="button" className="inicio-chip inicio-chip--active">
           Todo
         </button>
-        <button type="button" className="inicio-chip">
+        <button
+          type="button"
+          className="inicio-chip"
+          onClick={() => navigate("/musica")}
+        >
           Música
         </button>
-        <button type="button" className="inicio-chip">
+        <button
+          type="button"
+          className="inicio-chip"
+          onClick={() => navigate("/podcasts-inicio")}
+        >
           Podcasts
         </button>
       </div>
@@ -266,7 +276,19 @@ function Inicio() {
 
       <PlaylistRow
         eyebrow="Hecho para"
-        title={usuarioActual.nombre}
+        title={
+          <img
+            src={
+              usuarioActual.avatar ||
+              `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                usuarioActual.nombre || "U"
+              )}&background=ffdf2d&color=111`
+            }
+            alt={usuarioActual.nombre}
+            className="inicio-section__avatar"
+          />
+        }
+        titleClassName="inicio-section__title--avatar"
         playlists={hecho}
         onPlay={reproducirPlaylist}
       />

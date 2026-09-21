@@ -29,7 +29,7 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
   };
 
   return (
-    <header className="navbar">
+    <header className={`navbar ${esInvitado ? "navbar--guest" : ""}`}>
       <div className="navbar__left">
         <Link
           to="/"
@@ -58,9 +58,11 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
           />
         </form>
 
-        <Link to="/catalogo" className="navbar__explore">
-          Explorar
-        </Link>
+        {!esInvitado && (
+          <Link to="/catalogo" className="navbar__explore">
+            Explorar
+          </Link>
+        )}
       </div>
 
       <div className="navbar__actions">
@@ -70,21 +72,13 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
               Premium
             </Link>
 
-            <a
-              href="#ayuda"
-              className="navbar__link"
-              onClick={(event) => event.preventDefault()}
-            >
+            <Link to="/ayuda" className="navbar__link">
               Ayuda
-            </a>
+            </Link>
 
-            <a
-              href="#descargar"
-              className="navbar__link"
-              onClick={(event) => event.preventDefault()}
-            >
+            <Link to="/descargar" className="navbar__link">
               Descargar
-            </a>
+            </Link>
 
             <span className="navbar__divider" aria-hidden="true" />
 
@@ -95,15 +89,26 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
         )}
 
         {esInvitado ? (
-          <Link to="/login" className="navbar__button">
+          <Link to="/login" className="navbar__button navbar__button--compact">
             Iniciar sesión
           </Link>
         ) : (
           <Link
             to={usuarioActual.rol === "admin" ? "/admin" : "/perfil"}
-            className="navbar__button"
+            className="navbar__avatar-link"
+            aria-label={`Perfil de ${usuarioActual.nombre}`}
+            title={usuarioActual.nombre}
           >
-            {usuarioActual.nombre}
+            <img
+              src={
+                usuarioActual.avatar ||
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                  usuarioActual.nombre || "U"
+                )}&background=ffdf2d&color=111`
+              }
+              alt=""
+              className="navbar__avatar"
+            />
           </Link>
         )}
       </div>
