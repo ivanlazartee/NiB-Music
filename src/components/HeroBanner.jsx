@@ -19,12 +19,12 @@ const HeroBanner = () => {
           Explorar catálogo
         </Link>
 
-        <a
-          href="#catalogo"
+        <Link
+          to="/ver-mas"
           className="hero-banner__secondary-button"
         >
           Ver más
-        </a>
+        </Link>
       </div>
     </section>
   );
