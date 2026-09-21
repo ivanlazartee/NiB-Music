@@ -4,6 +4,26 @@
   gap: 28px;
 }
 
+.inicio-home-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inicio-home-avatar {
+  display: none;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.inicio-home-avatar img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #282828;
+}
+
 .inicio-chips {
   display: flex;
   flex-wrap: wrap;
@@ -23,6 +43,7 @@
   font-size: 0.88rem;
   font-weight: 650;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .inicio-chip--active {
@@ -754,5 +775,114 @@
 @media (max-width: 480px) {
   .song-card-modal__actions {
     flex-direction: column;
+  }
+
+  .inicio-home {
+    gap: 20px;
+  }
+
+  .inicio-home-avatar {
+    display: block;
+  }
+
+  .inicio-chips {
+    flex: 1;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .inicio-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .inicio-chip {
+    min-height: 32px;
+    padding: 0 14px;
+    font-size: 0.82rem;
+  }
+
+  .inicio-chip--active {
+    color: #111;
+    background: #ffdf2d;
+  }
+
+  .inicio-quick-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .inicio-quick-card {
+    min-height: 52px;
+    border-radius: 6px;
+    background: #282828;
+    font-size: 0.78rem;
+  }
+
+  .inicio-quick-card__cover {
+    width: 52px;
+    height: 52px;
+  }
+
+  .inicio-quick-card span:last-child {
+    padding-right: 10px;
+    line-height: 1.2;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .inicio-section__header--stack {
+    align-items: center;
+  }
+
+  .inicio-section__more {
+    display: none;
+  }
+
+  .inicio-home .inicio-section__title {
+    font-size: 1.15rem;
+  }
+
+  .inicio-section__avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .inicio-pl-row {
+    grid-auto-columns: minmax(132px, 42vw);
+    gap: 12px;
+    margin: 0 -12px;
+    padding: 0 12px 4px;
+  }
+
+  .inicio-pl-card {
+    padding: 0;
+  }
+
+  .inicio-pl-card:hover {
+    background: transparent;
+  }
+
+  .inicio-pl-card__cover-wrap {
+    margin-bottom: 8px;
+  }
+
+  .inicio-pl-card__play {
+    display: none;
+  }
+
+  .inicio-pl-card__meta h3 {
+    font-size: 0.82rem;
+  }
+
+  .inicio-pl-card__meta p {
+    font-size: 0.72rem;
+  }
+
+  .inicio-home .inicio-footer {
+    display: none;
   }
 }

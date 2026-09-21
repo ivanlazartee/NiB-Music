@@ -2057,4 +2057,43 @@ img {
   .app-layout--with-player .app-shell__top {
     margin: 0 -6px;
   }
+
+  /* Perfiles logueados: shell tipo Spotify móvil */
+  .app-layout--logged {
+    padding: 0;
+  }
+
+  .app-layout--logged .app-shell,
+  .app-layout--logged.app-layout--with-player .app-shell {
+    margin: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: "center";
+    gap: 0;
+  }
+
+  .app-layout--logged .app-shell__top {
+    display: none;
+  }
+
+  .app-layout--logged .app-panel--center {
+    border-radius: 0;
+    background: #121212;
+  }
+
+  .app-layout--logged .app-panel__main {
+    padding: 12px 16px 24px;
+  }
+
+  .app-layout--logged.app-layout--with-player {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app-layout--logged:not(.app-layout--with-player) {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app-layout--logged.app-layout--with-player .app-panel__main {
+    padding-bottom: 88px;
+  }
 }

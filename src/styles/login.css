@@ -34,11 +34,15 @@
 .login-navbar {
     position: absolute;
     top: 20px;
-    right: 145px;
+    left: 50%;
+    right: auto;
 
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 40px;
+
+    transform: translateX(-50%);
 
     z-index: 100;
 }
@@ -339,9 +343,9 @@
 
     .login-navbar {
         top: 16px;
-        right: 24px;
-        left: 24px;
-        justify-content: flex-end;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
         gap: 20px;
     }
 
@@ -380,9 +384,12 @@
 
     .login-navbar {
         top: 12px;
-        right: 12px;
-        left: 12px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
         gap: 14px;
+        width: max-content;
+        max-width: calc(100% - 24px);
     }
 
     .login-navbar a {
