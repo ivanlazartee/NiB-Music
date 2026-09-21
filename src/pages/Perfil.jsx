@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { LogOut } from "lucide-react";
 import Swal from "sweetalert2";
 
 import { useAuth } from "../context/AuthContext";
 import "../styles/Perfil.css";
 
 function Perfil() {
-  const { usuarioActual, actualizarPerfil } = useAuth();
+  const { usuarioActual, actualizarPerfil, logout } = useAuth();
 
   const [nombre, setNombre] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -137,6 +138,15 @@ function Perfil() {
             Guardar cambios
           </button>
         </form>
+
+        <button
+          type="button"
+          className="perfil__logout"
+          onClick={logout}
+        >
+          <LogOut size={18} />
+          <span>Cerrar sesión</span>
+        </button>
       </section>
     </main>
   );

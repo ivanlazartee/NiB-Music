@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Crown, Heart, ListMusic, LogOut, Plus } from "lucide-react";
+import { Crown, Heart, ListMusic, Plus } from "lucide-react";
 
 import logoNib from "../assets/img/Nib-Home.png";
 import { useAuth } from "../context/AuthContext";
@@ -18,7 +18,7 @@ import GuestAuthModal from "./GuestAuthModal";
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { usuarioActual, logout } = useAuth();
+  const { usuarioActual } = useAuth();
   const [mostrarModalPlaylist, setMostrarModalPlaylist] = useState(false);
   const [playlists, setPlaylists] = useState([]);
   const playlistCardRef = useRef(null);
@@ -200,17 +200,6 @@ const Sidebar = () => {
               Obtener Premium
             </button>
           </div>
-        )}
-
-        {usuarioActual && (
-          <button
-            type="button"
-            className="sidebar__logout-button"
-            onClick={logout}
-          >
-            <LogOut size={18} />
-            <span>Cerrar sesión</span>
-          </button>
         )}
       </div>
 

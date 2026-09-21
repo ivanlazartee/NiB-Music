@@ -6,6 +6,10 @@
 }
 
 .admin-page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 30px;
 }
 
@@ -25,6 +29,40 @@
 .admin-page__header p {
   margin: 0;
   color: #aaa;
+}
+
+.admin-page__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+
+  min-height: 42px;
+  padding: 0 16px;
+
+  color: #f87171;
+  background: transparent;
+
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 999px;
+
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.admin-page__logout:hover {
+  color: #fecaca;
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.55);
 }
 
 .admin-page__nav {
@@ -65,6 +103,15 @@
 @media (max-width: 700px) {
   .admin-page {
     padding: 20px 14px;
+  }
+
+  .admin-page__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-page__logout {
+    width: 100%;
   }
 
   .admin-page__nav {
