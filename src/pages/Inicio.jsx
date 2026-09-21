@@ -2,11 +2,19 @@ import { Link } from "react-router-dom";
 
 import HeroBanner from "../components/HeroBanner";
 
+import { useAuth } from "../context/AuthContext";
 import { getItem, KEYS } from "../utils/localStorage";
+import {
+  getPlaylistsDeUsuario,
+  getPortadaPlaylist,
+} from "../utils/playlists";
 
 import "../styles/InicioSections.css";
 
 function Inicio() {
+  const { usuarioActual } = useAuth();
+  const esLogueado = Boolean(usuarioActual);
+
   const canciones = getItem(KEYS.canciones) || [];
 
   const cancionesActivas = canciones.filter(
@@ -14,6 +22,8 @@ function Inicio() {
   );
 
   const cancionesRecomendadas = cancionesActivas.slice(0, 6);
+
+  const playlistsMasEscuchadas = getPlaylistsDeUsuario(usuarioActual?.id);
 
   const artistasDestacados = [
     ...new Map(
@@ -42,7 +52,47 @@ function Inicio() {
 
   return (
     <section className="catalogo">
-      <HeroBanner />
+      {esLogueado ? (
+        <section className="inicio-section">
+          <div className="inicio-section__header">
+            <h2 className="inicio-section__title">
+              Tus playlists más escuchadas
+            </h2>
+
+            <Link to="/playlist" className="inicio-section__more">
+              Ver todo
+            </Link>
+          </div>
+
+          {playlistsMasEscuchadas.length === 0 ? (
+            <div className="inicio-playlists-empty">
+              <p>Todavía no tenés playlists. Creá una para verla acá.</p>
+              <Link to="/playlist" className="inicio-playlists-empty__button">
+                Ir a playlists
+              </Link>
+            </div>
+          ) : (
+            <div className="inicio-playlists-grid">
+              {playlistsMasEscuchadas.slice(0, 8).map((playlist) => (
+                <Link
+                  key={playlist.id}
+                  to="/playlist"
+                  className="inicio-playlist-chip"
+                >
+                  <img
+                    src={getPortadaPlaylist(playlist)}
+                    alt={playlist.nombre}
+                    className="inicio-playlist-chip__cover"
+                  />
+                  <span>{playlist.nombre}</span>
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+      ) : (
+        <HeroBanner />
+      )}
 
       <section className="inicio-section">
         <div className="inicio-section__header">

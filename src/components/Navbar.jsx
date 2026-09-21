@@ -57,6 +57,10 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
             onChange={handleSearchChange}
           />
         </form>
+
+        <Link to="/catalogo" className="navbar__explore">
+          Explorar
+        </Link>
       </div>
 
       <div className="navbar__actions">

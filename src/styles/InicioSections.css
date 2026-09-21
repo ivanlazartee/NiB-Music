@@ -39,6 +39,72 @@
   color: var(--color-primary);
 }
 
+.inicio-playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.inicio-playlist-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 64px;
+  padding-right: 12px;
+
+  overflow: hidden;
+
+  color: var(--color-text);
+
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.inicio-playlist-chip:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.inicio-playlist-chip__cover {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+
+  object-fit: cover;
+}
+
+.inicio-playlists-empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+
+  padding: 16px;
+
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.inicio-playlists-empty p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.inicio-playlists-empty__button {
+  padding: 8px 14px;
+
+  background: var(--color-primary);
+  color: #111;
+
+  border-radius: 999px;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .inicio-recomendados {
   display: grid;
 

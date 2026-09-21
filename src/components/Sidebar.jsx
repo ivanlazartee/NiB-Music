@@ -2,17 +2,18 @@ import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   House,
-  Search,
   Library,
-  Heart,
   ListMusic,
-  Crown,
   LogOut,
   Plus,
 } from "lucide-react";
 
 import logoNib from "../assets/img/Nib-Home.png";
 import { useAuth } from "../context/AuthContext";
+import {
+  getPlaylistsDeUsuario,
+  getPortadaPlaylist,
+} from "../utils/playlists";
 import GuestAuthModal from "./GuestAuthModal";
 
 const Sidebar = () => {
@@ -22,10 +23,7 @@ const Sidebar = () => {
   const playlistCardRef = useRef(null);
 
   const esInvitado = !usuarioActual;
-
-  const handleObtenerPremium = () => {
-    navigate("/registro");
-  };
+  const playlistsDelUsuario = getPlaylistsDeUsuario(usuarioActual?.id);
 
   return (
     <aside className="sidebar">
@@ -45,15 +43,17 @@ const Sidebar = () => {
           <span>Inicio</span>
         </NavLink>
 
-        <NavLink to="/catalogo" className="sidebar__link">
-          <Search size={19} />
-          <span>Explorar</span>
-        </NavLink>
-
         <NavLink to="/playlist" className="sidebar__link">
           <Library size={19} />
           <span>Biblioteca</span>
         </NavLink>
+
+        {usuarioActual?.rol === "admin" && (
+          <NavLink to="/admin" className="sidebar__link">
+            <ListMusic size={19} />
+            <span>Admin</span>
+          </NavLink>
+        )}
       </nav>
 
       {esInvitado ? (
@@ -101,72 +101,63 @@ const Sidebar = () => {
           </div>
         </div>
       ) : (
-        <div className="sidebar__section">
-          <p className="sidebar__section-title">
-            PLAYLISTS
-          </p>
+        <div className="sidebar__section sidebar__library">
+          <div className="sidebar__library-header">
+            <p className="sidebar__section-title sidebar__section-title--library">
+              Tu biblioteca
+            </p>
 
-          <NavLink to="/playlist" className="sidebar__playlist-link">
-            <Heart size={17} />
-            <span>Tus Me Gusta</span>
-          </NavLink>
+            <button
+              type="button"
+              className="sidebar__library-add"
+              aria-label="Crear playlist"
+              onClick={() => navigate("/playlist")}
+            >
+              <Plus size={18} />
+            </button>
+          </div>
 
-          <NavLink to="/playlist" className="sidebar__playlist-link">
-            <ListMusic size={17} />
-            <span>Éxitos 2026</span>
-          </NavLink>
+          {playlistsDelUsuario.length === 0 ? (
+            <div className="sidebar__library-card">
+              <h3>Todavía no tenés playlists</h3>
+              <p>Creá una desde Biblioteca para verla acá.</p>
+              <button
+                type="button"
+                className="sidebar__library-button"
+                onClick={() => navigate("/playlist")}
+              >
+                Ir a playlists
+              </button>
+            </div>
+          ) : (
+            <div className="sidebar__library-list">
+              {playlistsDelUsuario.map((playlist) => (
+                <button
+                  key={playlist.id}
+                  type="button"
+                  className="sidebar__library-item"
+                  onClick={() => navigate("/playlist")}
+                >
+                  <img
+                    src={getPortadaPlaylist(playlist)}
+                    alt={playlist.nombre}
+                    className="sidebar__library-item-cover"
+                  />
 
-          <NavLink to="/playlist" className="sidebar__playlist-link">
-            <ListMusic size={17} />
-            <span>Lo Fi Chill</span>
-          </NavLink>
-
-          <NavLink to="/playlist" className="sidebar__playlist-link">
-            <ListMusic size={17} />
-            <span>Rock Classics</span>
-          </NavLink>
-
-          <NavLink to="/playlist" className="sidebar__playlist-link">
-            <ListMusic size={17} />
-            <span>Gym Mode</span>
-          </NavLink>
-
-          <NavLink to="/playlist" className="sidebar__playlist-link">
-            <ListMusic size={17} />
-            <span>Para Programar</span>
-          </NavLink>
+                  <span className="sidebar__library-item-info">
+                    <strong>{playlist.nombre}</strong>
+                    <small>
+                      Playlist · {playlist.cancionesIds?.length || 0} temas
+                    </small>
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
       <div className="sidebar__bottom">
-        <div className="sidebar__premium-card">
-          <div className="sidebar__premium-glow" />
-
-          <div className="sidebar__premium-header">
-            <div className="sidebar__premium-icon">
-              <Crown size={18} />
-            </div>
-
-            <span className="sidebar__premium-title">
-              NiB Premium
-            </span>
-          </div>
-
-          <p className="sidebar__premium-text">
-            Música sin límites,
-            <br />
-            sin anuncios.
-          </p>
-
-          <button
-            type="button"
-            className="sidebar__premium-button"
-            onClick={handleObtenerPremium}
-          >
-            Obtener Premium
-          </button>
-        </div>
-
         {usuarioActual && (
           <button
             type="button"
