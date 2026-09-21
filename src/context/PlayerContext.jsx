@@ -45,6 +45,27 @@ export function PlayerProvider({ children }) {
     setCola(canciones)
   }
 
+  function reordenarCola(desdeIndex, hastaIndex) {
+    if (
+      desdeIndex === hastaIndex ||
+      desdeIndex < 0 ||
+      hastaIndex < 0
+    ) {
+      return
+    }
+
+    setCola((prev) => {
+      if (desdeIndex >= prev.length || hastaIndex >= prev.length) {
+        return prev
+      }
+
+      const siguienteCola = [...prev]
+      const [movida] = siguienteCola.splice(desdeIndex, 1)
+      siguienteCola.splice(hastaIndex, 0, movida)
+      return siguienteCola
+    })
+  }
+
   return (
     <PlayerContext.Provider
       value={{
@@ -56,6 +77,7 @@ export function PlayerProvider({ children }) {
         siguiente,
         anterior,
         cargarCola,
+        reordenarCola,
       }}
     >
       {children}

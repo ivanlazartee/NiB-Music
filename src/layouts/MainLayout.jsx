@@ -15,7 +15,8 @@ const MainLayout = () => {
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
   const { usuarioActual } = useAuth();
-  const { reproducir, cargarCola, cancionActual } = usePlayer();
+  const { reproducir, cargarCola, reordenarCola, cancionActual, cola } =
+    usePlayer();
 
   const esInvitado = !usuarioActual;
   const mostrarPlayer =
@@ -23,9 +24,10 @@ const MainLayout = () => {
   const puedeReproducir = mostrarPlayer;
 
   const canciones = getItem(KEYS.canciones) || [];
-  const cancionesCola = canciones
+  const cancionesFallback = canciones
     .filter((cancion) => cancion.activo)
     .slice(0, 6);
+  const cancionesCola = cola.length > 0 ? cola : cancionesFallback;
 
   const focusSearch = () => {
     searchInputRef.current?.focus();
@@ -37,8 +39,23 @@ const MainLayout = () => {
       return;
     }
 
-    cargarCola(cancionesCola);
+    if (cola.length === 0) {
+      cargarCola(cancionesFallback);
+    }
+
     reproducir(cancion);
+  };
+
+  const handleReordenar = (desdeIndex, hastaIndex) => {
+    if (cola.length === 0) {
+      const reordenada = [...cancionesFallback];
+      const [movida] = reordenada.splice(desdeIndex, 1);
+      reordenada.splice(hastaIndex, 0, movida);
+      cargarCola(reordenada);
+      return;
+    }
+
+    reordenarCola(desdeIndex, hastaIndex);
   };
 
   return (
@@ -74,6 +91,7 @@ const MainLayout = () => {
               canciones={cancionesCola}
               cancionActualId={cancionActual?.id}
               onSelectCancion={handlePlayCancion}
+              onReordenar={handleReordenar}
             />
           )}
         </aside>
