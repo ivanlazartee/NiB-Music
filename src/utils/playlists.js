@@ -268,9 +268,13 @@ export function ensureMeGustaPlaylist(usuarioId) {
 
   if (yaExiste) return playlists;
 
-  const todasIds = (getItem(KEYS.canciones) || [])
-    .filter((cancion) => cancion.activo)
-    .map((cancion) => cancion.id);
+  const todasIds = ordenarPlaylistsPorUsuario(
+    (getItem(KEYS.canciones) || [])
+      .filter((cancion) => cancion.activo)
+      .map((cancion) => cancion.id),
+    usuarioId,
+    "me-gusta"
+  );
 
   const meGusta = {
     id: crypto.randomUUID(),
@@ -454,9 +458,13 @@ export function llenarMeGustaConTodasCanciones(usuarioId) {
   if (!usuarioId) return getItem(KEYS.playlists) || [];
 
   const playlists = ensureMeGustaPlaylist(usuarioId);
-  const todasIds = (getItem(KEYS.canciones) || [])
-    .filter((cancion) => cancion.activo)
-    .map((cancion) => cancion.id);
+  const todasIds = ordenarPlaylistsPorUsuario(
+    (getItem(KEYS.canciones) || [])
+      .filter((cancion) => cancion.activo)
+      .map((cancion) => cancion.id),
+    usuarioId,
+    "me-gusta"
+  );
 
   if (todasIds.length === 0) return playlists;
 
