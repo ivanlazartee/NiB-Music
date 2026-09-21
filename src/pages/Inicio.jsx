@@ -219,10 +219,18 @@ function Inicio() {
         <button type="button" className="inicio-chip inicio-chip--active">
           Todo
         </button>
-        <button type="button" className="inicio-chip">
+        <button
+          type="button"
+          className="inicio-chip"
+          onClick={() => navigate("/musica")}
+        >
           Música
         </button>
-        <button type="button" className="inicio-chip">
+        <button
+          type="button"
+          className="inicio-chip"
+          onClick={() => navigate("/podcasts-inicio")}
+        >
           Podcasts
         </button>
       </div>
