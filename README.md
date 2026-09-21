@@ -1,16 +1,70 @@
-# React + Vite
+# NiB Music
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+App de streaming musical estilo Spotify, hecha en React + Vite para el módulo de Rolling Code.
 
-Currently, two official plugins are available:
+## Equipo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Integrante | Rol |
+| --- | --- |
+| Iván Lazarte | Tech Lead · Usuario Premium · Reproductor · Deploy |
+| Eduardo Nicolas Brizuela | Autenticación · Administración de usuarios |
+| Benjamín / Fede | (completar según el equipo) |
 
-## React Compiler
+## Roles de usuario
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Invitado:** navega el catálogo, ve biblioteca limitada y CTAs a registro/login.
+- **Premium:** reproduce música, playlists, me gusta, cola y reproductor.
+- **Admin:** panel de canciones y usuarios (`/admin`).
 
-## Expanding the Oxlint configuration
+## Tecnologías
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- React 19 + Vite 8
+- React Router
+- Tailwind CSS
+- Lucide React
+- SweetAlert2
+- LocalStorage (persistencia local)
+
+## Cómo correr el proyecto
+
+```bash
+pnpm install
+pnpm run dev
+```
+
+Build de producción:
+
+```bash
+pnpm run build
+pnpm run preview
+```
+
+## Deploy
+
+- **Netlify:** se subió el build de producción (`dist`) arrastrando la carpeta.
+- Sitio: _(pegar acá la URL de Netlify)_
+
+## Credenciales de prueba
+
+Usá los usuarios seed del proyecto (admins / premium según `seedData`).
+
+## Estructura principal
+
+```text
+src/
+  components/   # UI compartida (Navbar, Sidebar, PlayerBar, etc.)
+  context/      # AuthContext y PlayerContext
+  layouts/      # MainLayout
+  pages/        # Inicio, Playlist, Perfil, Admin, Login, etc.
+  styles/       # CSS por sección
+  utils/        # localStorage, playlists, seed
+```
+
+## Scripts
+
+| Comando | Descripción |
+| --- | --- |
+| `pnpm run dev` | Servidor de desarrollo |
+| `pnpm run build` | Build para producción |
+| `pnpm run preview` | Previsualiza el build |
+| `pnpm run lint` | Linter (Oxlint) |
