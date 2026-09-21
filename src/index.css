@@ -752,9 +752,9 @@ img {
   width: 100%;
   flex-shrink: 0;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr minmax(200px, 420px) 1fr;
   align-items: center;
-  justify-content: space-between;
 
   gap: 12px;
 
@@ -767,14 +767,23 @@ img {
   box-shadow: none;
 }
 
+.navbar--guest {
+  display: flex;
+  justify-content: space-between;
+  grid-template-columns: none;
+}
+
 .navbar__left {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 12px;
 
-  flex: 1;
   min-width: 0;
+}
+
+.navbar--guest .navbar__left {
+  flex: 1;
 }
 
 .navbar__home {
@@ -809,10 +818,15 @@ img {
 .navbar__search {
   position: relative;
 
-  flex: 1;
   width: 100%;
   max-width: 420px;
+  justify-self: center;
+}
+
+.navbar--guest .navbar__search {
+  flex: 1;
   min-width: 0;
+  justify-self: auto;
 }
 
 .navbar__search-icon {
