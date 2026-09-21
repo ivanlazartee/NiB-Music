@@ -170,13 +170,7 @@
   border-radius: 50%;
   background: #fff;
   border: 0;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.player-bar__range:hover::-webkit-slider-thumb,
-.player-bar__range:focus::-webkit-slider-thumb {
-  opacity: 1;
+  box-shadow: none;
 }
 
 .player-bar__range::-moz-range-thumb {
@@ -185,13 +179,7 @@
   border-radius: 50%;
   background: #fff;
   border: 0;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.player-bar__range:hover::-moz-range-thumb,
-.player-bar__range:focus::-moz-range-thumb {
-  opacity: 1;
+  box-shadow: none;
 }
 
 .player-bar__range:disabled {
