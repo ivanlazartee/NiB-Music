@@ -984,6 +984,32 @@ img {
     0 0 18px rgba(255, 223, 45, 0.24);
 }
 
+.navbar__avatar-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  line-height: 0;
+}
+
+.navbar__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 223, 45, 0.55);
+  background: #282828;
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.navbar__avatar-link:hover .navbar__avatar {
+  transform: scale(1.06);
+  border-color: var(--color-primary);
+}
+
 .catalogo {
   display: flex;
   flex-direction: column;

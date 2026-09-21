@@ -101,9 +101,20 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
         ) : (
           <Link
             to={usuarioActual.rol === "admin" ? "/admin" : "/perfil"}
-            className="navbar__button"
+            className="navbar__avatar-link"
+            aria-label={`Perfil de ${usuarioActual.nombre}`}
+            title={usuarioActual.nombre}
           >
-            {usuarioActual.nombre}
+            <img
+              src={
+                usuarioActual.avatar ||
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                  usuarioActual.nombre || "U"
+                )}&background=ffdf2d&color=111`
+              }
+              alt=""
+              className="navbar__avatar"
+            />
           </Link>
         )}
       </div>
