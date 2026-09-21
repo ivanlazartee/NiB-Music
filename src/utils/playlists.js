@@ -109,11 +109,15 @@ export function ensureMeGustaPlaylist(usuarioId) {
 
   if (yaExiste) return playlists;
 
+  const todasIds = (getItem(KEYS.canciones) || [])
+    .filter((cancion) => cancion.activo)
+    .map((cancion) => cancion.id);
+
   const meGusta = {
     id: crypto.randomUUID(),
     usuarioId,
     nombre: NOMBRE_ME_GUSTA,
-    cancionesIds: [],
+    cancionesIds: todasIds,
     esMeGusta: true,
   };
 
@@ -284,27 +288,37 @@ export function crearPlaylistUsuario(usuarioId, nombre) {
   return actualizarPlaylists(usuarioId, (playlists) => [...playlists, nueva]);
 }
 
-export function seedCancionAleatoriaSiVacia(usuarioId) {
+/** Llena "Tus me gusta" con todas las canciones activas del catálogo. */
+export function llenarMeGustaConTodasCanciones(usuarioId) {
   if (!usuarioId) return getItem(KEYS.playlists) || [];
 
   const playlists = ensureMeGustaPlaylist(usuarioId);
-  const meGusta = playlists.find(
-    (playlist) =>
-      playlist.usuarioId === usuarioId && isMeGustaPlaylist(playlist)
-  );
+  const todasIds = (getItem(KEYS.canciones) || [])
+    .filter((cancion) => cancion.activo)
+    .map((cancion) => cancion.id);
 
-  if (!meGusta || meGusta.cancionesIds.length > 0) {
-    return playlists;
-  }
+  if (todasIds.length === 0) return playlists;
 
-  const canciones = (getItem(KEYS.canciones) || []).filter(
-    (cancion) => cancion.activo
-  );
+  const actualizadas = playlists.map((playlist) => {
+    if (
+      playlist.usuarioId !== usuarioId ||
+      !isMeGustaPlaylist(playlist)
+    ) {
+      return playlist;
+    }
 
-  if (canciones.length === 0) return playlists;
+    return {
+      ...playlist,
+      cancionesIds: todasIds,
+    };
+  });
 
-  const aleatoria =
-    canciones[Math.floor(Math.random() * canciones.length)];
+  setItem(KEYS.playlists, actualizadas);
+  notifyPlaylistsUpdated();
+  return actualizadas;
+}
 
-  return agregarCancionAPlaylist(usuarioId, meGusta.id, aleatoria.id);
+/** @deprecated usar llenarMeGustaConTodasCanciones */
+export function seedCancionAleatoriaSiVacia(usuarioId) {
+  return llenarMeGustaConTodasCanciones(usuarioId);
 }

@@ -13,7 +13,7 @@ import {
   getPlaylistsCatalogo,
   getPortadaPlaylist,
   isMeGustaPlaylist,
-  seedCancionAleatoriaSiVacia,
+  llenarMeGustaConTodasCanciones,
 } from "../utils/playlists";
 
 import portadaDefault from "../assets/img/portada-default.png";
@@ -122,7 +122,7 @@ function Inicio() {
     }
 
     ensureMeGustaPlaylist(usuarioActual.id);
-    setPlaylists(seedCancionAleatoriaSiVacia(usuarioActual.id));
+    setPlaylists(llenarMeGustaConTodasCanciones(usuarioActual.id));
   }, [usuarioActual?.id]);
 
   const canciones = getItem(KEYS.canciones) || [];

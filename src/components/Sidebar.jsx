@@ -10,7 +10,7 @@ import {
   getPortadaPlaylist,
   isMeGustaPlaylist,
   PLAYLISTS_EVENT,
-  seedCancionAleatoriaSiVacia,
+  llenarMeGustaConTodasCanciones,
 } from "../utils/playlists";
 import GuestAuthModal from "./GuestAuthModal";
 
@@ -32,7 +32,7 @@ const Sidebar = () => {
     }
 
     ensureMeGustaPlaylist(usuarioActual.id);
-    const actualizadas = seedCancionAleatoriaSiVacia(usuarioActual.id);
+    const actualizadas = llenarMeGustaConTodasCanciones(usuarioActual.id);
     setPlaylists(actualizadas);
 
     const sync = () => {

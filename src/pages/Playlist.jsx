@@ -23,6 +23,7 @@ import {
   getPortadaPlaylist,
   isCatalogoPlaylist,
   isMeGustaPlaylist,
+  llenarMeGustaConTodasCanciones,
 } from "../utils/playlists";
 
 import portadaDefault from "../assets/img/portada-default.png";
@@ -52,6 +53,7 @@ function Playlist() {
 
     if (usuarioId) {
       ensureMeGustaPlaylist(usuarioId);
+      llenarMeGustaConTodasCanciones(usuarioId);
     }
 
     setPlaylists(getItem(KEYS.playlists) || []);
