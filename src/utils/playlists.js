@@ -193,13 +193,57 @@ export function ensureCatalogoPlaylists() {
   return actualizadas;
 }
 
-export function getPlaylistsCatalogo(seccion, playlistsFuente) {
+/** Hash determinístico a partir del id de usuario (mismo usuario = mismo orden). */
+function hashSemilla(texto) {
+  let hash = 2166136261;
+  const str = String(texto || "invitado");
+  for (let i = 0; i < str.length; i += 1) {
+    hash ^= str.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function crearPrng(semilla) {
+  let estado = hashSemilla(semilla);
+  return () => {
+    estado = (Math.imul(estado, 1664525) + 1013904223) >>> 0;
+    return estado / 4294967296;
+  };
+}
+
+/** Orden distinto por usuario, estable entre recargas. */
+export function ordenarPlaylistsPorUsuario(playlists, usuarioId, clave = "") {
+  if (!Array.isArray(playlists) || playlists.length <= 1) {
+    return playlists || [];
+  }
+
+  const copia = [...playlists];
+  const random = crearPrng(`${usuarioId || "invitado"}:${clave}`);
+
+  for (let i = copia.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+
+  return copia;
+}
+
+export function getPlaylistsCatalogo(seccion, playlistsFuente, usuarioId) {
   const playlists = playlistsFuente || getItem(KEYS.playlists) || [];
 
-  return playlists.filter(
+  const filtradas = playlists.filter(
     (playlist) =>
       isCatalogoPlaylist(playlist) &&
       (!seccion || playlist.seccion === seccion)
+  );
+
+  if (!usuarioId) return filtradas;
+
+  return ordenarPlaylistsPorUsuario(
+    filtradas,
+    usuarioId,
+    seccion || "catalogo"
   );
 }
 

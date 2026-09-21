@@ -127,11 +127,20 @@ function Inicio() {
 
   const canciones = getItem(KEYS.canciones) || [];
   const cancionesActivas = canciones.filter((cancion) => cancion.activo);
+  const ordenUsuarioId = usuarioActual?.id;
 
-  const vuelve = getPlaylistsCatalogo("vuelve", playlists);
-  const hecho = getPlaylistsCatalogo("hecho", playlists);
-  const recientesCatalogo = getPlaylistsCatalogo("recientes", playlists);
-  const similares = getPlaylistsCatalogo("similares", playlists);
+  const vuelve = getPlaylistsCatalogo("vuelve", playlists, ordenUsuarioId);
+  const hecho = getPlaylistsCatalogo("hecho", playlists, ordenUsuarioId);
+  const recientesCatalogo = getPlaylistsCatalogo(
+    "recientes",
+    playlists,
+    ordenUsuarioId
+  );
+  const similares = getPlaylistsCatalogo(
+    "similares",
+    playlists,
+    ordenUsuarioId
+  );
 
   const meGusta = playlists.find(
     (playlist) =>
