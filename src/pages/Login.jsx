@@ -1,6 +1,6 @@
 import { useState } from "react";
 import loginBg from "../assets/img/login-bg.png";
-import "./login.css";
+import "../styles/login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import {
