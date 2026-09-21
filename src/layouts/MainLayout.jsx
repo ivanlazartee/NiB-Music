@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import PlayerBar from "../components/PlayerBar";
 import QueuePanel from "../components/QueuePanel";
 import GuestSearchPanel from "../components/GuestSearchPanel";
+import MobileBottomNav from "../components/MobileBottomNav";
 import { useAuth } from "../context/AuthContext";
 import { usePlayer } from "../context/PlayerContext";
 import { getItem, KEYS } from "../utils/localStorage";
@@ -20,6 +21,7 @@ const MainLayout = () => {
     usePlayer();
 
   const esInvitado = !usuarioActual;
+  const esLogueado = Boolean(usuarioActual);
   const mostrarPlayer =
     usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
   const puedeReproducir = mostrarPlayer;
@@ -68,12 +70,16 @@ const MainLayout = () => {
     reordenarCola(desdeIndex, hastaIndex);
   };
 
+  const layoutClass = [
+    "app-layout",
+    mostrarPlayer ? "app-layout--with-player" : "",
+    esLogueado ? "app-layout--logged" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      className={
-        mostrarPlayer ? "app-layout app-layout--with-player" : "app-layout"
-      }
-    >
+    <div className={layoutClass}>
       <div className={`app-shell${esInvitado ? " app-shell--guest" : ""}`}>
         <aside className="app-panel app-panel--sidebar">
           <Sidebar />
@@ -108,6 +114,7 @@ const MainLayout = () => {
       </div>
 
       {mostrarPlayer && <PlayerBar />}
+      {esLogueado && <MobileBottomNav />}
     </div>
   );
 };

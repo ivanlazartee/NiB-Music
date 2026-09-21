@@ -275,31 +275,50 @@ function Inicio() {
     );
   }
 
+  const perfilHref =
+    usuarioActual.rol === "admin" ? "/admin" : "/perfil";
+
+  const avatarSrc =
+    usuarioActual.avatar ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      usuarioActual.nombre || "U"
+    )}&background=ffdf2d&color=111`;
+
   return (
     <section className="catalogo inicio-home">
-      <div className="inicio-chips">
-        <button
-          type="button"
-          className="inicio-chip inicio-chip--active"
+      <div className="inicio-home-top">
+        <Link
+          to={perfilHref}
+          className="inicio-home-avatar"
+          aria-label="Ir al perfil"
         >
-          Todo
-        </button>
+          <img src={avatarSrc} alt="" />
+        </Link>
 
-        <button
-          type="button"
-          className="inicio-chip"
-          onClick={() => navigate("/musica")}
-        >
-          Música
-        </button>
+        <div className="inicio-chips">
+          <button
+            type="button"
+            className="inicio-chip inicio-chip--active"
+          >
+            Todas
+          </button>
 
-        <button
-          type="button"
-          className="inicio-chip"
-          onClick={() => navigate("/podcasts-inicio")}
-        >
-          Podcasts
-        </button>
+          <button
+            type="button"
+            className="inicio-chip"
+            onClick={() => navigate("/musica")}
+          >
+            Música
+          </button>
+
+          <button
+            type="button"
+            className="inicio-chip"
+            onClick={() => navigate("/podcasts-inicio")}
+          >
+            Podcasts
+          </button>
+        </div>
       </div>
 
       <div className="inicio-quick-grid">

@@ -1929,3 +1929,171 @@ img {
     font-size: 0.75rem;
   }
 }
+
+/* iPhone 15 Pro Max / móvil (~430px) — capa 1: shell */
+@media (max-width: 480px) {
+  .app-layout {
+    padding: 0;
+    gap: 0;
+  }
+
+  .app-layout--with-player {
+    padding-bottom: 0;
+  }
+
+  .app-shell,
+  .app-shell--guest {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+      "top"
+      "center";
+    gap: 0;
+  }
+
+  .app-panel--sidebar,
+  .app-panel--right {
+    display: none;
+  }
+
+  .app-shell__top {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: #000;
+  }
+
+  .app-panel--center {
+    border: 0;
+    border-radius: 0;
+    background: #121212;
+  }
+
+  .app-panel__main {
+    padding: 14px 12px 20px;
+  }
+
+  .navbar {
+    height: 56px;
+    gap: 8px;
+    padding: 0 10px;
+  }
+
+  .navbar,
+  .navbar--guest {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: none;
+  }
+
+  .navbar__left {
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .navbar__home {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .navbar__search {
+    flex: 1;
+    max-width: none;
+    min-width: 0;
+    justify-self: auto;
+  }
+
+  .navbar__explore {
+    display: none;
+  }
+
+  .navbar__input {
+    padding: 10px 14px 10px 40px;
+    font-size: 0.85rem;
+  }
+
+  .navbar__search-icon {
+    left: 14px;
+  }
+
+  .navbar__actions {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .navbar--guest .navbar__link:not(.navbar__link--register),
+  .navbar--guest .navbar__divider {
+    display: none;
+  }
+
+  .navbar__link--register {
+    font-size: 0.78rem;
+  }
+
+  .navbar__button,
+  .navbar__button--compact {
+    padding: 7px 12px;
+    font-size: 0.78rem;
+  }
+
+  .navbar__avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .app-layout--with-player .app-panel__main {
+    padding-bottom: 12px;
+  }
+
+  .app-layout--with-player {
+    padding: 0 0 6px;
+  }
+
+  .app-layout--with-player .app-shell {
+    margin: 0 6px;
+  }
+
+  .app-layout--with-player .app-shell__top {
+    margin: 0 -6px;
+  }
+
+  /* Perfiles logueados: shell tipo Spotify móvil */
+  .app-layout--logged {
+    padding: 0;
+  }
+
+  .app-layout--logged .app-shell,
+  .app-layout--logged.app-layout--with-player .app-shell {
+    margin: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: "center";
+    gap: 0;
+  }
+
+  .app-layout--logged .app-shell__top {
+    display: none;
+  }
+
+  .app-layout--logged .app-panel--center {
+    border-radius: 0;
+    background: #121212;
+  }
+
+  .app-layout--logged .app-panel__main {
+    padding: 12px 16px 24px;
+  }
+
+  .app-layout--logged.app-layout--with-player {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app-layout--logged:not(.app-layout--with-player) {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app-layout--logged.app-layout--with-player .app-panel__main {
+    padding-bottom: 88px;
+  }
+}

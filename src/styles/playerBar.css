@@ -24,6 +24,26 @@
   min-width: 0;
 }
 
+.player-bar__track-hit {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.player-bar__track-hit:disabled {
+  cursor: default;
+}
+
 .player-bar__cover {
   width: 56px;
   height: 56px;
@@ -269,5 +289,130 @@
 
   .player-bar__range--volume {
     width: 72px;
+  }
+}
+
+/* iPhone 15 Pro Max / móvil (~430px) */
+@media (max-width: 480px) {
+  .player-bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "track controls"
+      "progress progress";
+    gap: 0.45rem 0.75rem;
+    min-height: 0;
+    padding: 0.55rem 0.7rem 0.65rem;
+    border-radius: 10px;
+  }
+
+  .player-bar__track {
+    grid-area: track;
+    gap: 0.55rem;
+  }
+
+  .player-bar__cover {
+    width: 44px;
+    height: 44px;
+  }
+
+  .player-bar__title {
+    font-size: 0.8rem;
+  }
+
+  .player-bar__artist {
+    font-size: 0.7rem;
+  }
+
+  .player-bar__center {
+    grid-area: controls;
+    width: auto;
+    gap: 0.2rem;
+    align-items: flex-end;
+  }
+
+  .player-bar__controls {
+    gap: 0.35rem;
+  }
+
+  .player-bar__btn:not(.player-bar__btn--main) {
+    display: none;
+  }
+
+  .player-bar__btn--main {
+    width: 40px;
+    height: 40px;
+  }
+
+  .player-bar__progress {
+    grid-area: progress;
+    width: 100%;
+    grid-template-columns: 34px 1fr 34px;
+    gap: 0.35rem;
+  }
+
+  .player-bar__time {
+    font-size: 0.65rem;
+  }
+
+  .player-bar__extra {
+    display: none;
+  }
+
+  /* Mini-player flotante sobre bottom nav (premium/admin) */
+  .app-layout--logged .player-bar {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+    z-index: 45;
+
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "track controls";
+    gap: 0.5rem;
+    min-height: 56px;
+    padding: 0.45rem 0.6rem 0.55rem;
+
+    background: #2a3a52;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  }
+
+  .app-layout--logged .player-bar__progress {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 3px;
+    display: block;
+    width: auto;
+    height: 2px;
+    grid-template-columns: none;
+    gap: 0;
+  }
+
+  .app-layout--logged .player-bar__time {
+    display: none;
+  }
+
+  .app-layout--logged .player-bar__range {
+    height: 2px;
+    margin: 0;
+    padding: 0;
+    accent-color: #fff;
+  }
+
+  .app-layout--logged .player-bar__cover {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+  }
+
+  .app-layout--logged .player-bar__center {
+    align-items: center;
+  }
+
+  .app-layout--logged .player-bar__btn--main {
+    width: 36px;
+    height: 36px;
   }
 }
