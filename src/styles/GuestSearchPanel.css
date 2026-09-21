@@ -1,6 +1,7 @@
 .guest-search-panel {
   width: 100%;
-  min-height: 320px;
+  height: 100%;
+  min-height: 100%;
 
   display: flex;
   align-items: center;
@@ -8,10 +9,10 @@
 
   padding: 28px 22px;
 
-  background-color: var(--color-navigation);
+  background-color: transparent;
 
-  border: 1px solid var(--color-border);
-  border-radius: 18px;
+  border: none;
+  border-radius: 0;
 }
 
 .guest-search-panel__content {

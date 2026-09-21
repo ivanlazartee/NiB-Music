@@ -91,68 +91,128 @@ img {
 
 .app-layout {
   display: flex;
+  flex-direction: column;
 
+  height: 100vh;
   min-height: 100vh;
+  overflow: hidden;
 
-  background-color: var(--color-bg);
+  padding: 8px;
+  gap: 8px;
+
+  background-color: #000000;
 }
 
-.app-layout__content {
+.app-layout--with-player {
+  padding-bottom: 8px;
+}
+
+.app-shell {
   flex: 1;
+  min-height: 0;
+
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr) 300px;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "sidebar top top"
+    "sidebar center right";
+  gap: 8px;
+}
+
+.app-panel {
   min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+
+  background-color: #121212;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+.app-panel--sidebar {
+  grid-area: sidebar;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+}
+
+.app-shell__top {
+  grid-area: top;
+
+  min-width: 0;
+  min-height: 0;
+}
+
+.app-panel--center {
+  grid-area: center;
 
   display: flex;
   flex-direction: column;
-
-  background-color: var(--color-bg);
 }
 
-.app-layout__main {
+.app-panel__main {
   flex: 1;
+  min-height: 0;
 
   padding: var(--space-xl);
 
   overflow-x: hidden;
-
-  background-color: var(--color-bg);
+  overflow-y: auto;
 }
 
+.app-panel--right {
+  grid-area: right;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+.app-panel--right > * {
+  flex: 1;
+  min-height: 0;
+}
+
+/* compat: ya no usamos estas clases del layout viejo */
+.app-layout__content,
+.app-layout__main,
 .app-layout__main--with-player {
-  padding-bottom: calc(var(--space-xl) + 96px);
+  display: contents;
 }
 
 .app-layout--with-player .sidebar {
-  padding-bottom: calc(20px + 96px);
+  padding-bottom: calc(20px + 8px);
 }
 
 .sidebar {
-  position: sticky;
-  top: 0;
+  position: relative;
+  top: auto;
 
-  width: 220px;
-  min-width: 220px;
-  height: 100vh;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 100%;
 
   display: flex;
   flex-direction: column;
 
   padding: 20px 16px;
 
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
 
-  background:
-    linear-gradient(
-      180deg,
-      #090909 0%,
-      #050505 100%
-    );
+  background: transparent;
 
-  border-right: 1px solid rgba(255, 223, 45, 0.12);
+  border-right: none;
 
   scrollbar-width: none;
 
-  z-index: 20;
+  z-index: 1;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -482,7 +542,9 @@ img {
 }
 
 .navbar {
-  height: 72px;
+  height: 64px;
+  width: 100%;
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
@@ -490,9 +552,9 @@ img {
 
   gap: var(--space-lg);
 
-  padding: 0 32px;
+  padding: 0 8px 0 4px;
 
-  background-color: var(--color-bg);
+  background-color: transparent;
 
   border: none;
 
@@ -1359,10 +1421,29 @@ img {
   transform: translateY(-2px);
 }
 
+@media (max-width: 1150px) {
+  .app-shell {
+    grid-template-columns: 220px minmax(0, 1fr) 260px;
+  }
+}
+
+@media (max-width: 950px) {
+  .app-shell {
+    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-areas:
+      "sidebar top"
+      "sidebar center";
+  }
+
+  .app-panel--right {
+    display: none;
+  }
+}
+
 @media (max-width: 900px) {
   .sidebar {
-    width: 190px;
-    min-width: 190px;
+    width: 100%;
+    min-width: 0;
 
     padding: 18px 12px;
   }
@@ -1413,9 +1494,16 @@ img {
 }
 
 @media (max-width: 700px) {
+  .app-shell {
+    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-areas:
+      "sidebar top"
+      "sidebar center";
+  }
+
   .sidebar {
-    width: 72px;
-    min-width: 72px;
+    width: 100%;
+    min-width: 0;
 
     padding: 16px 8px;
   }
@@ -1445,12 +1533,8 @@ img {
     display: none;
   }
 
-  .app-layout__main {
+  .app-panel__main {
     padding: var(--space-md);
-  }
-
-  .app-layout__main--with-player {
-    padding-bottom: calc(var(--space-md) + 110px);
   }
 
   .navbar {
