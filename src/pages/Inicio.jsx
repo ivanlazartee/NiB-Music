@@ -17,7 +17,32 @@ import {
 } from "../utils/playlists";
 
 import portadaDefault from "../assets/img/portada-default.png";
+
 import "../styles/InicioSections.css";
+import "../styles/FooterInicio.css";
+
+function FooterInicio() {
+  return (
+    <footer className="inicio-footer">
+      <div className="inicio-footer__contenido">
+        <span className="inicio-footer__marca">
+          NiB Music
+        </span>
+
+        <Link
+          to="/acerca-de-nosotros"
+          className="inicio-footer__enlace"
+        >
+          Acerca de nosotros
+        </Link>
+
+        <span className="inicio-footer__copyright">
+          © {new Date().getFullYear()} NiB Music
+        </span>
+      </div>
+    </footer>
+  );
+}
 
 function PlaylistCard({ playlist, onPlay }) {
   const navigate = useNavigate();
@@ -71,7 +96,13 @@ function PlaylistCard({ playlist, onPlay }) {
   );
 }
 
-function PlaylistRow({ title, eyebrow, playlists, onPlay, titleClassName = "" }) {
+function PlaylistRow({
+  title,
+  eyebrow,
+  playlists,
+  onPlay,
+  titleClassName = "",
+}) {
   if (!playlists.length) return null;
 
   return (
@@ -79,8 +110,11 @@ function PlaylistRow({ title, eyebrow, playlists, onPlay, titleClassName = "" })
       <div className="inicio-section__header inicio-section__header--stack">
         <div>
           {eyebrow && (
-            <span className="inicio-section__eyebrow">{eyebrow}</span>
+            <span className="inicio-section__eyebrow">
+              {eyebrow}
+            </span>
           )}
+
           <h2 className={`inicio-section__title ${titleClassName}`.trim()}>
             {title}
           </h2>
@@ -108,6 +142,7 @@ function Inicio() {
   const { usuarioActual } = useAuth();
   const { reproducir, cargarCola } = usePlayer();
   const navigate = useNavigate();
+
   const esLogueado = Boolean(usuarioActual);
 
   const [playlists, setPlaylists] = useState(() => {
@@ -124,20 +159,38 @@ function Inicio() {
     }
 
     ensureMeGustaPlaylist(usuarioActual.id);
-    setPlaylists(llenarMeGustaConTodasCanciones(usuarioActual.id));
+
+    setPlaylists(
+      llenarMeGustaConTodasCanciones(usuarioActual.id)
+    );
   }, [usuarioActual?.id]);
 
   const canciones = getItem(KEYS.canciones) || [];
-  const cancionesActivas = canciones.filter((cancion) => cancion.activo);
+
+  const cancionesActivas = canciones.filter(
+    (cancion) => cancion.activo
+  );
+
   const ordenUsuarioId = usuarioActual?.id;
 
-  const vuelve = getPlaylistsCatalogo("vuelve", playlists, ordenUsuarioId);
-  const hecho = getPlaylistsCatalogo("hecho", playlists, ordenUsuarioId);
+  const vuelve = getPlaylistsCatalogo(
+    "vuelve",
+    playlists,
+    ordenUsuarioId
+  );
+
+  const hecho = getPlaylistsCatalogo(
+    "hecho",
+    playlists,
+    ordenUsuarioId
+  );
+
   const recientesCatalogo = getPlaylistsCatalogo(
     "recientes",
     playlists,
     ordenUsuarioId
   );
+
   const similares = getPlaylistsCatalogo(
     "similares",
     playlists,
@@ -146,7 +199,8 @@ function Inicio() {
 
   const meGusta = playlists.find(
     (playlist) =>
-      playlist.usuarioId === usuarioActual?.id && isMeGustaPlaylist(playlist)
+      playlist.usuarioId === usuarioActual?.id &&
+      isMeGustaPlaylist(playlist)
   );
 
   const recientes = meGusta
@@ -172,7 +226,8 @@ function Inicio() {
     }
 
     const puede =
-      usuarioActual.rol === "premium" || usuarioActual.rol === "admin";
+      usuarioActual.rol === "premium" ||
+      usuarioActual.rol === "admin";
 
     if (!puede) {
       navigate("/registro");
@@ -194,6 +249,7 @@ function Inicio() {
       playlistId: playlist.id,
       cancionInicialId: temas[0]?.id,
     });
+
     reproducir(temas[0]);
   }
 
@@ -201,16 +257,20 @@ function Inicio() {
     return (
       <section className="catalogo">
         <HeroBanner />
+
         <PlaylistRow
           title="Vuelve a tu música"
           playlists={vuelve}
           onPlay={reproducirPlaylist}
         />
+
         <PlaylistRow
           title="Similares a Bad Bunny"
           playlists={similares}
           onPlay={reproducirPlaylist}
         />
+
+        <FooterInicio />
       </section>
     );
   }
@@ -218,9 +278,13 @@ function Inicio() {
   return (
     <section className="catalogo inicio-home">
       <div className="inicio-chips">
-        <button type="button" className="inicio-chip inicio-chip--active">
+        <button
+          type="button"
+          className="inicio-chip inicio-chip--active"
+        >
           Todo
         </button>
+
         <button
           type="button"
           className="inicio-chip"
@@ -228,6 +292,7 @@ function Inicio() {
         >
           Música
         </button>
+
         <button
           type="button"
           className="inicio-chip"
@@ -262,6 +327,7 @@ function Inicio() {
                   className="inicio-quick-card__cover"
                 />
               )}
+
               <span>{playlist.nombre}</span>
             </Link>
           );
@@ -304,6 +370,8 @@ function Inicio() {
         playlists={similares}
         onPlay={reproducirPlaylist}
       />
+
+      <FooterInicio />
     </section>
   );
 }
