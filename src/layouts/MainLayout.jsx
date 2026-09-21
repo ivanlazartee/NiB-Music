@@ -74,7 +74,7 @@ const MainLayout = () => {
         mostrarPlayer ? "app-layout app-layout--with-player" : "app-layout"
       }
     >
-      <div className="app-shell">
+      <div className={`app-shell${esInvitado ? " app-shell--guest" : ""}`}>
         <aside className="app-panel app-panel--sidebar">
           <Sidebar />
         </aside>

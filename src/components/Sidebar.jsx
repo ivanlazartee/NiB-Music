@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Heart, ListMusic, LogOut, Plus } from "lucide-react";
+import { Crown, Heart, ListMusic, LogOut, Plus } from "lucide-react";
 
 import logoNib from "../assets/img/Nib-Home.png";
 import { useAuth } from "../context/AuthContext";
@@ -174,6 +174,34 @@ const Sidebar = () => {
       )}
 
       <div className="sidebar__bottom">
+        {esInvitado && (
+          <div className="sidebar__premium-card">
+            <div className="sidebar__premium-glow" />
+
+            <div className="sidebar__premium-header">
+              <div className="sidebar__premium-icon">
+                <Crown size={18} />
+              </div>
+
+              <span className="sidebar__premium-title">NiB Premium</span>
+            </div>
+
+            <p className="sidebar__premium-text">
+              Música sin límites,
+              <br />
+              sin anuncios.
+            </p>
+
+            <button
+              type="button"
+              className="sidebar__premium-button"
+              onClick={() => navigate("/registro")}
+            >
+              Obtener Premium
+            </button>
+          </div>
+        )}
+
         {usuarioActual && (
           <button
             type="button"

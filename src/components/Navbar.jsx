@@ -28,42 +28,38 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
     }
   };
 
+  const buscador = (
+    <form className="navbar__search" onSubmit={handleSubmit}>
+      <Search className="navbar__search-icon" size={19} />
+
+      <input
+        ref={searchInputRef}
+        type="search"
+        placeholder="Buscar canciones, artistas, álbumes..."
+        className="navbar__input"
+        value={search}
+        onChange={handleSearchChange}
+      />
+    </form>
+  );
+
   return (
     <header className={`navbar ${esInvitado ? "navbar--guest" : ""}`}>
       <div className="navbar__left">
-        <Link
-          to="/"
-          className="navbar__home"
-          aria-label="Ir al inicio"
-        >
+        <Link to="/" className="navbar__home" aria-label="Ir al inicio">
           <House size={20} />
         </Link>
 
-        <form
-          className="navbar__search"
-          onSubmit={handleSubmit}
-        >
-          <Search
-            className="navbar__search-icon"
-            size={19}
-          />
-
-          <input
-            ref={searchInputRef}
-            type="search"
-            placeholder="Buscar canciones, artistas, álbumes..."
-            className="navbar__input"
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </form>
-
-        {!esInvitado && (
+        {esInvitado ? (
+          buscador
+        ) : (
           <Link to="/catalogo" className="navbar__explore">
             Explorar
           </Link>
         )}
       </div>
+
+      {!esInvitado && buscador}
 
       <div className="navbar__actions">
         {esInvitado && (
