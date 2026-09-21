@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useRef } from 'react'
+import { getItem, setItem, KEYS } from '../utils/localStorage'
 
 export const PlayerContext = createContext(null)
 
@@ -6,10 +7,35 @@ export function usePlayer() {
   return useContext(PlayerContext)
 }
 
+function leerColaGuardada() {
+  const ids = getItem(KEYS.cola)
+
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return []
+  }
+
+  const canciones = getItem(KEYS.canciones) || []
+
+  return ids
+    .map((id) =>
+      canciones.find(
+        (cancion) => String(cancion.id) === String(id) && cancion.activo
+      )
+    )
+    .filter(Boolean)
+}
+
+function guardarCola(canciones) {
+  setItem(
+    KEYS.cola,
+    (canciones || []).map((cancion) => cancion.id)
+  )
+}
+
 export function PlayerProvider({ children }) {
   const [cancionActual, setCancionActual] = useState(null)
   const [reproduciendo, setReproduciendo] = useState(false)
-  const [cola, setCola] = useState([])
+  const [cola, setCola] = useState(() => leerColaGuardada())
   const audioRef = useRef(new Audio())
 
   function reproducir(cancion) {
@@ -42,7 +68,9 @@ export function PlayerProvider({ children }) {
   }
 
   function cargarCola(canciones) {
-    setCola(canciones)
+    const siguienteCola = canciones || []
+    setCola(siguienteCola)
+    guardarCola(siguienteCola)
   }
 
   function reordenarCola(desdeIndex, hastaIndex) {
@@ -62,6 +90,7 @@ export function PlayerProvider({ children }) {
       const siguienteCola = [...prev]
       const [movida] = siguienteCola.splice(desdeIndex, 1)
       siguienteCola.splice(hastaIndex, 0, movida)
+      guardarCola(siguienteCola)
       return siguienteCola
     })
   }
