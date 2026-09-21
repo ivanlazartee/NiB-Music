@@ -39,29 +39,29 @@ const Navbar = ({ search, setSearch, searchInputRef }) => {
           <House size={20} />
         </Link>
 
-        <form
-          className="navbar__search"
-          onSubmit={handleSubmit}
-        >
-          <Search
-            className="navbar__search-icon"
-            size={19}
-          />
-
-          <input
-            ref={searchInputRef}
-            type="search"
-            placeholder="Buscar canciones, artistas, álbumes..."
-            className="navbar__input"
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </form>
-
         <Link to="/catalogo" className="navbar__explore">
           Explorar
         </Link>
       </div>
+
+      <form
+        className="navbar__search"
+        onSubmit={handleSubmit}
+      >
+        <Search
+          className="navbar__search-icon"
+          size={19}
+        />
+
+        <input
+          ref={searchInputRef}
+          type="search"
+          placeholder="Buscar canciones, artistas, álbumes..."
+          className="navbar__input"
+          value={search}
+          onChange={handleSearchChange}
+        />
+      </form>
 
       <div className="navbar__actions">
         {esInvitado && (
