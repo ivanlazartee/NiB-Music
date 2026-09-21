@@ -15,9 +15,10 @@ function Catalogo() {
   const navigate = useNavigate();
   const { search = "" } = useOutletContext();
   const { usuarioActual } = useAuth();
-  const { reproducir, cargarCola } = usePlayer();
+  const { reproducir, cargarCola, cancionActual } = usePlayer();
 
-  const esPremium = usuarioActual?.rol === "premium";
+  const puedeReproducir =
+    usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
 
   const [generoSeleccionado, setGeneroSeleccionado] = useState("");
   const [artistaSeleccionado, setArtistaSeleccionado] = useState("");
@@ -65,12 +66,12 @@ function Catalogo() {
   });
 
   function handlePlayCancion(cancion) {
-    if (!esPremium) {
+    if (!puedeReproducir) {
       navigate("/registro");
       return;
     }
 
-    cargarCola(cancionesFiltradas);
+    cargarCola(cancionesFiltradas.length > 0 ? cancionesFiltradas : cancionesCola);
     reproducir(cancion);
   }
 
@@ -154,7 +155,11 @@ function Catalogo() {
         </section>
       </div>
 
-      <QueuePanel canciones={cancionesCola} />
+      <QueuePanel
+        canciones={cancionesCola}
+        cancionActualId={cancionActual?.id}
+        onSelectCancion={handlePlayCancion}
+      />
     </section>
   );
 }

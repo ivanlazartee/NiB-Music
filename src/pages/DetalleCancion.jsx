@@ -13,15 +13,21 @@ function DetalleCancion() {
   const navigate = useNavigate();
 
   const { usuarioActual } = useAuth();
-  const { reproducir } = usePlayer();
+  const { reproducir, cargarCola } = usePlayer();
 
   const [mostrarAviso, setMostrarAviso] = useState(false);
 
   const canciones = getItem(KEYS.canciones) || [];
 
-  const cancion = canciones.find(
-    (cancion) => String(cancion.id) === id && cancion.activo
+  const cancionesActivas = canciones.filter(
+    (cancion) => cancion.activo
   );
+
+  const cancion = cancionesActivas.find(
+    (cancion) => String(cancion.id) === id
+  );
+
+  const esPremium = usuarioActual?.rol === "premium";
 
   const handleImageError = (event) => {
     event.currentTarget.onerror = null;
@@ -29,13 +35,17 @@ function DetalleCancion() {
   };
 
   const handlePlayClick = () => {
-    // Conservamos el bloqueo para visitantes.
     if (!usuarioActual) {
       setMostrarAviso(true);
       return;
     }
 
-    // Reproducimos la canción seleccionada desde su página de detalle.
+    if (!esPremium) {
+      navigate("/registro");
+      return;
+    }
+
+    cargarCola(cancionesActivas);
     reproducir(cancion);
   };
 
