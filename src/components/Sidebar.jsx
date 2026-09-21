@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   House,
@@ -7,14 +8,20 @@ import {
   ListMusic,
   Crown,
   LogOut,
+  Plus,
 } from "lucide-react";
 
 import logoNib from "../assets/img/Nib-Home.png";
 import { useAuth } from "../context/AuthContext";
+import GuestAuthModal from "./GuestAuthModal";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const { usuarioActual, logout } = useAuth();
+  const [mostrarModalPlaylist, setMostrarModalPlaylist] = useState(false);
+  const playlistCardRef = useRef(null);
+
+  const esInvitado = !usuarioActual;
 
   const handleObtenerPremium = () => {
     navigate("/registro");
@@ -49,41 +56,87 @@ const Sidebar = () => {
         </NavLink>
       </nav>
 
-      <div className="sidebar__section">
-        <p className="sidebar__section-title">
-          PLAYLISTS
-        </p>
+      {esInvitado ? (
+        <div className="sidebar__section sidebar__library">
+          <div className="sidebar__library-header">
+            <p className="sidebar__section-title sidebar__section-title--library">
+              Tu biblioteca
+            </p>
 
-        <NavLink to="/playlist" className="sidebar__playlist-link">
-          <Heart size={17} />
-          <span>Tus Me Gusta</span>
-        </NavLink>
+            <button
+              type="button"
+              className="sidebar__library-add"
+              aria-label="Crear playlist"
+              onClick={() => setMostrarModalPlaylist(true)}
+            >
+              <Plus size={18} />
+            </button>
+          </div>
 
-        <NavLink to="/playlist" className="sidebar__playlist-link">
-          <ListMusic size={17} />
-          <span>Éxitos 2026</span>
-        </NavLink>
+          <div
+            className="sidebar__library-card"
+            ref={playlistCardRef}
+          >
+            <h3>Crea tu primera playlist</h3>
+            <p>Es fácil y rápido. Te guiamos paso a paso.</p>
+            <button
+              type="button"
+              className="sidebar__library-button"
+              onClick={() => setMostrarModalPlaylist(true)}
+            >
+              Crear playlist
+            </button>
+          </div>
 
-        <NavLink to="/playlist" className="sidebar__playlist-link">
-          <ListMusic size={17} />
-          <span>Lo Fi Chill</span>
-        </NavLink>
+          <div className="sidebar__library-card">
+            <h3>Descubrí podcasts para seguir</h3>
+            <p>Enterate de episodios nuevos apenas salgan.</p>
+            <button
+              type="button"
+              className="sidebar__library-button"
+              onClick={() => navigate("/podcasts")}
+            >
+              Explorar podcasts
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="sidebar__section">
+          <p className="sidebar__section-title">
+            PLAYLISTS
+          </p>
 
-        <NavLink to="/playlist" className="sidebar__playlist-link">
-          <ListMusic size={17} />
-          <span>Rock Classics</span>
-        </NavLink>
+          <NavLink to="/playlist" className="sidebar__playlist-link">
+            <Heart size={17} />
+            <span>Tus Me Gusta</span>
+          </NavLink>
 
-        <NavLink to="/playlist" className="sidebar__playlist-link">
-          <ListMusic size={17} />
-          <span>Gym Mode</span>
-        </NavLink>
+          <NavLink to="/playlist" className="sidebar__playlist-link">
+            <ListMusic size={17} />
+            <span>Éxitos 2026</span>
+          </NavLink>
 
-        <NavLink to="/playlist" className="sidebar__playlist-link">
-          <ListMusic size={17} />
-          <span>Para Programar</span>
-        </NavLink>
-      </div>
+          <NavLink to="/playlist" className="sidebar__playlist-link">
+            <ListMusic size={17} />
+            <span>Lo Fi Chill</span>
+          </NavLink>
+
+          <NavLink to="/playlist" className="sidebar__playlist-link">
+            <ListMusic size={17} />
+            <span>Rock Classics</span>
+          </NavLink>
+
+          <NavLink to="/playlist" className="sidebar__playlist-link">
+            <ListMusic size={17} />
+            <span>Gym Mode</span>
+          </NavLink>
+
+          <NavLink to="/playlist" className="sidebar__playlist-link">
+            <ListMusic size={17} />
+            <span>Para Programar</span>
+          </NavLink>
+        </div>
+      )}
 
       <div className="sidebar__bottom">
         <div className="sidebar__premium-card">
@@ -125,6 +178,12 @@ const Sidebar = () => {
           </button>
         )}
       </div>
+
+      <GuestAuthModal
+        abierto={mostrarModalPlaylist}
+        onCerrar={() => setMostrarModalPlaylist(false)}
+        anchorRef={playlistCardRef}
+      />
     </aside>
   );
 };
