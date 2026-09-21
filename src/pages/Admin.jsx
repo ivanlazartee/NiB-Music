@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import CancionesAdmin from "../components/admin/CancionesAdmin";
 import UsuariosAdmin from "../components/admin/UsuariosAdmin";
+import PlayerBar from "../components/PlayerBar";
 
 import "../styles/Admin.css";
 
@@ -9,7 +10,7 @@ function Admin() {
   const [seccionActiva, setSeccionActiva] = useState("canciones");
 
   return (
-    <main className="admin-page">
+    <main className="admin-page admin-page--with-player">
       <header className="admin-page__header">
         <div>
           <span className="admin-page__eyebrow">
@@ -53,6 +54,8 @@ function Admin() {
       ) : (
         <UsuariosAdmin />
       )}
+
+      <PlayerBar />
     </main>
   );
 }

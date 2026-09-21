@@ -10,7 +10,8 @@ const MainLayout = () => {
   const [search, setSearch] = useState("");
   const { usuarioActual } = useAuth();
 
-  const esPremium = usuarioActual?.rol === "premium";
+  const mostrarPlayer =
+    usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
 
   return (
     <div className="app-layout">
@@ -22,12 +23,18 @@ const MainLayout = () => {
           setSearch={setSearch}
         />
 
-        <main className="app-layout__main">
+        <main
+          className={
+            mostrarPlayer
+              ? "app-layout__main app-layout__main--with-player"
+              : "app-layout__main"
+          }
+        >
           <Outlet context={{ search }} />
         </main>
       </div>
 
-      {esPremium && <PlayerBar />}
+      {mostrarPlayer && <PlayerBar />}
     </div>
   );
 };
