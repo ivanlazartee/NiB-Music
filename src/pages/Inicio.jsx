@@ -1,13 +1,22 @@
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import HeroBanner from "../components/HeroBanner";
 import QueuePanel from "../components/QueuePanel";
 
 import { getItem, KEYS } from "../utils/localStorage";
+import { useAuth } from "../context/AuthContext";
+import { usePlayer } from "../context/PlayerContext";
 
 import "../styles/InicioSections.css";
 
 function Inicio() {
+  const navigate = useNavigate();
+  const { usuarioActual } = useAuth();
+  const { reproducir, cargarCola, cancionActual } = usePlayer();
+
+  const puedeReproducir =
+    usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
+
   const canciones = getItem(KEYS.canciones) || [];
 
   const cancionesActivas = canciones.filter(
@@ -41,6 +50,16 @@ function Inicio() {
       ])
     ).values(),
   ].slice(0, 8);
+
+  function handlePlayCancion(cancion) {
+    if (!puedeReproducir) {
+      navigate("/registro");
+      return;
+    }
+
+    cargarCola(cancionesCola);
+    reproducir(cancion);
+  }
 
   return (
     <section className="catalogo-layout">
@@ -147,7 +166,11 @@ function Inicio() {
         </section>
       </div>
 
-      <QueuePanel canciones={cancionesCola} />
+      <QueuePanel
+        canciones={cancionesCola}
+        cancionActualId={cancionActual?.id}
+        onSelectCancion={handlePlayCancion}
+      />
     </section>
   );
 }

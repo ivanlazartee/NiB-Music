@@ -1,15 +1,24 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 import QueuePanel from "../components/QueuePanel";
 import SongCard from "../components/SongCard";
 
 import { getItem, KEYS } from "../utils/localStorage";
 
+import { useAuth } from "../context/AuthContext";
+import { usePlayer } from "../context/PlayerContext";
+
 import "../styles/InicioSections.css";
 
 function Catalogo() {
+  const navigate = useNavigate();
   const { search = "" } = useOutletContext();
+  const { usuarioActual } = useAuth();
+  const { reproducir, cargarCola, cancionActual } = usePlayer();
+
+  const puedeReproducir =
+    usuarioActual?.rol === "premium" || usuarioActual?.rol === "admin";
 
   const [generoSeleccionado, setGeneroSeleccionado] = useState("");
   const [artistaSeleccionado, setArtistaSeleccionado] = useState("");
@@ -55,6 +64,16 @@ function Catalogo() {
       coincideArtista
     );
   });
+
+  function handlePlayCancion(cancion) {
+    if (!puedeReproducir) {
+      navigate("/registro");
+      return;
+    }
+
+    cargarCola(cancionesFiltradas.length > 0 ? cancionesFiltradas : cancionesCola);
+    reproducir(cancion);
+  }
 
   return (
     <section className="catalogo-layout">
@@ -120,6 +139,7 @@ function Catalogo() {
                 <SongCard
                   key={cancion.id}
                   cancion={cancion}
+                  onPlay={handlePlayCancion}
                 />
               ))}
             </div>
@@ -135,7 +155,11 @@ function Catalogo() {
         </section>
       </div>
 
-      <QueuePanel canciones={cancionesCola} />
+      <QueuePanel
+        canciones={cancionesCola}
+        cancionActualId={cancionActual?.id}
+        onSelectCancion={handlePlayCancion}
+      />
     </section>
   );
 }
