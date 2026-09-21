@@ -18,103 +18,109 @@ export function isCatalogoPlaylist(playlist) {
   return Boolean(playlist?.esCatalogo);
 }
 
-function coincidePlaylist(cancion, seed) {
-  const artista = (cancion.artista || "").toLowerCase();
-  const genero = (cancion.genero || "").toLowerCase();
-  const tags = (cancion.tags || []).map((t) => String(t).toLowerCase());
+function escapeRegExp(texto) {
+  return String(texto).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
-  const artistas = seed.artistas || [];
-  const generos = seed.generos || [];
+function normalizarTexto(texto) {
+  return (texto || "").toLowerCase().trim();
+}
 
-  const matchArtista = artistas.some((nombre) => {
-    const n = nombre.toLowerCase();
-    return (
-      artista.includes(n) ||
-      tags.some((t) => n.includes(t) || t.includes(n.split(" ")[0]))
-    );
-  });
+/** Match estricto de artista del seed (evita Omar Courtz → Don Omar, Yan → Yandel). */
+function cancionEsDeArtista(cancion, nombreArtista) {
+  const artista = normalizarTexto(cancion.artista);
+  const n = normalizarTexto(nombreArtista);
+  if (!artista || !n) return false;
+  if (artista === n) return true;
+  if (artista.includes(n)) return true;
 
-  const matchGenero = generos.some((g) => genero === g.toLowerCase());
+  const partes = n.split(/\s+/).filter(Boolean);
+  if (partes.length >= 2) {
+    return partes.every((parte) => artista.includes(parte));
+  }
 
-  return matchArtista || matchGenero;
+  return new RegExp(
+    `(?:^|[\\s&,/]+)${escapeRegExp(n)}(?:$|[\\s&,/]+)`,
+    "i"
+  ).test(cancion.artista || "");
+}
+
+function coincideArtistaPlaylist(cancion, seed) {
+  return (seed.artistas || []).some((nombre) =>
+    cancionEsDeArtista(cancion, nombre)
+  );
+}
+
+function coincideGeneroPlaylist(cancion, seed) {
+  const genero = normalizarTexto(cancion.genero);
+  return (seed.generos || []).some((g) => genero === normalizarTexto(g));
 }
 
 function matchArtistaPrincipal(cancion, seed) {
-  const artista = (cancion.artista || "").toLowerCase();
-  const principal = (seed.artistas || [])[0]?.toLowerCase() || "";
+  const principal = (seed.artistas || [])[0];
   if (!principal) return false;
-  return artista.includes(principal) || principal.includes(artista.split(" ")[0]);
+  return cancionEsDeArtista(cancion, principal);
 }
 
 function pickCancionesParaPlaylist(seed, canciones, cantidad = 10, imagenesUsadas) {
-  const prioritarias = canciones.filter((cancion) =>
-    coincidePlaylist(cancion, seed)
+  const usados = new Set();
+  const elegidas = [];
+
+  const pools = (seed.artistas || []).map((nombre) =>
+    canciones.filter((cancion) => cancionEsDeArtista(cancion, nombre))
   );
 
-  const portadaPreferida = (seed.portadaCancion || "").toLowerCase();
+  let agrego = true;
+  while (elegidas.length < cantidad && agrego) {
+    agrego = false;
+    for (const pool of pools) {
+      if (elegidas.length >= cantidad) break;
+      const next = pool.find((cancion) => !usados.has(cancion.id));
+      if (next) {
+        elegidas.push(next);
+        usados.add(next.id);
+        agrego = true;
+      }
+    }
+  }
+
+  for (const cancion of canciones) {
+    if (elegidas.length >= cantidad) break;
+    if (usados.has(cancion.id)) continue;
+    if (coincideArtistaPlaylist(cancion, seed)) {
+      elegidas.push(cancion);
+      usados.add(cancion.id);
+    }
+  }
+
+  for (const cancion of canciones) {
+    if (elegidas.length >= cantidad) break;
+    if (usados.has(cancion.id)) continue;
+    if (coincideGeneroPlaylist(cancion, seed)) {
+      elegidas.push(cancion);
+      usados.add(cancion.id);
+    }
+  }
+
+  for (const cancion of canciones) {
+    if (elegidas.length >= cantidad) break;
+    if (usados.has(cancion.id)) continue;
+    elegidas.push(cancion);
+    usados.add(cancion.id);
+  }
+
+  const portadaPreferida = normalizarTexto(seed.portadaCancion);
 
   const porTituloPreferido = canciones.find(
     (cancion) =>
       portadaPreferida &&
-      (cancion.nombre || "").toLowerCase().includes(portadaPreferida) &&
+      normalizarTexto(cancion.nombre).includes(portadaPreferida) &&
       cancion.imagen &&
       !imagenesUsadas.has(cancion.imagen)
   );
 
-  const delArtistaPrincipal = prioritarias.filter((cancion) =>
-    matchArtistaPrincipal(cancion, seed)
-  );
-
-  const conPortadaNueva = [
-    ...(porTituloPreferido ? [porTituloPreferido] : []),
-    ...delArtistaPrincipal,
-    ...prioritarias,
-  ].filter(
-    (cancion, index, arr) =>
-      arr.findIndex((item) => item.id === cancion.id) === index &&
-      cancion.imagen &&
-      !imagenesUsadas.has(cancion.imagen)
-  );
-
-  const resto = canciones.filter(
-    (cancion) => !prioritarias.some((p) => p.id === cancion.id)
-  );
-
-  const ordenadas = [
-    ...conPortadaNueva,
-    ...prioritarias.filter(
-      (cancion) => !conPortadaNueva.some((p) => p.id === cancion.id)
-    ),
-    ...resto,
-  ];
-
-  const elegidas = [];
-  const imagenesEnPlaylist = new Set();
-
-  for (const cancion of ordenadas) {
-    if (elegidas.length >= cantidad) break;
-
-    if (
-      cancion.imagen &&
-      imagenesEnPlaylist.has(cancion.imagen) &&
-      elegidas.length < cantidad - 1
-    ) {
-      continue;
-    }
-
-    elegidas.push(cancion);
-    if (cancion.imagen) imagenesEnPlaylist.add(cancion.imagen);
-  }
-
-  while (elegidas.length < Math.min(cantidad, ordenadas.length)) {
-    const faltante = ordenadas.find(
-      (cancion) => !elegidas.some((e) => e.id === cancion.id)
-    );
-    if (!faltante) break;
-    elegidas.push(faltante);
-  }
-
-  const portadaCancion =
+  let portadaCancion =
+    porTituloPreferido ||
     elegidas.find(
       (cancion) =>
         cancion.imagen &&
@@ -125,6 +131,11 @@ function pickCancionesParaPlaylist(seed, canciones, cantidad = 10, imagenesUsada
       (cancion) => cancion.imagen && !imagenesUsadas.has(cancion.imagen)
     ) ||
     elegidas[0];
+
+  if (portadaCancion && !elegidas.some((c) => c.id === portadaCancion.id)) {
+    elegidas.unshift(portadaCancion);
+    if (elegidas.length > cantidad) elegidas.pop();
+  }
 
   if (portadaCancion?.imagen) {
     imagenesUsadas.add(portadaCancion.imagen);

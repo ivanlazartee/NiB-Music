@@ -2,13 +2,20 @@
 export const playlistsCatalogoSeed = [
   {
     id: "catalog-forever-tu-gantel",
-    portadaCancion: "Esclava",
+    portadaCancion: "FOREVER TU GANTEL",
     nombre: "FOREVER TU GANTEL",
     descripcion: "Con Omar Courtz, Yan Block y más",
     seccion: "vuelve",
     color: "#3d5a80",
     creador: "NiB Music",
-    artistas: ["Omar Courtz", "Bryant Myers", "Arcangel", "Myke Towers", "Jhayco"],
+    artistas: [
+      "Omar Courtz",
+      "Yan Block",
+      "Bryant Myers",
+      "Arcangel",
+      "Myke Towers",
+      "JHAYCO",
+    ],
     generos: ["Reggaeton"],
   },
   {
@@ -134,13 +141,13 @@ export const playlistsCatalogoSeed = [
   },
   {
     id: "catalog-por-si-manana",
-    portadaCancion: "REINA",
+    portadaCancion: "Kyoto",
     nombre: "POR SI MAÑANA NO ESTOY",
     descripcion: "Playlist reciente",
     seccion: "recientes",
     color: "#6c757d",
     creador: "NiB Music",
-    artistas: ["Bad Bunny", "Feid", "Mora"],
+    artistas: ["Omar Courtz", "Yan Block", "Bryant Myers"],
     generos: ["Reggaeton"],
   },
   {
@@ -151,7 +158,7 @@ export const playlistsCatalogoSeed = [
     seccion: "recientes",
     color: "#adb5bd",
     creador: "NiB Music",
-    artistas: ["Rauw Alejandro", "Jhayco", "Arcangel"],
+    artistas: ["Ozuna", "Rauw Alejandro", "JHAYCO", "Arcangel"],
     generos: ["Reggaeton"],
   },
   {
