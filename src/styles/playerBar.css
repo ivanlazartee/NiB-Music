@@ -130,6 +130,18 @@
   height: 28px;
 }
 
+.player-bar__btn--muted,
+.player-bar__btn--muted:disabled {
+  color: #3a3a3a;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.player-bar__btn--muted:hover,
+.player-bar__btn--muted:disabled:hover {
+  color: #3a3a3a;
+}
+
 .player-bar__progress {
   display: grid;
   grid-template-columns: 40px 1fr 40px;

@@ -61,13 +61,6 @@ function PlayerBar() {
     buscarEnCancion(Number(event.target.value))
   }
 
-  function enfocarCola() {
-    document.querySelector(".queue-panel")?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-    })
-  }
-
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen?.()
@@ -189,29 +182,30 @@ function PlayerBar() {
       <div className="player-bar__extra">
         <button
           type="button"
-          className="player-bar__btn player-bar__btn--extra"
+          className="player-bar__btn player-bar__btn--extra player-bar__btn--muted"
           aria-label="Letra"
-          title="Letra"
-          disabled={!cancionActual}
+          title="No disponible"
+          disabled
         >
           <Mic2 size={16} />
         </button>
 
         <button
           type="button"
-          className="player-bar__btn player-bar__btn--extra"
+          className="player-bar__btn player-bar__btn--extra player-bar__btn--muted"
           aria-label="Cola"
-          title="A continuación"
-          onClick={enfocarCola}
+          title="No disponible"
+          disabled
         >
           <ListMusic size={16} />
         </button>
 
         <button
           type="button"
-          className="player-bar__btn player-bar__btn--extra"
+          className="player-bar__btn player-bar__btn--extra player-bar__btn--muted"
           aria-label="Conectar a un dispositivo"
-          title="Conectar a un dispositivo"
+          title="No disponible"
+          disabled
         >
           <MonitorSpeaker size={16} />
         </button>
@@ -240,9 +234,10 @@ function PlayerBar() {
 
         <button
           type="button"
-          className="player-bar__btn player-bar__btn--extra"
+          className="player-bar__btn player-bar__btn--extra player-bar__btn--muted"
           aria-label="Mini reproductor"
-          title="Mini reproductor"
+          title="No disponible"
+          disabled
         >
           <PictureInPicture2 size={16} />
         </button>
